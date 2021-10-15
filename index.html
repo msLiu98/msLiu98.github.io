@@ -86,9 +86,131 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Mac安装Homebrew"><a href="#Mac安装Homebrew" class="headerlink" title="Mac安装Homebrew"></a>Mac安装Homebrew</h2><p>打开命令行并输入一下命令即可安装（若已安装则忽略）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li>安装Homebrew</li>
+</ul>
+<p>打开命令行并输入<code>brew</code>安装命令（若已安装则忽略）</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>安装node.js</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br></pre></td></tr></table></figure>
+
+<p>安装后查看node和内置npm包管理工具是否均安装成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>输出<code>v16.10.0</code>,<code>7.24.0</code>等表示版本号的结果则表示安装成功</p>
+<ul>
+<li>安装git</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure>
+
+<p>查看是否安装成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<p>输出<code>git version 2.30.1 (Apple Git-130)</code>则安装成功</p>
+<h2 id="正式搭建"><a href="#正式搭建" class="headerlink" title="正式搭建"></a>正式搭建</h2><ul>
+<li>使用npm安装hexo</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>这里是以管理员身份运行代码，所以需要输入密码</p>
+<ul>
+<li>在你想存放该博客文件的路径下创建单独文件夹并切换至该文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/Projects</span><br><span class="line">mkdir blog</span><br><span class="line">cd blog</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>初始化博客</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动hexo进行预览</li>
+</ul>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>看到以下输出则可以在对应端口查看预览了</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO  Validating config</span><br><span class="line">INFO  <span class="built_in">Start</span> processing</span><br><span class="line">INFO  Hexo is running <span class="built_in">at</span> http://localhost:<span class="number">4000</span> . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+
+<p>预览效果如下（这里我用的默认的4000端口，你也可以选择其他未被占用的端口，例如8888，8889等）<br><img src="https://i.loli.net/2021/10/15/nZAtjod1UHPvVQB.png" alt="localhost:4000"></p>
+<ul>
+<li>配置客户端git，添加SSH Key到github</li>
+</ul>
+<p>若前期因为其他项目已配置，可跳过该步骤</p>
+<p>命令行输入配置用户名和邮箱账号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;your github username&quot;</span><br><span class="line">git config --global user.email &quot;your github email&quot;</span><br></pre></td></tr></table></figure>
+
+<p>生成SSH Key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;your github email&quot;</span><br></pre></td></tr></table></figure>
+
+<p>此时会要求你输入密码，输入一个便于记忆的密码即可，之后一般会在<code>~/.ssh/id_rsa.pub</code>中，查看key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p>登陆网页github账号，点击<code>setting</code></p>
+<p><img src="https://i.loli.net/2021/10/15/lsxO5UamyQ72wz4.png"></p>
+<p>然后点击左侧<code>SSH and GPG keys</code>, 点击<code>New SSH Key</code>生成新的SSH key</p>
+<p><img src="https://i.loli.net/2021/10/15/GpRXWtUnyElaSrK.png"></p>
+<p>命令后，输入刚才自命令行复制的key，点击<code>Add SSH key</code>完成生成</p>
+<p><img src="https://i.loli.net/2021/10/15/V4q9Ui3nogOTNHE.png"></p>
+<ul>
+<li>与github关联</li>
+</ul>
+<p>登录github并创建一个特定命名的仓库，命名方式为<strong>username.github.io</strong>, 例如我的为<code>msLiu98.github.io</code>, 命名格式不能修改，否则无法对应</p>
+<p>我这里因为已经创建了，所以显示错误。第一次创建则可以通过。</p>
+<p><img src="https://i.loli.net/2021/10/15/nV62358jhKZJcRN.png"></p>
+<p>命令行在<code>blog</code>路径下安装相关依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>然后修改配置文件<code>~/Projects/blog/_config.yml</code>，将<code>deploy</code>部分修改为git.</p>
+<p>这里采用的是git协议，也可以是http协议，就是该仓库的网址，只是国内http比较慢，且容易出错，所以这里用git协议。</p>
+<p>修改时同时注意空格，建议用Typora等编译器打开修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:msLiu98/msLiu98.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>之后便可以将博客推送至github了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Hexo常用命令总结"><a href="#Hexo常用命令总结" class="headerlink" title="Hexo常用命令总结"></a>Hexo常用命令总结</h2><table>
+<thead>
+<tr>
+<th>command</th>
+<th>command-short</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hexo server</td>
+<td>hexo s</td>
+<td>启动预览服务器</td>
+</tr>
+<tr>
+<td>hexo server -i 192.168.1.1 -p 8888</td>
+<td>hexo s -i 192.168.1.1 -p 8888</td>
+<td>自定义预览ip和端口</td>
+</tr>
+<tr>
+<td>hexo new “name”</td>
+<td>hexo n “”</td>
+<td>创建新文章，必须先创建再写</td>
+</tr>
+<tr>
+<td>hexo generate</td>
+<td>hexo g</td>
+<td>生成静态网页</td>
+</tr>
+<tr>
+<td>hexo deploy</td>
+<td>hexo d</td>
+<td>部署</td>
+</tr>
+<tr>
+<td>hexo clean</td>
+<td></td>
+<td>清除缓存</td>
+</tr>
+</tbody></table>
 
       
     </div>
