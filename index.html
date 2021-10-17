@@ -64,6 +64,106 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Linux平台安装MongoDB" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/" class="article-date">
+  <time datetime="2021-10-17T11:04:47.000Z" itemprop="datePublished">2021-10-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/">Linux平台安装MongoDB</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li><p>相关Linux平台依赖</p>
+<ul>
+<li><p>Ubuntu 18.04LTS</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl4 openssl</span><br></pre></td></tr></table></figure></li>
+<li><p>Ubuntu 16.04 LTS</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl3 openssl</span><br></pre></td></tr></table></figure></li>
+<li><p>CentOS</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install libcurl openssl</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><p>命令行下载源码并解压</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.8.tgz    # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-ubuntu1604-4.2.8.tgz                                # 解压</span><br></pre></td></tr></table></figure></li>
+<li><p>移动文件夹至local（这里可以自定义文件夹名，我就用的mongodb4）</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv mongodb-linux-x86_64-ubuntu1604-4.2.8.tgz  /usr/local/mongodb4  # 移动至local文件夹</span><br></pre></td></tr></table></figure></li>
+<li><p>将mongo文件夹的bin路径添加至PATH路径中</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/local/mongodb4/bin:$PATH</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><ul>
+<li>初始化数据和日志目录（这里需要和MongoDB启动的默认路径一致）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /data/db</span><br><span class="line">sudo mkdir -p /data/logs/mongodb.log</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建配置文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mongodb4/bin</span><br><span class="line">vim mongodb.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置以下信息至mongodb.conf后保存退出</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dbpath = /data/db #数据文件存放目录  </span><br><span class="line">logpath = /data/logs/mongodb.log   #日志文件存放目录  </span><br><span class="line">port = 27017  #端口  </span><br><span class="line">fork = true  #以守护程序的方式启用，即在后台运行  </span><br><span class="line">auth = true #验证用户名密码</span><br><span class="line">logappend = true</span><br><span class="line">bind_ip = 0.0.0.0 #这里默认是127.0.0.1, 设置成0.0.0.0是表示所有IP地址都可以访问(后面会具体介绍)</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><ul>
+<li>通过配置文件启动mongo服务</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mongodb4/bin</span><br><span class="line">./mongod -f ./mongodb.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加管理用户"><a href="#添加管理用户" class="headerlink" title="添加管理用户"></a>添加管理用户</h2><ul>
+<li><p>由于Mongodb没有类似root用户，只有管理用户的用户，因此创建用户</p>
+</li>
+<li><p>进入mongo shell</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mongodb4/bin</span><br><span class="line">./mongo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建用户</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.createUser(&#123;user:&quot;admin&quot;, pwd:&quot;123456&quot;, roles: [&#123;role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot;&#125;]&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>退出交互并重新进入mongo shell</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.auth(&quot;admin&quot;, &quot;123456&quot;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><ul>
+<li><p>将mongod添加至系统路径，方便随处执行</p>
+</li>
+<li><p>设置开机自动启动</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/" data-id="ckuv59vbo0000275h555hfs8v" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Mac-Hexo搭建个人博客" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/15/Mac-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="article-date">
@@ -303,6 +403,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/">Linux平台安装MongoDB</a>
+          </li>
         
           <li>
             <a href="/2021/10/15/Mac-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">Mac+Hexo搭建个人博客</a>
