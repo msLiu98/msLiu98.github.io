@@ -64,6 +64,81 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Linux访问Windows共享文件夹并挂载在本地" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/" class="article-date">
+  <time datetime="2021-10-18T08:07:49.000Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/">Linux访问Windows共享文件夹并挂载在本地</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li>Windows设置共享文件夹</li>
+</ul>
+<p>暂时略，记得将文件夹共享给Everyone即可</p>
+<ul>
+<li>Windows打开smb传输协议</li>
+</ul>
+<p>具体路径<code>控制面板-程序-程序和功能-启用或关闭Windows功能-SMB 1.0/CIFS 文件共享支持</code></p>
+<p><img src="https://i.loli.net/2021/10/18/6oh4LTikYS1bEvP.png"></p>
+<ul>
+<li>Linux安装相关<code>smbclient</code>命令(以Ubuntu 16为例)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install smbclient</span><br></pre></td></tr></table></figure>
+
+<h2 id="访问共享文件夹命令"><a href="#访问共享文件夹命令" class="headerlink" title="访问共享文件夹命令"></a>访问共享文件夹命令</h2><ul>
+<li>查看有哪些共享文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient -L 192.168.102.161 -U Administrator%123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>访问文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient //192.168.102.161/share -U Administrator%123456</span><br></pre></td></tr></table></figure>
+
+<h2 id="挂载共享文件夹至本地"><a href="#挂载共享文件夹至本地" class="headerlink" title="挂载共享文件夹至本地"></a>挂载共享文件夹至本地</h2><ul>
+<li>本地创建挂载文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data/share</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>挂载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cifs //192.168.102.161/share /data/share -o username=Administrator,password=123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>卸载</li>
+</ul>
+<p>注意，卸载前需要关闭对该目录的所有进程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /data/share</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/" data-id="ckuwe71ut0000fk5he0eqgza5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Linux平台安装MongoDB" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/" class="article-date">
@@ -354,6 +429,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/">Linux访问Windows共享文件夹并挂载在本地</a>
+          </li>
         
           <li>
             <a href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/">Linux平台安装MongoDB</a>
