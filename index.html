@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2026-02-28-clawdbot-guide" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2026/02/28/2026-02-28-clawdbot-guide/" class="article-date">
+  <time datetime="2026-02-28T08:55:00.000Z" itemprop="datePublished">2026-02-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/02/28/2026-02-28-clawdbot-guide/">Clawdbot超级小白入门指南，不靠MacMini和云，安全用上满血版</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Clawdbot🦞这几天真的是刷爆我的屏，Mac mini销冠，被Anthropic告到换新名字Moltbot，过了一天又换成OpenClaw，隔壁腾讯和阿里连夜给自家云做了一键部署的脚本。</p>
+<p>但这个bot有两个大漏勺缺点，权限极高，高到可以直接把你的电脑清空，上下文工作太烂，烧Token太快，零人敢接 Claude Opus 4.5。</p>
+<p>但真架不住确实太好玩了，好玩到我这两天给AI配一套完整账号，以及下单了台国补后3399的Mac Mini。</p>
+<p>但是，目前大部分的Clawdbot的教程都停留在安装，MacMini和云服务器都不是最好的第一选择。</p>
+<p>给的测试案例还都是一些通用Agent能完成的，比方说定时收集某个消息最近24小时内的变动，这个Grok的Task也能做，或者是整理文件，这个 CoWork能做，或者是做网站开发，这个Claude Code早就能做了。</p>
+        
+          <p class="article-more-link">
+            <a href="/2026/02/28/2026-02-28-clawdbot-guide/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/02/28/2026-02-28-clawdbot-guide/" data-id="cmm63s07u0002ingrhlg8eees" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clawdbot/" rel="tag">Clawdbot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenClaw/" rel="tag">OpenClaw</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux访问Windows共享文件夹并挂载在本地" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/" class="article-date">
+  <time datetime="2021-10-18T08:07:49.000Z" itemprop="datePublished">2021-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/">Linux访问Windows共享文件夹并挂载在本地</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li>Windows设置共享文件夹</li>
+</ul>
+<p>暂时略，记得将文件夹共享给Everyone即可</p>
+<ul>
+<li>Windows打开smb传输协议</li>
+</ul>
+<p>具体路径<code>控制面板-程序-程序和功能-启用或关闭Windows功能-SMB 1.0/CIFS 文件共享支持</code></p>
+<p><img src="https://i.loli.net/2021/10/18/6oh4LTikYS1bEvP.png"></p>
+<ul>
+<li>Linux安装相关<code>smbclient</code>命令(以Ubuntu 16为例)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install smbclient</span><br></pre></td></tr></table></figure>
+
+<h2 id="访问共享文件夹命令"><a href="#访问共享文件夹命令" class="headerlink" title="访问共享文件夹命令"></a>访问共享文件夹命令</h2><ul>
+<li>查看有哪些共享文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient -L 192.168.102.161 -U Administrator%123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>访问文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">smbclient //192.168.102.161/share -U Administrator%123456</span><br></pre></td></tr></table></figure>
+
+<h2 id="挂载共享文件夹至本地"><a href="#挂载共享文件夹至本地" class="headerlink" title="挂载共享文件夹至本地"></a>挂载共享文件夹至本地</h2><ul>
+<li>本地创建挂载文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data/share</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>挂载</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cifs //192.168.102.161/share /data/share -o username=Administrator,password=123456</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>卸载</li>
+</ul>
+<p>注意，卸载前需要关闭对该目录的所有进程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /data/share</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/" data-id="cmm63s07t0001ingr734u56n0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux平台安装MongoDB" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/" class="article-date">
+  <time datetime="2021-10-17T11:04:47.000Z" itemprop="datePublished">2021-10-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/">Linux平台安装MongoDB</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li><p>相关Linux平台依赖</p>
+<ul>
+<li><p>Ubuntu 18.04LTS</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl4 openssl</span><br></pre></td></tr></table></figure></li>
+<li><p>Ubuntu 16.04 LTS</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcurl3 openssl</span><br></pre></td></tr></table></figure></li>
+<li><p>CentOS</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install libcurl openssl</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><p>命令行下载源码并解压</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1604-4.2.8.tgz    # 下载</span><br><span class="line">tar -zxvf mongodb-linux-x86_64-ubuntu1604-4.2.8.tgz                                # 解压</span><br></pre></td></tr></table></figure></li>
+<li><p>移动文件夹至local（这里可以自定义文件夹名，我就用的mongodb4）</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv mongodb-linux-x86_64-ubuntu1604-4.2.8.tgz  /usr/local/mongodb4  # 移动至local文件夹</span><br></pre></td></tr></table></figure></li>
+<li><p>将mongo文件夹的bin路径添加至PATH路径中</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/local/mongodb4/bin:$PATH</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><ul>
+<li>初始化数据和日志目录（这里需要和MongoDB启动的默认路径一致）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /data/db</span><br><span class="line">sudo mkdir -p /data/logs/mongodb.log</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建配置文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mongodb4/bin</span><br><span class="line">vim mongodb.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置以下信息至mongodb.conf后保存退出</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dbpath = /data/db #数据文件存放目录  </span><br><span class="line">logpath = /data/logs/mongodb.log   #日志文件存放目录  </span><br><span class="line">port = 27017  #端口  </span><br><span class="line">fork = true  #以守护程序的方式启用，即在后台运行  </span><br><span class="line">auth = true #验证用户名密码</span><br><span class="line">logappend = true</span><br><span class="line">bind_ip = 0.0.0.0 #这里默认是127.0.0.1, 设置成0.0.0.0是表示所有IP地址都可以访问(后面会具体介绍)</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><ul>
+<li>通过配置文件启动mongo服务</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mongodb4/bin</span><br><span class="line">./mongod -f ./mongodb.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加管理用户"><a href="#添加管理用户" class="headerlink" title="添加管理用户"></a>添加管理用户</h2><ul>
+<li><p>由于Mongodb没有类似root用户，只有管理用户的用户，因此创建用户</p>
+</li>
+<li><p>进入mongo shell</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mongodb4/bin</span><br><span class="line">./mongo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建用户</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.createUser(&#123;user:&quot;admin&quot;, pwd:&quot;123456&quot;, roles: [&#123;role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot;&#125;]&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>退出交互并重新进入mongo shell</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use admin</span><br><span class="line">db.auth(&quot;admin&quot;, &quot;123456&quot;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><ul>
+<li><p>将mongod添加至系统路径，方便随处执行</p>
+</li>
+<li><p>设置开机自动启动</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/" data-id="cmm63s07s0000ingrf3p60vws" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Mac-Hexo搭建个人博客" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/15/Mac-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="article-date">
+  <time datetime="2021-10-15T02:25:49.000Z" itemprop="datePublished">2021-10-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/15/Mac-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">Mac+Hexo搭建个人博客</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
+<li>安装Homebrew</li>
+</ul>
+<p>打开命令行并输入<code>brew</code>安装命令（若已安装则忽略）</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装node.js</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br></pre></td></tr></table></figure>
+
+<p>安装后查看node和内置npm包管理工具是否均安装成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<p>输出<code>v16.10.0</code>,<code>7.24.0</code>等表示版本号的结果则表示安装成功</p>
+<ul>
+<li>安装git</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install git</span><br></pre></td></tr></table></figure>
+
+<p>查看是否安装成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
+<p>输出<code>git version 2.30.1 (Apple Git-130)</code>则安装成功</p>
+<h2 id="正式搭建"><a href="#正式搭建" class="headerlink" title="正式搭建"></a>正式搭建</h2><ul>
+<li>使用npm安装hexo</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+
+<p>这里是以管理员身份运行代码，所以需要输入密码</p>
+<ul>
+<li>在你想存放该博客文件的路径下创建单独文件夹并切换至该文件夹</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/Projects</span><br><span class="line">mkdir blog</span><br><span class="line">cd blog</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>初始化博客</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>启动hexo进行预览</li>
+</ul>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<p>看到以下输出则可以在对应端口查看预览了</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO  Validating config</span><br><span class="line">INFO  <span class="built_in">Start</span> processing</span><br><span class="line">INFO  Hexo is running <span class="built_in">at</span> http://localhost:<span class="number">4000</span> . Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
+
+<p>预览效果如下（这里我用的默认的4000端口，你也可以选择其他未被占用的端口，例如8888，8889等）<br><img src="https://i.loli.net/2021/10/15/nZAtjod1UHPvVQB.png" alt="localhost:4000"></p>
+<ul>
+<li>配置客户端git，添加SSH Key到github</li>
+</ul>
+<p>若前期因为其他项目已配置，可跳过该步骤</p>
+<p>命令行输入配置用户名和邮箱账号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;your github username&quot;</span><br><span class="line">git config --global user.email &quot;your github email&quot;</span><br></pre></td></tr></table></figure>
+
+<p>生成SSH Key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;your github email&quot;</span><br></pre></td></tr></table></figure>
+
+<p>此时会要求你输入密码，输入一个便于记忆的密码即可，之后一般会在<code>~/.ssh/id_rsa.pub</code>中，查看key</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+<p>登陆网页github账号，点击<code>setting</code></p>
+<p><img src="https://i.loli.net/2021/10/15/lsxO5UamyQ72wz4.png"></p>
+<p>然后点击左侧<code>SSH and GPG keys</code>, 点击<code>New SSH Key</code>生成新的SSH key</p>
+<p><img src="https://i.loli.net/2021/10/15/GpRXWtUnyElaSrK.png"></p>
+<p>命令后，输入刚才自命令行复制的key，点击<code>Add SSH key</code>完成生成</p>
+<p><img src="https://i.loli.net/2021/10/15/V4q9Ui3nogOTNHE.png"></p>
+<ul>
+<li>与github关联</li>
+</ul>
+<p>登录github并创建一个特定命名的仓库，命名方式为<strong>username.github.io</strong>, 例如我的为<code>msLiu98.github.io</code>, 命名格式不能修改，否则无法对应</p>
+<p>我这里因为已经创建了，所以显示错误。第一次创建则可以通过。</p>
+<p><img src="https://i.loli.net/2021/10/15/nV62358jhKZJcRN.png"></p>
+<p>命令行在<code>blog</code>路径下安装相关依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>然后修改配置文件<code>~/Projects/blog/_config.yml</code>，将<code>deploy</code>部分修改为git.</p>
+<p>这里采用的是git协议，也可以是http协议，就是该仓库的网址，只是国内http比较慢，且容易出错，所以这里用git协议。</p>
+<p>修改时同时注意空格，建议用Typora等编译器打开修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:msLiu98/msLiu98.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>之后便可以将写好的博客生成网页页面并推送至github了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Hexo常用命令总结"><a href="#Hexo常用命令总结" class="headerlink" title="Hexo常用命令总结"></a>Hexo常用命令总结</h2><table>
+<thead>
+<tr>
+<th>command</th>
+<th>command-short</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>hexo server</td>
+<td>hexo s</td>
+<td>启动预览服务器</td>
+</tr>
+<tr>
+<td>hexo server -i 192.168.1.1 -p 8888</td>
+<td>hexo s -i 192.168.1.1 -p 8888</td>
+<td>自定义预览ip和端口</td>
+</tr>
+<tr>
+<td>hexo new “name”</td>
+<td>hexo n “”</td>
+<td>创建新文章，必须先创建再写</td>
+</tr>
+<tr>
+<td>hexo generate</td>
+<td>hexo g</td>
+<td>生成静态网页</td>
+</tr>
+<tr>
+<td>hexo deploy</td>
+<td>hexo d</td>
+<td>部署</td>
+</tr>
+<tr>
+<td>hexo clean</td>
+<td></td>
+<td>清除缓存</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/10/15/Mac-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" data-id="cmm63s07u0003ingrdany6wp2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clawdbot/" rel="tag">Clawdbot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenClaw/" rel="tag">OpenClaw</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/Clawdbot/" style="font-size: 10px;">Clawdbot</a> <a href="/tags/OpenClaw/" style="font-size: 10px;">OpenClaw</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">February 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/02/28/2026-02-28-clawdbot-guide/">Clawdbot超级小白入门指南，不靠MacMini和云，安全用上满血版</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/">Linux访问Windows共享文件夹并挂载在本地</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/17/Linux%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85MongoDB/">Linux平台安装MongoDB</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/15/Mac-Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">Mac+Hexo搭建个人博客</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
