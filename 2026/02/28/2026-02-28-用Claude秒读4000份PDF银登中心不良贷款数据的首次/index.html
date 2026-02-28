@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、一个被忽略的数据富矿 银登中心（银行业信贷资产登记流转中心）是银保监会批准设立的全国性不良贷款转让业务平台。不良贷款转让虽然也可以通过ABS等方式进行（且Wind等数据商已有较好的覆盖），但银登中心的逐笔公告数据至今无人系统化整理。 自2023年不良贷款转让业务正式扩容以来，银登中心已累计发布超过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘">
+<meta property="og:url" content="http://example.com/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、一个被忽略的数据富矿 银登中心（银行业信贷资产登记流转中心）是银保监会批准设立的全国性不良贷款转让业务平台。不良贷款转让虽然也可以通过ABS等方式进行（且Wind等数据商已有较好的覆盖），但银登中心的逐笔公告数据至今无人系统化整理。 自2023年不良贷款转让业务正式扩容以来，银登中心已累计发布超过">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-02-28T12:40:41.000Z">
+<meta property="article:modified_time" content="2026-02-28T12:40:41.690Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Claude">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="银行">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2026-02-28-用Claude秒读4000份PDF银登中心不良贷款数据的首次" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/" class="article-date">
+  <time datetime="2026-02-28T12:40:41.000Z" itemprop="datePublished">2026-02-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一、一个被忽略的数据富矿</p>
+<p>银登中心（银行业信贷资产登记流转中心）是银保监会批准设立的全国性不良贷款转让业务平台。不良贷款转让虽然也可以通过ABS等方式进行（且Wind等数据商已有较好的覆盖），但银登中心的逐笔公告数据至今无人系统化整理。</p>
+<p>自2023年不良贷款转让业务正式扩容以来，银登中心已累计发布超过</p>
+<span id="more"></span>
+
+<p>4000份</p>
+<p>个人不良贷款转让公告，涵盖了国有大行、股份制银行、城商行、农商行和消费金融公司等各类金融机构。每一份公告都以PDF附件形式挂在网站上，详细列明了转让资产包的关键信息：未偿本金总额、资产笔数、借款人户数、逾期天数、五级分类、担保方式等十余个字段。</p>
+<p>银登中心官网（</p>
+<p><a target="_blank" rel="noopener" href="https://www.yindeng.com.cn/index.html">https://www.yindeng.com.cn/index.html</a></p>
+<p>）</p>
+<p>如果系统化整理，这些数据将是研究中国个人不良贷款转让市场最直接、最底层的一手信息源。</p>
+<p>然而，至今几乎没有人做过这件事。这在AI时代之前，几乎是一个</p>
+<p>不可能完成的任务</p>
+<p>。</p>
+<p>4000多份PDF，要从中做到可靠的结构化提取，需要非常专业的开发支持，绝非安排实习生去”洗”数据就能解决的问题，人力去做相当于一个团队都耗在单一数据收集。</p>
+<p>而对于金融数据商而言，这个数据的受众面实在太窄，主要是部分投研人员，可能还有一些AMC从业者，那专门投入资源去做，商业上并不划算。</p>
+<p>所以，这个数据一直是空白的。</p>
+<p>更关键的是，银登中心自身也已停止公开发布不良贷款转让业务的汇总统计数据。这意味着，如果不从公告层面逐一提取，这些信息实际对于非会员单位处于一种”公开但不可用”的状态。</p>
+<p>二、几小时做完传统几周的工作</p>
+<p>整个流程可以概括为四步：</p>
+<p>自动爬取网页公告列表 → 批量下载PDF附件 → 结构化解析表格数据 → 输出标准化Excel</p>
+<p>。</p>
+<p>技术上使用Python编写，结合Claude AI辅助开发。爬虫自动遍历银登中心网站全部分页，提取公告标题、日期和PDF下载链接；下载器以多线程并发获取全部PDF文件；解析器使用PDF表格识别库自动提取每份公告中的16个关键字段。对于少数格式特殊的PDF（约5%），通过正则表达式和AI大模型作为兜底方案，确保最大程度覆盖。全程只使用了少量的自然语言进行交互，例如启动项目：</p>
+<p>从网站</p>
+<p>https:</p>
+<p>/</p>
+<p>/<a target="_blank" rel="noopener" href="http://www.yindeng.com.cn/xxpl/xxpl_bldkzr/bldkzr">www.yindeng.com.cn/xxpl/xxpl_bldkzr/bldkzr</a></p>
+<p>_zrgg/</p>
+<p>提取</p>
+<p>PDF</p>
+<p>并且进行解析，获取关键字段，如未尝本金</p>
+<p>我们先使用</p>
+<p>10</p>
+<p>份进行测试</p>
+<p>整个过程——从编写代码到完成4000+份PDF的全量下载和解析——耗时仅</p>
+<p>一个下午</p>
+<p>。传统人工方式完成同样的工作，保守估计需要2-3周。更重要的是，系统支持增量更新：每次运行只需几分钟即可获取最新数据，真正实现了”一次投入，持续产出”。</p>
+<p>最终产出两个完整数据集：</p>
+<p>• 转让公告数据：</p>
+<p>2200+条</p>
+<p>有效记录，覆盖2023年1月至今的全部个人不良贷款转让公告</p>
+<p>• 转让结果数据：</p>
+<p>1300+条</p>
+<p>有效记录，包含转让完成后的受让方和成交信息</p>
+<p>三、数据发现一：市场全景</p>
+<p>首先来看市场整体规模的变化。</p>
+<p>数据来源：银登中心转让公告，经结构化提取汇总。注：季度归属以初次公告日为准，与银登中心业务统计数据可能存在出入，下同。</p>
+<p>从季度未偿本金总额来看，个人不良贷款转让市场在过去三年间呈现出显著的扩容态势。2023年第一季度，全市场转让公告涉及的未偿本金仅</p>
+<p>8.85亿元</p>
+<p>——这是不良贷款批量转让业务试点初期的水平。到2025年第四季度，这一数字已跃升至</p>
+<p>939.51亿元</p>
+<p>，增长超过100倍。</p>
+<p>需要说明的是，这里的数据反映的是”挂牌出让规模”而非”最终成交规模”。但作为衡量市场活跃度的指标，趋势信号是非常明确的：越来越多的金融机构正在将个人不良贷款转让作为常规资产处置手段。</p>
+<p>数据来源：银登中心转让公告，经结构化提取汇总</p>
+<p>将公告数量和资产笔数放在一起看，可以发现另一个有趣的趋势：</p>
+<p>公告数量从2023Q1的</p>
+<p>10个</p>
+<p>增长到2025Q4的</p>
+<p>403个</p>
+<p>，反映出参与机构和项目数量在快速扩容</p>
+<p>资产笔数从</p>
+<p>1.3万笔</p>
+<p>跃升至</p>
+<p>1265万笔</p>
+<p>，增长近千倍</p>
+<p>两者增速的差异说明：不仅参与的机构更多了，单个资产包的规模也在显著扩大。这反映出银行对不良贷款批量转让模式的接受度正在提高，转让标的正从早期的”试水型小包”向”常规化大包”转变。</p>
+<p>另一个值得关注的现象是季度间的波动。每年第一季度通常是低点（如2024Q1仅20.81亿元），第三、四季度则是高点。这与银行年末加速不良资产出清的行业惯例一致——金融机构倾向于在年末集中处置不良资产，以优化年度报表指标。</p>
+<p>四、数据发现二：机构分化图谱</p>
+<p>接下来，将视角从市场整体转向具体机构——</p>
+<p>这也是本文数据最核心的价值所在</p>
+<p>。</p>
+<p>银登中心自身发布过的业务统计数据，也仅停留在市场汇总层面，从未披露过单家机构的转让数据。而我们这次直接从4000多份公告中穿透到了</p>
+<p>机构层</p>
+<p>，逐一识别出每家机构、每个季度的转让规模——这是此前从未有过的数据维度。</p>
+<p>数据来源：银登中心转让公告。橙色为消费金融公司，深蓝色为银行。</p>
+<p>从累计转让规模来看，机构之间的分化非常明显。</p>
+<p>某股份制银行A</p>
+<p>以759亿元的累计未偿本金遥遥领先，几乎是第二名某股份制银行B（339亿元）的两倍多。</p>
+<p>排名前十的机构中，有五家是股份制银行，两家是城商行，两家是国有大行，一家是消费金融公司。这个分布本身就很有信息量——</p>
+<p>股份制银行是个人不良贷款转让最积极的参与者</p>
+<p>，而国有大行虽然不良贷款余额庞大，但通过银登中心转让的规模相对有限，这可能与国有大行自身拥有更多内部处置渠道有关。</p>
+<p>值得特别关注的是消费金融公司的崛起。图中以橙色标注的机构即为消费金融公司，它们正在成为不良贷款转让市场的重要供给力量。</p>
+<p>我们挑选排名前两位的机构，分别观察它们的季度转让节奏。</p>
+<p>数据来源：银登中心转让公告，按初次公告日归属季度</p>
+<p>某股份制银行A</p>
+<p>是最早的大规模参与者，也是累计转让规模最大的单一机构。从季度节奏来看，2023年下半年开始显著放量，Q4单季度更是达到</p>
+<p>234亿元</p>
+<p>的峰值。但紧接着2024Q1断崖式归零，此后逐步恢复至50-80亿元区间。这种”脉冲式启动—急停—常态化”的节奏，可能与内部额度审批、资产质量集中暴露等因素有关。</p>
+<p>数据来源：银登中心转让公告，按初次公告日归属季度</p>
+<p>某股份制银行B</p>
+<p>则呈现典型的</p>
+<p>脉冲式出清</p>
+<p>模式：转让规模在0-5亿元和40-100亿元之间剧烈波动，每隔几个季度集中出货一次，幅度差异极大。2025Q2单季度达到</p>
+<p>101亿元</p>
+<p>的历史高点，而紧邻的Q3仅有5亿元。这种节奏表明该机构可能采取了”攒批集中转让”的策略，而非持续出清。</p>
+<p>这些差异反映了各机构在不良资产处置策略、内部审批流程以及资产质量管理节奏方面的不同选择。对于关注特定机构的投研人员而言，这种季度级别的转让时序数据，是此前无法获取的新维度信息。</p>
+<p>五、数据发现三：消费金融公司专题</p>
+<p>消费金融公司是近年来不良贷款转让市场最值得关注的新力量。我们选取三家转让规模最大的消费金融公司，单独观察它们的季度转让节奏。</p>
+<p>数据来源：银登中心转让公告</p>
+<p>三家公司的转让节奏迥异：</p>
+<p>某消费金融公司G</p>
+<p>从2024年第二季度开始参与转让，此后在20-35亿元区间维持稳定的季度转让规模，表现出</p>
+<p>常态化处置</p>
+<p>的特征</p>
+<p>某消费金融公司H</p>
+<p>参与最早（2023年第二季度即有小规模尝试），此后保持每季度10-30亿元的转让频率，呈现</p>
+<p>稳健波动</p>
+<p>型</p>
+<p>某消费金融公司J</p>
+<p>起步较晚但增速惊人，从2024年的个位数迅速攀升，2025年第四季度单季度转让规模达到</p>
+<p>60.46亿元</p>
+<p>，为三家之最，呈现典型的</p>
+<p>后来居上</p>
+<p>态势</p>
+<p>作为一个数据观察，不良贷款转让行为本身可以作为研判金融机构资产质量变化的前瞻性指标之一。当某家机构的转让规模突然放大时，往往值得关注其背后的业务发展和资产质量动因。</p>
+<p>需要强调的是，不良贷款转让是正常的资产处置行为，转让规模大不等于资产质量差。部分机构可能是主动加速出清以优化资产负债表，而非被动应对不良攀升。</p>
+<p>我们仅呈现数据事实，不做信用层面的评价。</p>
+<p>六、结语：研究边界的拓展</p>
+<p>回过头来看，这个项目真正的起点既不是代码也不是AI，而是一个具体的问题：各家机构的不良贷款转让情况究竟是什么样的？有了这个问题，工具和方法只是手段，而手段在今天已经不是瓶颈了。</p>
+<p>这或许是AI时代做研究最深刻的变化。当数据的获取和处理不再构成壁垒，真正稀缺的东西就浮出水面了——</p>
+<p>你到底想研究什么？</p>
+<p>说实话，我自己也常常陷入这种困境：手握越来越强的工具，却不确定该拿它们去解决什么问题。工具越强大，”找到正确的问题”反而变得越重要。</p>
+<p>类似银登中心这样”一直在那里但没人整理”的数据，在金融研究中其实随处可见——裁判文书、产权交易所挂牌信息、监管处罚公告——方法是通用的，但前提永远是：你得先知道自己在找什么，为什么要找这些数据，他们用来说明什么问题？这篇文章算是一个样本。如果它能让你想到自己领域里类似的数据富矿，那它的价值就不止于不良贷款本身了。</p>
+<p>另外由于数据可能用于内部深度报告，这篇暂时先不发布数据集。</p>
+<p>数据说明：</p>
+<p>本文所有数据均来源于银登中心（yindeng.com.cn）公开发布的个人不良贷款转让公告，经自动化程序结构化提取汇总。文中所有机构名称均做化名处理。季度归属以公告初次发布日期为准。</p>
+<p>免责声明：</p>
+<p>本文仅做数据展示和客观分析，不构成任何投资建议，亦不对任何机构做信用评价。</p>
+<hr>
+<blockquote>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/of0T-uzNYCw3ETr7zISTDw">https://mp.weixin.qq.com/s/of0T-uzNYCw3ETr7zISTDw</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/" data-id="cmm6b7imb0004vrgrfqfn0nhi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Claude/" rel="tag">Claude</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%93%B6%E8%A1%8C/" rel="tag">银行</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/02/28/2026-02-28-claude-cowork-bank-model/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/A%E8%82%A1/" rel="tag">A股</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude/" rel="tag">Claude</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Cowork/" rel="tag">Claude Cowork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clawdbot/" rel="tag">Clawdbot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KimiClaw/" rel="tag">KimiClaw</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Obsidian/" rel="tag">Obsidian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenClaw/" rel="tag">OpenClaw</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%95%E8%B5%84%E9%93%B6%E8%A1%8C/" rel="tag">投资银行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%9B%E5%95%86%E9%93%B6%E8%A1%8C/" rel="tag">招商银行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" rel="tag">知识管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91/" rel="tag">第二大脑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%A2%E5%8A%A1%E5%BB%BA%E6%A8%A1/" rel="tag">财务建模</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%B6%E8%A1%8C/" rel="tag">银行</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 20px;">AI</a> <a href="/tags/A%E8%82%A1/" style="font-size: 10px;">A股</a> <a href="/tags/Claude/" style="font-size: 15px;">Claude</a> <a href="/tags/Claude-Cowork/" style="font-size: 10px;">Claude Cowork</a> <a href="/tags/Clawdbot/" style="font-size: 10px;">Clawdbot</a> <a href="/tags/KimiClaw/" style="font-size: 10px;">KimiClaw</a> <a href="/tags/Obsidian/" style="font-size: 10px;">Obsidian</a> <a href="/tags/OpenClaw/" style="font-size: 15px;">OpenClaw</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/%E6%8A%95%E8%B5%84%E9%93%B6%E8%A1%8C/" style="font-size: 10px;">投资银行</a> <a href="/tags/%E6%8B%9B%E5%95%86%E9%93%B6%E8%A1%8C/" style="font-size: 10px;">招商银行</a> <a href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="font-size: 10px;">知识管理</a> <a href="/tags/%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91/" style="font-size: 10px;">第二大脑</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/tags/%E8%B4%A2%E5%8A%A1%E5%BB%BA%E6%A8%A1/" style="font-size: 10px;">财务建模</a> <a href="/tags/%E9%93%B6%E8%A1%8C/" style="font-size: 10px;">银行</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">February 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/">用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/28/2026-02-28-claude-cowork-bank-model/">Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/28/2026-02-28-kimiclaw-obsidian-guide/">KimiClaw+OpenClaw+Obsidian组合，打造AI驱动的知识管理系统</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/28/2026-02-28-clawdbot-guide/">Clawdbot超级小白入门指南，不靠MacMini和云，安全用上满血版</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/">Linux访问Windows共享文件夹并挂载在本地</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
