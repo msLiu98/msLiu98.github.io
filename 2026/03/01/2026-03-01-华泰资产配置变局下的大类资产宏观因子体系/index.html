@@ -1,35 +1,516 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【华泰资产配置】变局下的大类资产宏观因子体系 | Thomas的随笔思考</title><meta name="author" content="Thomas"><meta name="copyright" content="Thomas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="如果您希望第一时间收到推送，别忘了加“星标”！ 核心观点 近年来，大类资产配置最大的痛点之一是全球经济周期规律弱化，过去一些经典的宏观模型，比如美林时钟等适用范围的局限性越发明显。我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对每个因子进行细化跟踪，并辅助进行大类资产中长期走势判断。基于该框架，我们构建了两个版本的资产配置模型：风险平价模型与风险预算模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【华泰资产配置】变局下的大类资产宏观因子体系">
+<meta property="og:url" content="http://example.com/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/index.html">
+<meta property="og:site_name" content="Thomas的随笔思考">
+<meta property="og:description" content="如果您希望第一时间收到推送，别忘了加“星标”！ 核心观点 近年来，大类资产配置最大的痛点之一是全球经济周期规律弱化，过去一些经典的宏观模型，比如美林时钟等适用范围的局限性越发明显。我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对每个因子进行细化跟踪，并辅助进行大类资产中长期走势判断。基于该框架，我们构建了两个版本的资产配置模型：风险平价模型与风险预算模型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920">
+<meta property="article:published_time" content="2026-03-01T04:23:35.000Z">
+<meta property="article:modified_time" content="2026-03-13T07:36:34.344Z">
+<meta property="article:author" content="Thomas">
+<meta property="article:tag" content="金融">
+<meta property="article:tag" content="投研">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "【华泰资产配置】变局下的大类资产宏观因子体系",
+  "url": "http://example.com/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/",
+  "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920",
+  "datePublished": "2026-03-01T04:23:35.000Z",
+  "dateModified": "2026-03-13T07:36:34.344Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Thomas",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
 
-block content
-  #post
-    if top_img === false
-      include includes/header/post-info.pug
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
 
-    article#article-container.container.post-content
-      if theme.noticeOutdate.enable && page.noticeOutdate !== false
-        include includes/post/outdate-notice.pug
-      else
-        !=page.content
-    include includes/post/post-copyright.pug
-    .tag_share
-      if (page.tags.length > 0 && theme.post_meta.post.tags)
-        .post-meta__tag-list
-          each item, index in page.tags.data
-            a(href=url_for(item.path)).post-meta__tags #[=item.name]
-      include includes/third-party/share/index.pug
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
 
-    if theme.reward.enable && theme.reward.QR_code
-      !=partial('includes/post/reward', {}, {cache: true})
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【华泰资产配置】变局下的大类资产宏观因子体系',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
 
-    //- ad
-    if theme.ad && theme.ad.post
-      .ads-wrap!=theme.ad.post
+  preloader.initLoading()
 
-    if theme.post_pagination
-      include includes/pagination.pug
-    if theme.related_post && theme.related_post.enable
-      != related_posts(page,site.posts)
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
 
-    if page.comments !== false && theme.comments.use
-      - var commentsJsLoad = true
-      !=partial('includes/third-party/comments/index', {}, {cache: true})
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/favicon.png" alt="Logo"><span class="site-name">Thomas的随笔思考</span></a><a class="nav-page-title" href="/"><span class="site-name">【华泰资产配置】变局下的大类资产宏观因子体系</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【华泰资产配置】变局下的大类资产宏观因子体系</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-01T04:23:35.000Z" title="发表于 2026-03-01 12:23:35">2026-03-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:36:34.344Z" title="更新于 2026-03-13 15:36:34">2026-03-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>如果您希望第一时间收到推送，别忘了加“星标”！</p>
+<p>核心观点</p>
+<p>近年来，大类资产配置最大的痛点之一是全球经济周期规律弱化，过去一些经典的宏观模型，比如美林时钟等适用范围的局限性越发明显。我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对每个因子进行细化跟踪，并辅助进行大类资产中长期走势判断。基于该框架，我们构建了两个版本的资产配置模型：风险平价模型与风险预算模型，并以月度为调仓频率进行了模型构建，2019年至今，二者均在有效控制回撤的前提下，具备获取持续超额回报的能力。</p>
+<span id="more"></span>
+
+<p>全球宏观因子介绍</p>
+<p>宏观因子是影响大类资产价格长期走势的核心驱动因素，也是我们理解资产配置的出发点。但传统方法存在披露滞后、噪声大等诸多缺陷。我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对“增长、通胀、流动性、法币信用、AI科技、风险偏好”等宏观维度进行细化跟踪。为此，我们尝试将FMP与PCA两种方法结合，先对选取的资产序列进行FMP操作，构建可投资的初级因子代理序列，再用PCA对这些初级因子进行合成，以得到相对稳健且可解释性较高的最终因子。</p>
+<p>全球宏观因子合成</p>
+<p>全球宏观因子合成流程可以概括为“FMP–PCA–FMP”三步走：第一步用FMP把资产序列处理成带有清晰经济含义、且具备可投资性的初级因子代理；第二步用PCA在这些初级因子之间提取共同主成分，放大共同信号、削弱特异噪声，从而兼顾解释性与稳健性；第三步再把主成分映射回资产端，得到最终可用于监测与配置的宏观因子序列。为避免“统计合成”带来的污染和不稳定问题，报告还在过程中做了几类关键技术处理：对代理变量标准化并进行截尾/缩尾以压制极端值；在最终映射时用Ridge回归提高估计系数稳定性；并对科技因子做部分正交化以提升因子“纯净度”。</p>
+<p>全球宏观因子走势、解释能力与资产配置模型应用</p>
+<p>从宏观因子的同比数据来看，增长、通胀、流动性因子都有3~4年运行周期；流动性因子往往率先见底反弹，领先在1年左右。在解释能力上，全球宏观因子对资产收益率具有较强的解释力度。因子贡献上，以MSCI全球指数为例，2025年推动MSCI全球指数上涨的主要动力来自于增长因子、AI科技因子以及流动性因子。在资产配置应用上，我们基于全球宏观因子构建两类投资组合：一类是宏观因子风险平价策略（增长、通胀、法币信用与AI科技四因子各1/4风险权重），另一类是风险预算策略（增长、通胀各30%，法币信用、AI科技各20%）。回测对比显示，自2019年以来宏观因子风险平价/风险预算显示出约12.6%/11.5%的年化收益、约14%的波动控制、约24.3%/23.7%的最大回撤，其卡玛比率表现更优，同时在夏普维度也整体领先于多数对照组合。</p>
+<p>风险提示：模型未来应用有效性或存在差异；市场超预期波动的风险。</p>
+<p>正文</p>
+<p>全球宏观因子：跨资产视角与方法论</p>
+<p>为什么要构建跨资产视角下的全球宏观因子体系？</p>
+<p>近年来，大类资产配置最大的痛点之一是全球经济周期规律弱化，过去一些经典的宏观模型，比如美林时等适用范围越来越有限。具体原因如下：</p>
+<p>①当前正处于全球秩序解构与重塑的关键时期，</p>
+<p>一方面是地缘和经贸扰动频发，另一方面AI等科技革命深化，对经济和金融市场产生了更底层、更深远的影响。</p>
+<p>②高额的财政支出扭曲了经济周期，</p>
+<p>部分央行也在一定程度下被财政绑架，货币政策独立性受到挑战，传导机制不畅。</p>
+<p>③各主要经济体之间基本面分化、经济周期错位，</p>
+<p>增加了从基本面数据把握全球经济动向的难度。</p>
+<p>④多国出现K型经济的特征，</p>
+<p>高收入与中低收入群体分化加剧，导致宏观经济很少出现典型的衰退或复苏，更多体现为各个行业滚动衰退或滚动复苏。</p>
+<p>宏观因子是影响大类资产价格长期走势的核心驱动因素，也是我们理解资产配置的出发点。</p>
+<p>在真实的市场周期中，几乎所有中长期的大类资产超额收益或显著回撤，最终都可以追溯到少数几类核心宏观因子的共振或反转。这些因子并非孤立作用，而是通过复杂的交互，塑造了股票、债券、商品、汇率乃至另类资产之间的相对表现与轮动规律。</p>
+<p>我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对每个因子进行细化跟踪。</p>
+<p>这套框架的目标是可以从周期、趋势、拐点、边际变化等多个角度帮助投资者理解宏观因子的运行规律，并辅助进行大类资产中长期走势判断。这套框架有几个重要特点：</p>
+<p>第一、能够反映在全球大类资产价格变动中的共性，比如只用一个因子代表全球增长。</p>
+<p>当然，这种方式存在不可避免的弊端，就是对于国别层面的异质性和差可能有所忽视，在寻求总体“正确”的同时只能选择牺牲一些结构的“精准”。</p>
+<p>第二、从跨资产视角出发，得到的宏观因子能够在最大程度上体现跨资产、跨国别、跨品类的投资者共识，从而最大程度避免只聚焦个别资产可能导致的片面性。</p>
+<p>第三、除了增长、通胀等基本面因子外，也需要刻画一些对大类资产产生较大影响的长期结构性命题或时代主题，比如法币信用的缺失等。</p>
+<p>合成宏观因子的方法比较</p>
+<p>在实践应用中需要区分两类宏观因子合成的方式：</p>
+<p>第一类是用宏观经济指标直接合成因子，其优势是可解释度较高、可预测性强，不过缺点在于低频、披露滞后、落后于市场预期。</p>
+<p>宏观经济数据一般以月频为主，部分行业可能有周频、日频数据，但是并不全面且波动相对较大。当月的经济数据一般在次月上旬甚至部分是下旬才公布，数据所描述的经济状态已经成了“过去时”，尤其在拐点前后容易导致误判。“市场是经济的晴雨表”，对经济走势的预期往往会提前反映在资产价格中，实际数据公布时市场更多交易是否低于/超预期、加速/减速等“二阶导”信息。</p>
+<p>第二类是从资产价格中提取隐含的市场因子，优点是高频、实时、可投资等，对资产的解释度往往更高。不过和第一类相比，相应的“噪声”也可能更大。</p>
+<p>这种市场隐含因子可以做到日频甚至日内高频，但是一旦频率过高，因子中可能体现宏观趋势和变化的成分偏少，更多反映流动性和投资者交易行为，反而违背了我们提取宏观因子的初衷。由于这类方法是从资产中直接提取的因子，因此将因子和资产价格相对应的过程也较为容易直接，具有较好的可投资性和可解释度。不过由于这种方法合成的因子中涵盖了绝大多数的价格行为，也导致将一些非宏观因素驱动的信息涵盖进来，导致“噪声”可能偏多。</p>
+<p>本文重点聚焦第二类因子提取方法，具体手段上又可以分为FMP(factor mimicking portfolio，因子模拟组合)和PCA(principal components analysis，主成分分析)两种，其中FMP更侧重经济金融逻辑，PCA更多体现数据驱动和市场表达。</p>
+<p>FMP的核心逻辑是通过构建一个投资组合，使其收益在统计意义上“复制”某个目标因子的暴露，从而用这个组合来代表该因子。主要优点包括：</p>
+<p>①方法灵活，</p>
+<p>除了可用于宏观因子（通胀、增长、流动性），也可以通过选取不同特征的股票，刻画价值、动量等股市风格因子；</p>
+<p>②经济金融逻辑相对清晰，</p>
+<p>可以选取意义明确的大类资产组合，比如股票相对债券超额收益刻画增长因子，规则清晰容易溯源，避免因子合成变成黑箱；</p>
+<p>③可投资性强，</p>
+<p>将抽象因子转化为可交易组合，方便直接在实盘应用。</p>
+<p>当然，FMP也有一些缺点，包括：</p>
+<p>①过拟合风险，</p>
+<p>尤其是如果使用回归等方式，系数相对固定，样本依赖性强，在样本外失效的风险较高；</p>
+<p>②资产选择敏感，</p>
+<p>难以避险共线性问题。如果小幅调整资产池，可能导致得到的因子出现较大幅度变化；</p>
+<p>③潜在追踪误差，</p>
+<p>尤其关注非特定因子风险（比如个别资产的流动性冲击），可能会污染组合收益从而导致因子失真；</p>
+<p>④难以捕捉非线性特征和动态关系。</p>
+<p>PCA是一种经典的统计降维技术，通过正交变换将相关的大类资产回报变量转换为少数互不相关的“主成分”，依据最大化数据方差来寻找资产收益的主要共振方向。主要优点包括：</p>
+<p>①简化和降噪效果突出，</p>
+<p>用少量主成分取代大量原始变量，消除多重共线性，并通过舍去对方差贡献较小的成分来降低噪声；</p>
+<p>②多变量合成时无需考虑权重分配；</p>
+<p>③不依赖预设经济故事或因子假设，</p>
+<p>可挖掘隐藏因子，纯粹数据驱动；</p>
+<p>④对于短期系统性冲击（资产价格共振）的捕捉能力较强。</p>
+<p>同时，由于其纯粹数据驱动的特性，PCA也存在有一些缺点：</p>
+<p>①可解释性差，</p>
+<p>主成分是原始变量的线性组合，常缺乏直观经济含义；</p>
+<p>②时变的不稳定性</p>
+<p>，对样本窗口敏感，样本的变化可能导致因子结构跳跃；</p>
+<p>③对异常值敏感，</p>
+<p>PCA基于协方差/相关系数矩阵，而这些统计量易受极端异常值的影响，可能导致主成分发生偏差。</p>
+<p>综上所述，FMP和PCA有他们各自的优缺点，因此我们在本文中希望尝试新的因子构成方式，以发挥他们各自的优点。</p>
+<p>FMP结合PCA的全球宏观因子体系思路</p>
+<p>我们尝试将FMP与PCA两种方法结合，先对选取的资产序列进行FMP操作，构建可投资的初级因子代理序列，再用PCA对这些初级因子进行合成，以得到相对稳健且可解释度较高的最终因子。我们认为这种方法可能有以下几个优点：</p>
+<p>第一、兼具经济含义与数据驱动。</p>
+<p>FMP 重点在于刻画经济金融逻辑，将FMP处理后的初级因子作为PCA的输入变量，使其中的经济金融逻辑得以保留。</p>
+<p>第二、相对单纯的PCA，两者结合后的可解释性和可交易性大幅提升，可以大致看出哪些资产对因子变化贡献较大。</p>
+<p>第三、相对单纯FMP，因子的信噪比会有明显的提升。</p>
+<p>FMP 自身含有估计误差，而在FMP的基础上进行 PCA 可把共同信号放大、把特异性噪声削弱，从而得到更稳定的合成因子。</p>
+<p>第四、FMP得到的初级因子经济金融解释力强，从而有助于降低PCA导致最终因子含义在不同样本窗口出现跳跃的风险。</p>
+<p>当然，这种处理方式并非完美。如果FMP构建中存在较大偏误，可能继续传导到PCA的结果中；PCA合成过程中也可能丢失部分信息；在极端情况下FMP-PCA结构也可能出现不稳定。因此在实际因子合成的过程，我们对一些细节进行了优化，</p>
+<p>比如用正交化等方式剔除因子污染，以及采用截尾处理避免单一基础因子占据过大权重。</p>
+<p>全球宏观因子合成步骤</p>
+<p>全球六因子框架与基础指标选择</p>
+<p>因此我们认为可以正在传统增长-通胀-流动性等三大传统反映经济周期的三因子体系外，加入风险偏好-法币信用-AI科技等反映时代背景与长期主题的三大因子，使得整个宏观因子体系更为完整，也有望提高对大类资产价格的解释能力。</p>
+<p>在初步确定了全球六因子框架后，我们需要挑选每个因子所对应的基础资产变量或组合。这个过程中，</p>
+<p>我们希望尽量照顾到更多的资产大类和每个大类中最具有代表性的品种。原则上，在合成每个因子时，都尽量会涉及股债商汇四大类资产中的相关品种，以使得因子更具备代表性，也和大类资产实际投研工作中的关注重点更为一致。</p>
+<p>在合成部分代理因子时，需要进行跨国别加总，我们对权重分配的核心原则是美国占比50%，英国、日本、德国（欧元）平分剩下的50%。</p>
+<p>具体来看，增长和通胀的因子的底层资产选择相对容易，可以通过统计方法找出和宏观经济数据更相关的品种，而其他因子底层资产的选取更依赖主观判断和逻辑推演。</p>
+<p>全球增长因子的底层资产选择，通过回归测算，在各类基础资产（组合）中挑选和全球PMI高相关性的品种。</p>
+<p>跨资产：</p>
+<p>股票相对债券的超额收益，股票选择MSCI全球，债券选择彭博综合债券指数；</p>
+<p>权益类：</p>
+<p>全球周期类股票相对防御类超额，选取全球周期性行业（材料、工业、金融、可选消费）指数和防御性行业（公用事业、必选消费）指数分别作为代理指标；</p>
+<p>债券类：</p>
+<p>全球信用债利差对全球增长敏感，选取彭博投资级和高收益债利差；此外选取全球主要经济体国债5y-1y的期限利差，越大往往代表增长动能越强。</p>
+<p>商品类：</p>
+<p>初期选取彭博工业金属指数相对贵金属指数超额，但是后续发现贵金属指数受法币信用因子影响过大，工业金属vs贵金属很难体现实际增长变化，故最终舍去。</p>
+<p>全球通胀因子的底层资产选择较为简单明确，主要商品现货或期货、通胀预期、商品货币和权益相关行业等品种，且均于全球CPI高度相关。</p>
+<p>商品类：</p>
+<p>同时考虑商品期货和现货价格，分别选取彭博商品价格指数和CRB商品现货指数；</p>
+<p>债券类：</p>
+<p>主要关注全球主要经济体盈亏平衡通胀，用主要经济体的10年期债券名义利率减去10年期债券实际利率；</p>
+<p>外汇类：</p>
+<p>关注主要商品货币，比如澳元、加元和挪威克朗等相对其他货币的超额。</p>
+<p>权益类：</p>
+<p>全球原材料行业股指，相对整体市场的超额收益情况。</p>
+<p>全球流动性因子的底层资产的选择，我们主要以美元流动性为基础，同时综合考虑其他主流货币以及市场的流动性状况，其中以债券类资产为主。</p>
+<p>美元流动性：</p>
+<p>美元在岸市场选取SOFR-EFFR利差，2019H1之前Libor仍是更广泛的基准，故2019年7月1日使用Libor-OIS利差；美元离岸市场选取欧元互换基差，代表离岸美元的流动性情况。此外，美元指数也能代表全球美元流动性情况。</p>
+<p>全球利率市场：</p>
+<p>选取美国、欧元区、英国、日本等主要经济体政策利率和10年期债券利率（取德国作为欧元区基准）。</p>
+<p>大类资产波动因子：如果全球流动性收紧，美股、美债、黄金、外汇等资产波动率容易上升，全球信用利差容易走阔；</p>
+<p>大类资产共振因子：</p>
+<p>大类资产（除美元外）普遍上涨，是全球流动性扩张最显眼的特征，故选取MSCI全球、彭博债券综合指数、彭博商品指数，观察资产价格运行方向是否具有一致性。</p>
+<p>全球法币信用因子的底层资产选择，我们主要考虑在发达国家债务可持续性、央行独立性等担忧下，资金从法币转向实物资产、加密货币等去中心化等品种。</p>
+<p>跨资产：</p>
+<p>从储备资产的角度，测算黄金和比特币等去中心化资产相对基于国家主权和法币信用的美债的超额收益。</p>
+<p>债券类：</p>
+<p>发达经济体主权信用风险的上升主要体现在长债的期限溢价中，参考旧金山联储10年期美债的拆分，选取和10年期美债期限溢价相关性最高的利差，10y-2y利差；此外选取30年-10年实际利率，反映了通胀预期的偏离（央行独立性）以及超长债更高的期限溢价。</p>
+<p>全球风险因子方面，主要挑选一些传统避险资产，对这些资产（组合）的收益率取负值代表全球风险偏好。</p>
+<p>当然这边我们需要说明，不同因素引发的市场风险偏好变化，在大类资产表现上可能较为类似，比如增长大幅低于预期和地缘扰动升温，都可能会体现为风险资产下跌+避险资产上涨。因此在实际应用中，需要进一步对细分资产的观察，以判断风险偏好变化的来源，比如中东地缘扰动时原油的表现、大国贸易摩擦时离岸市场和汇率的表现等等。</p>
+<p>①债券vs股票：</p>
+<p>债涨股跌是全球风险偏好下行的典型模式，因此我们计算全球债券相对股票超额，前者以彭博全球债券指数代表，后者以MSCI全球指数代表；</p>
+<p>②股票：</p>
+<p>选取典型避险行业公用事业股相对整体股指的超额收益，前者以标普全球1200公用事业行业为代表；同时加入美股VIX代表股市投资者避险情绪。</p>
+<p>③商品：</p>
+<p>本意也是希望用贵金属相对工业金属的超额代表避险情绪，不过同样是因为受法币信用因子影响过大，最终舍去。</p>
+<p>④外汇：</p>
+<p>选取典型避险货币相对其他货币的超额，包括美元、日元和瑞郎，三者之间平均分配权重。</p>
+<p>全球AI科技因子方面，主要选择了和AI发展密切相关的AI硬件、AI软件、AI基础设施这三个层面，然后和增长因子、流动性因子进行部分正交剔除干扰。</p>
+<p>①AI硬件：</p>
+<p>主要选取了全球半导体指数，加上代表北美半的费城半导体指数，以及代表亚洲半导体行业的亚洲信息技术股票指数；</p>
+<p>②AI软件：</p>
+<p>选取全球软件指数、云计算指数。</p>
+<p>③AI基础设施：</p>
+<p>选取数据中心和电力指数。</p>
+<p>指标合成：FMP-PCA-FMP流程</p>
+<p>全球宏观因子框架的合成步骤主要可以分为三步走。</p>
+<p>第一、在周度频率下，首先对不同资产类别的价格序列进行收益化处理：利率类资产采用一阶差分以刻画利率变动，股票与商品类资产采用对数收益率形式。基于上述收益序列，计算滚动三年历史波动率，并采用波动率倒数作为权重，对资产收益进行加权汇总，从而构建初步的基础代理因子。</p>
+<p>第二、PCA用于提取基础代理因子之间的共性驱动方向。</p>
+<p>在每一类宏观因子内部，对第一步构建的各个基础代理变量，在滚动三年窗口下统一实施主成分分析，并选取第一主成分。该主成分刻画了同一宏观因子下各代理变量所共有的主要波动特征，可视为该宏观因子的统计“方向”。</p>
+<p>第三、使用第一阶段得到的基础代理因子作为解释变量，以第二阶段提取的第一主成分作为目标变量，实施带有L2正则项的Ridge回归。</p>
+<p>通过正则化回归，在保持主成分统计特征的同时，提高权重估计在滚动样本下的稳定性。回归得到的系数用于刻画各基础代理变量在该宏观因子中的相对贡献，并据此对代理变量进行加权汇总，然后将环比收益率还原到累计收益率，得到最终的宏观因子读数。</p>
+<p>通过这样FMP–PCA–FMP流程，我们可以在宏观因子合成过程中，较好地实现兼顾金融逻辑与统计逻辑、因子易于解释且可投资的目标。</p>
+<p>①</p>
+<p>在因子构建过程中兼顾经济含义与统计稳健性</p>
+<p>，避免直接在资产或代理变量层面进行降维所带来的解释性不足；</p>
+<p>②通过“FMP–PCA–FMP”的三步走，</p>
+<p>将高度相关、波动特征各异的代理变量压缩为少数具有清晰宏观指向的因子序列，有效缓解多重共线性和权重不稳定问题；</p>
+<p>③最终得到的宏观因子既保留了对原始资产信息的充分刻画，又具备时间序列上的平滑性和可投资性，为后续资产配置、因子轮动及风险预算等应用提供了稳定且可解释的输入。</p>
+<p>在因子合成的过程，我们也进行了一些技术性处理，以保证最终的宏观因子能够较好地反映我们希望它体现的信息：</p>
+<p>①避免极端值干扰。</p>
+<p>除了在进行PCA之前对所有基础代理变量进行标准化，我们还应用了截尾处理和缩尾（winsorize）处理等方式，使得结果更加稳健。</p>
+<p>②通过引入正则化处理，提高最终因子权重及因子读数的稳健性。</p>
+<p>在第三步的FMP映射过程中，对第一主成分进行回归时引入L2正则化（Ridge回归），以缓解在解释变量高度共线性条件下，传统最小二乘估计可能导致的系数不稳定问题。</p>
+<p>③应用正交化通过实现因子的“去污染”。</p>
+<p>在因子构建过程中，正交化通常通过回归方式完成，即对因子进行线性回归并取残差，以剔除因子间的共性波动。本篇中我们主要将初步的科技因子对增长和流动性因子进行了部分正交（系数取0.9），以更好实现因子的纯净度与鲁棒性平衡，也更符合实际经济金融含义。</p>
+<p>④AI科技因子合成的特殊方式。</p>
+<p>其他宏观因子在合成时，PC1往往可以较好地刻画共振最显著的方向，但是AI科技因子不同。在AI科技的内部，完全可能出现分化，比如2025Q4以来，AI软件和应用公司明显偏弱，而半导体等硬件公司表现突出。为了更好处理这样的分化，</p>
+<p>我们把AI科技分为AI硬件（半导体为主）、AI软件（互联网巨头和软件公司）和AI基建（数据中心和能源等）三部分，并分别赋予40%/40%/20%的权重，以更好地体现AI科技当前的发展。</p>
+<p>⑤风险偏好因子的特殊价值。</p>
+<p>风险偏好本身往往同时受到增长预期、流动性环境以及技术进步等多重因素的共同驱动，因此与增长、流动性等宏观因子存在较强相关性。因此在全球宏观六因子的监测体系中，</p>
+<p>我们将风险偏好作为关键的观察变量加以保留；但在后续因子组合构建及模型运算过程中，为避免因子间高度共线性对结果产生干扰，并不将风险偏好因子纳入风险平价等模型。</p>
+<p>结果展示：宏观因子走势、解释能力与资产配置模型</p>
+<p>宏观因子的趋势、周期与拐点</p>
+<p>从宏观因子的读数表现来看，我们能够观察到几个特征：</p>
+<p>①法币信用因子是最强趋势</p>
+<p>。和其他因子更偏周期化的运行规律相比，法币信用因子自2023年以来持续向上趋势显著，因子读数在3年内上升超过90%。</p>
+<p>②流动性在其他几个因子中波动相对较大。</p>
+<p>在我们的框架体系中，流动性因子类似于全球市场β的角色，因此波动比增长等因子更明显。</p>
+<p>③科技因子由于和增长因子、流动性因子进行了部分正交，绝对读数偏低并不能直接代表因子强度弱。</p>
+<p>相对而言，更建议关注科技因子的趋势和拐点。</p>
+<p>从宏观因子的同比数据来看，可以更好地观察周期性变化，有助于我们对因子拐点的判断。</p>
+<p>从图中可以直观看到，增长因子、通胀因子、流动性因子都有3~4年运行周期，和经济短周期（库存周期）的运行规律暗合。</p>
+<p>如果考虑领先-滞后关系，流动性因子往往率先见底反弹，增长和通胀因子可能几乎同时触底，流动性因子的领先在1年左右（如果排除疫情影响）。不过流动性因子的高点可能和增长因子、通胀因子同步出现。</p>
+<p>增长因子：</p>
+<p>前几轮周期分别是2008<del>2012年、2012</del>2016年、2016<del>2020年、2020</del>2024年。本轮周期本应在2025年左右看到一轮高点，不过可能是受到关税等影响，2025年增长动能呈现震荡状态，后续关注2026年在财政发力+AI资本开支+国防开支等推动下，增长因子能否顺利走高。</p>
+<p>通胀因子：</p>
+<p>通胀因子同比在2016<del>2020年、2020</del>2024年也分别经历了两轮周期。2022年左右全球通胀因子触及本轮高点，随后进入“去通胀”阶段。直到2023年下半年，通胀因子同比读数进入一段稳定期，2025年下半年开始，通胀因子又出现了回升。</p>
+<p>流动性因子：</p>
+<p>流动性因子的上一轮高点出现在2020年底，背景是疫情后发达国家纷纷开启MMT，全球货币宽松政策全面推行。当前流动性因子读数已经逐渐接近2020年年底的水平，考虑到全球降息周期已进入尾声，我们预计可能很难超越2020年的状态。</p>
+<p>风险偏好因子：</p>
+<p>多数情况下和增长因子同步，不过近期显示出更明确的上行态势。</p>
+<p>法币信用因子：</p>
+<p>在2021年一度达到高点，我们认为可能反映了对央行抗通胀立场的质疑；风险偏好因子近期回升显著，超过了增长因子的趋势</p>
+<p>AI科技因子：</p>
+<p>自Chatgpt在2022年年底问世以来，AI科技因子在2024年快速走高，随后一度回落，不过在2025H2又再度上升。</p>
+<p>此外我们也可以监测宏观因子变化背后的主要驱动因素，目前数据截至2026年1月30日，数据体现了各个基础资产组合对因子收益率的贡献（滚动三个月）。</p>
+<p>增长因子：</p>
+<p>2025H2以来，全球股票相对债券超额收益、周期股相对防御股超额收益正向贡献明显，然后是信用债利差、5y-1y国债利差。</p>
+<p>通胀因子：</p>
+<p>商品期货和现货的涨价是最近一个季度通胀因子的主要贡献，同时通胀预期、商品货币、原材料行业超额等也均为正贡献。</p>
+<p>流动性因子：</p>
+<p>2025H2以来，流动性因子走高主要来自于大类资产共振（资产价格普遍上涨），此外美元指数、全球利率因子、大类资产波动也整体倾向于正贡献。</p>
+<p>风险偏好因子：</p>
+<p>2025H2以来，股市相对债市超额收益贡献较大，其次是避险货币的相对跑输，此外防御类行业的相对弱势、股市情绪也都是正面贡献。</p>
+<p>法币信用因子：</p>
+<p>2025年，黄金和比特币相对美债超额收益和各国利率曲线的陡峭化都有不小的贡献。</p>
+<p>科技因子：</p>
+<p>2025H2以来，主要贡献是AI硬件，AI基础设施也是正贡献，而AI软件部分已经转为拖累。</p>
+<p>因子间的相关性</p>
+<p>全球六大宏观因子之间的相关性整体偏低，且跨越较长的时间区间还能维持基本稳定。</p>
+<p>在2020<del>2025年期间，除了增长与风险偏好因子之间的相关性偏高，达到了0.83，其他因子两两之间的相关性均小于0.5，甚至绝大多数在0.3以下。以AI科技因子为例，由于合成时先做了正交化，因此和其他所有因子的相关性都非常低。如果对比2020</del>2025年和2015<del>2020年期间，因子间整体的相关性比较稳定，不过2015</del>2020年区间内，部分因子之间的相关性略高，比如增长与通胀、增长与法币信用等。</p>
+<p>此外，我们重点关注几组相关性的动态变化。下文的长期特指以月为频率的36个月（3年）滚动回归，而中期指以周为频率的52周（1年）滚动回归：</p>
+<p>1、流动性与增长因子：</p>
+<p>2023年以来，无论是长期还是短期，两者都保持着不同程度的负相关，这也是近几年市场频繁交易“好消息就是坏消息”的体现。</p>
+<p>2、流动性与通胀因子：</p>
+<p>2020年以来，长期视角下通胀与流动性呈负相关，符和预期；不过中期视角下，通胀与流动性的负相关明显弱化，一方面可能说明通胀水平暂不是制约流动性的主要矛盾，另一方面，流动性充裕也通过商品价格的上涨体现。</p>
+<p>3、增长与风险偏好因子：</p>
+<p>2024H2以来两者的正相关性无论在中期还是长期都出现了强化，表明增长可能是过去一年多以来市场风险偏好走暖的重要驱动因素。</p>
+<p>4、法币信用与通胀因子：</p>
+<p>法币信用与通胀因子拥有一部分天然的共线性：当通胀预期失控，往往意味着法币信用受损和货币贬值。不过2022年以来，长期视角下两者的正相关性明显下降，表明当前的法币信用问题可能更多受地缘秩序变化、发达国家财政可持续性担忧等影响。</p>
+<p>5、法币信用与科技因子：</p>
+<p>长期来看维持了较好的负相关性，不过中期的负相关性明显弱化，可能和近年来越来越多的投资者“左手科技，右手黄金”的交易行为。</p>
+<p>6、科技与流动性因子：</p>
+<p>2023年后两者相关性高位回落，一方面可能科技股对全球流动性的提振效果有所弱化，另一方面可能也表明了科技股或已不再是资金的唯一选择。</p>
+<p>对大类资产的解释能力</p>
+<p>全球宏观六因子框架对不少大类资产的解释度普遍能达到60%左右甚至更高，在越具备“全球性”、特质性更少的品种上表现越好。</p>
+<p>我们以线性回归的R2来衡量全球六因子模型对主要大类资产的解释能力，解释度在70%左右甚至更高的资产包括MSCI全球、MSCI发达国家、标普500、纳斯达克、彭博商品指数、美元指数、彭博债券综合指数、美国政府债等。</p>
+<p>对除了彭博商品指数外的多数品种而言，加入流动性因子都会使得模型的解释度有明显提升，甚至对于比如美元、新兴市场债券而言，模型的解释能力几乎都来自流动性因子，也可以说这些资产的涨跌在全球宏观的逻辑下就是流动性现象。</p>
+<p>不过遗憾的是，该宏观因子框架对国内品种的解释度较低，背后的原因可能是国内与海外在经济增长、通胀、市场流动性等层面的错位与分化，以及在AI科技等产业链上更多的独立性</p>
+<p>。全球宏观六因子框架对国内资产的解释能力较弱，对沪深300、恒生指数、中债总财富指数的解释度分别为17%、31%、6%。不过整体来看，本模型对除了美国外的国别资产的解释能力均较为有限，对发达国家的解释都基本不足50%，对新兴市场更低，印度股指也不足30%。从这些指标来看，美国股债可以说是全球大类资产，其他国别市场很难相提并论。</p>
+<p>在这一框架下，我们也可以实现对大类资产价格变化的动态解释。</p>
+<p>以MSCI全球指数为例，我们按照三个月滚动进行测算每个因子的贡献。从图中可以看到，2025年推动MSCI全球指数上涨的主要动力来自于增长因子、AI科技因子以及流动性因子。</p>
+<p>基于全球宏观因子的风险平价和风险预算模型</p>
+<p>在审视了全球宏观因子框架的可靠性之后，我们希望进一步在实际投资、组合配置中进行应用，而将全球宏观因子框架与风险平价模型结合也是一种比较自然的思路。</p>
+<p>风险平价模型（Risk Parity）是一种以风险贡献为核心的资产配置方法，我们在报告《风险平价的理念与国内实践——资产配置方法论系列》（20241121）中就尝试构建了在各类宏观因子上保持均等风险敞口的风险平价模型。本文中我们也希望能够将组合的风险权重，在几个全球宏观因子之间进行合理分配。</p>
+<p>不过在实际模型的构建中，</p>
+<p>我们主要希望实现在增长、通胀、法币信用、AI科技这四个因子之间风险的平均分配，流动性因子和风险偏好因子可能暂不纳入。</p>
+<p>第一、在本文的全球宏观因子体系中，流动性因子充当的是全市场的整体beta的概念，所以每一个资产几乎都对流动性有非常高的风险暴露。</p>
+<p>对于流动性因子，我们目前暂不纳入风险平价或预算模型中，或者仅仅作为约束性因子（比如组合整体暴露不超过某个水平），两种处理方式效果类似。</p>
+<p>第二、风险偏好本身往往同时受到增长预期、流动性环境以及技术进步等多重因素的共同驱动，因此并不纳入我们的风险平价模型。</p>
+<p>借鉴Greenberg等（2016）的方法，我们构建了从宏观因子到基础资产的映射，计算不同资产在各宏观因子上的风险暴露。</p>
+<p>实际操作中我们以滚动3年的方式进行资产风险暴露的计算，而以2015<del>2020年、2020</del>2025年的风险暴露为例，可以看到一些变化特征：</p>
+<p>2020年之后，贵金属和债券对增长因子负暴露在降低，贵金属在法币信用因子上的暴露提高、股票类资产在通胀因子的正暴露提高、新兴市场在AI科技因子正暴露降低。</p>
+<p>我们构建了两个版本的模型，一个是比较严格的风险平价模型，增长/通胀/法币信用/AI科技这四个因子各分配到1/4的风险权重；另一个是风险预算模型，权重上会更多向增长和通胀倾斜，各占30%，而法币信用和AI科技各占20%。</p>
+<p>我们以周度数据基础，以滚动3年的数据计算协方差矩阵估算风险贡献，并且以月度为调仓频率（四周）进行了模型的构建。</p>
+<p>两种模型在资产分配的仓位上较为相似，不过也有所区别：比如截至2026年1月30日，风险平价模型在黄金和金矿股的仓位相对更高，而风险预算模型在工业金属和白银的仓位更高。</p>
+<p>最后我们进行了模型效果的比较和展示，除了根据宏观因子框架编制的风险平价和风险预算模型之外，我们还引入了简易风险平价模型（直接在在股债商3个资产类别平均分配风险权重），以及不同波动率目标的标普风险平价（RP）指数等作为对比。</p>
+<p>宏观因子风险平价/风险预算模型在2019年至2026年1月30日取得了12.6/11.5%的年化收益率，同时波动率能够控制在14%左右，夏普比上整体领先于除了8%波动率目标的标普风险平价指数外的其他组合表现。此外，宏观因子风险平价和风险预算模型的最大回撤控制在24.3/23.7%，使得两者均有较高的卡玛比率。</p>
+<p>风险提示</p>
+<p>1）模型未来应用有效性或存在差异。</p>
+<p>由于模型基于历史数据构建，因此模型在未来应用的有效性可能与报告回测有效性存在差异；</p>
+<p>2）市场超预期波动的风险。</p>
+<p>市场可能会出现超预期波动，对依据或使用该模型所造成的后果由投资者自行承担。</p>
+<p>相关研报</p>
+<p>研报：</p>
+<p>《变局下的大类资产宏观因子体系》</p>
+<p>2026年2月24日</p>
+<p>张继强     S0570518110002    研究员</p>
+<p>陶   冶     S0570522040001     研究员</p>
+<p>王建刚     S0570124070098     联系人</p>
+<p>关注我们</p>
+<p>华泰证券研究所国内站（研究Portal）</p>
+<p><a target="_blank" rel="noopener" href="https://inst.htsc.com/research">https://inst.htsc.com/research</a></p>
+<p>访问权限：国内机构客户</p>
+<p>华泰证券研究所海外站</p>
+<p><a target="_blank" rel="noopener" href="https://intl.inst.htsc.com/research">https://intl.inst.htsc.com/research</a></p>
+<p>访问权限：美国及香港金控机构客户</p>
+<p>添加权限请联系您的华泰对口客户经理</p>
+<p>免责声明</p>
+<p>▲向上滑动阅览</p>
+<p>本公众号不是华泰证券股份有限公司（以下简称“华泰证券”）研究报告的发布平台，本公众号仅供华泰证券中国内地研究服务客户参考使用。其他任何读者在订阅本公众号前，请自行评估接收相关推送内容的适当性，且若使用本公众号所载内容，务必寻求专业投资顾问的指导及解读。华泰证券不因任何订阅本公众号的行为而将订阅者视为华泰证券的客户。</p>
+<p>本公众号转发、摘编华泰证券向其客户已发布研究报告的部分内容及观点，完整的投资意见分析应以报告发布当日的完整研究报告内容为准。订阅者仅使用本公众号内容，可能会因缺乏对完整报告的了解或缺乏相关的解读而产生理解上的歧义。如需了解完整内容，请具体参见华泰证券所发布的完整报告。</p>
+<p>本公众号内容基于华泰证券认为可靠的信息编制，但华泰证券对该等信息的准确性、完整性及时效性不作任何保证，也不对证券价格的涨跌或市场走势作确定性判断。本公众号所载的意见、评估及预测仅反映发布当日的观点和判断。在不同时期，华泰证券可能会发出与本公众号所载意见、评估及预测不一致的研究报告。</p>
+<p>在任何情况下，本公众号中的信息或所表述的意见均不构成对任何人的投资建议。订阅者不应单独依靠本订阅号中的内容而取代自身独立的判断，应自主做出投资决策并自行承担投资风险。订阅者若使用本资料，有可能会因缺乏解读服务而对内容产生理解上的歧义，进而造成投资损失。对依据或者使用本公众号内容所造成的一切后果，华泰证券及作者均不承担任何法律责任。</p>
+<p>本公众号版权仅为华泰证券所有，未经华泰证券书面许可，任何机构或个人不得以翻版、复制、发表、引用或再次分发他人等任何形式侵犯本公众号发布的所有内容的版权。如因侵权行为给华泰证券造成任何直接或间接的损失，华泰证券保留追究一切法律责任的权利。华泰证券具有中国证监会核准的“证券投资咨询”业务资格，经营许可证编号为：91320000704041011J。</p>
+<hr>
+<blockquote>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/6Brup573ID99dwvYImGJFQ">https://mp.weixin.qq.com/s/6Brup573ID99dwvYImGJFQ</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Thomas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/">http://example.com/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Thomas的随笔思考</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%87%91%E8%9E%8D/">金融</a><a class="post-meta__tags" href="/tags/%E6%8A%95%E7%A0%94/">投研</a></div><div class="post-share"><div class="social-share" data-image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Python 并发编程进阶：多线程、锁机制与线程池</div></div><div class="info-2"><div class="info-item-1">前言Python 的并发编程是进阶开发者必须掌握的核心技能。本文将深入探讨多线程的通信机制、锁的使用以及线程池的实现，帮助你写出更高效的并发程序。   一、单线程 vs 多线程 vs 多进程在深入之前，我们需要理解三种执行模式的区别：    场景 单线程 多线程 多进程    CPU计算密集型 83s 93s (更慢) 9s (最快)   磁盘IO密集型 15s 13s 1.3s   网络IO密集型 1.1s 0.18s 0.13s   模拟IO密集型 20s 2.0s 2.0s   核心结论：  多线程适合 IO密集型 场景（爬虫、网站开发） 多进程适合 CPU计算密集型 场景（大数据分析、机器学习） 多线程在 CPU 密集型任务中由于 GIL 存在，反而更慢  二、线程间的消息通信1. Event 事件机制Event 是最简单的线程通信方式，适合”触发-执行”场景： 123456789101112131415161718192021222324252627import timeimport threadingclass MyThread(threading.Thread): ...</div></div></div></a><a class="pagination-related" href="/2026/03/01/2026-03-01-%E5%B9%BF%E5%8F%91%E9%87%91%E5%B7%A5OpenClaw%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%8A%95%E7%A0%94%E5%BA%94%E7%94%A8/" title="【广发金工】OpenClaw多平台部署与投研应用"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">【广发金工】OpenClaw多平台部署与投研应用</div></div><div class="info-2"><div class="info-item-1">广发证券首席金工分析师 安宁宁 SAC: S0260512020003 &#x61;&#110;&#x6e;&#105;&#x6e;&#103;&#x6e;&#x69;&#110;&#x67;&#64;&#x67;&#102;&#46;&#99;&#111;&#109;&#46;&#99;&#x6e;   广发证券联席首席金工分析师 陈原文 SAC: S0260517080003 &#99;&#x68;&#x65;&#x6e;&#121;&#117;&#97;&#110;&#x77;&#101;&#x6e;&#64;&#x67;&#102;&#46;&#x63;&#x6f;&#109;&#46;&#99;&#110; 联系人：广发证券金工高级研究员 林涛 SAC: S0260124060060 &#x67;&#102;&#108;&#x69;&#x6e;&#116;&#x61;&#x6f;&#x40;&#103;&#x66;&#x2e;&#x63;&#x6f;&#x6d;&#x2e;&#x63;&#110; 广发金工安宁宁陈原文团队 摘要 AI投研应用： 在2025年2月发布的研...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/02/28/2026-02-28-claude-cowork-bank-model/" title="Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-28</div><div class="info-item-2">Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行</div></div><div class="info-2"><div class="info-item-1">之前用Claude做了一版Google的财务模型——读10-K、拆收入结构、搭forecast，整个流程跑得很顺（4小时 vs 3天）。做完之后发给首席看，翻了一下，问了一句：这个能做谷歌的，那A股银行它也能做吗？ 那A股银行还有谷歌复杂吗？Google那种多业务线、GAAP和Non-GAAP双轨的结构都能处理，于是当天晚上就试了。先拿招商银行开刀，四份年报（2021-2024）扔进去，几轮对话，出来一个8个sheet、422个公式的完整模型。   工作流：简单到有点无聊整个流程用的是 Claude 桌面端的 Cowork 模式。操作上没有任何技术门槛——不需要写代码，不需要配环境。 第一步把招行2021-2024四份年报PDF和谷歌的财务模型Excel一起拖进对话窗口。 第二步一句话prompt：  参考谷歌的财务报告模式，结合招行的年报，我们做个招行的财务模型，历史3年加预测3年  然后它就开始工作了。先翻年报提取数据，对着合并报表一项一项读数，搭建Excel的sheet结构，写公式，做格式。第一版大概几分钟就出来了。 迭代：像跟分析师对需求一样第一版出来之后打开看了一下，能...</div></div></div></a><a class="pagination-related" href="/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/" title="用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-28</div><div class="info-item-2">用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘</div></div><div class="info-2"><div class="info-item-1">一、一个被忽略的数据富矿 银登中心（银行业信贷资产登记流转中心）是银保监会批准设立的全国性不良贷款转让业务平台。不良贷款转让虽然也可以通过ABS等方式进行（且Wind等数据商已有较好的覆盖），但银登中心的逐笔公告数据至今无人系统化整理。 自2023年不良贷款转让业务正式扩容以来，银登中心已累计发布超过   4000份 个人不良贷款转让公告，涵盖了国有大行、股份制银行、城商行、农商行和消费金融公司等各类金融机构。每一份公告都以PDF附件形式挂在网站上，详细列明了转让资产包的关键信息：未偿本金总额、资产笔数、借款人户数、逾期天数、五级分类、担保方式等十余个字段。 银登中心官网（ https://www.yindeng.com.cn/index.html ） 如果系统化整理，这些数据将是研究中国个人不良贷款转让市场最直接、最底层的一手信息源。 然而，至今几乎没有人做过这件事。这在AI时代之前，几乎是一个 不可能完成的任务 。 4000多份PDF，要从中做到可靠的结构化提取，需要非常专业的开发支持，绝非安排实习生去”洗”数据就能解决的问题，人力去做相当于一个团队都耗在单一数据收集。 而对...</div></div></div></a><a class="pagination-related" href="/2026/03/01/2026-03-01-%E5%B9%BF%E5%8F%91%E9%87%91%E5%B7%A5OpenClaw%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%8A%95%E7%A0%94%E5%BA%94%E7%94%A8/" title="【广发金工】OpenClaw多平台部署与投研应用"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-01</div><div class="info-item-2">【广发金工】OpenClaw多平台部署与投研应用</div></div><div class="info-2"><div class="info-item-1">广发证券首席金工分析师 安宁宁 SAC: S0260512020003 &#x61;&#110;&#x6e;&#105;&#x6e;&#103;&#x6e;&#x69;&#110;&#x67;&#64;&#x67;&#102;&#46;&#99;&#111;&#109;&#46;&#99;&#x6e;   广发证券联席首席金工分析师 陈原文 SAC: S0260517080003 &#99;&#x68;&#x65;&#x6e;&#121;&#117;&#97;&#110;&#x77;&#101;&#x6e;&#64;&#x67;&#102;&#46;&#x63;&#x6f;&#109;&#46;&#99;&#110; 联系人：广发证券金工高级研究员 林涛 SAC: S0260124060060 &#x67;&#102;&#108;&#x69;&#x6e;&#116;&#x61;&#x6f;&#x40;&#103;&#x66;&#x2e;&#x63;&#x6f;&#x6d;&#x2e;&#x63;&#110; 广发金工安宁宁陈原文团队 摘要 AI投研应用： 在2025年2月发布的研...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Thomas</div><div class="author-info-description">记录技术、思考与生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/msLiu98"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/msLiu98" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Thomas 的随笔思考 🎉</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 冷技巧与实用黑科技"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技">Python 冷技巧与实用黑科技</a><time datetime="2026-03-13T07:40:00.000Z" title="发表于 2026-03-13 15:40:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 设计模式与工程实践"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践">Python 设计模式与工程实践</a><time datetime="2026-03-13T07:30:00.000Z" title="发表于 2026-03-13 15:30:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 代码优化技巧与常见陷阱（错题集）"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）">Python 代码优化技巧与常见陷阱（错题集）</a><time datetime="2026-03-13T07:20:00.000Z" title="发表于 2026-03-13 15:20:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" title="Python 协程与异步编程：从生成器到 asyncio"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 协程与异步编程：从生成器到 asyncio"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" title="Python 协程与异步编程：从生成器到 asyncio">Python 协程与异步编程：从生成器到 asyncio</a><time datetime="2026-03-13T07:10:00.000Z" title="发表于 2026-03-13 15:10:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 并发编程进阶：多线程、锁机制与线程池"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池">Python 并发编程进阶：多线程、锁机制与线程池</a><time datetime="2026-03-13T07:00:00.000Z" title="发表于 2026-03-13 15:00:00">2026-03-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Thomas</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

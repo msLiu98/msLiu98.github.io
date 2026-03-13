@@ -1,5 +1,282 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Thomas的随笔思考 - 记录技术、思考与生活</title><meta name="author" content="Thomas"><meta name="copyright" content="Thomas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Thomas的个人博客，分享Python技术、AI工具使用心得与生活随笔">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Thomas的随笔思考">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Thomas的随笔思考">
+<meta property="og:description" content="Thomas的个人博客，分享Python技术、AI工具使用心得与生活随笔">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/avatar.png">
+<meta property="article:author" content="Thomas">
+<meta property="article:tag" content="Python, AI, 技术博客, 随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Thomas的随笔思考",
+  "alternateName": [
+    "记录技术、思考与生活",
+    "example.com"
+  ],
+  "url": "http://example.com/"
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
 
-block content
-  include ./includes/mixins/indexPostUI.pug
-  +indexPostUI
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Thomas的随笔思考',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/favicon.png" alt="Logo"><span class="site-name">Thomas的随笔思考</span></a></span><div id="menus"></div></nav><div id="site-info"><h1 id="site-title">Thomas的随笔思考</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/msLiu98" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="post_cover left"><a href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 冷技巧与实用黑科技"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技">Python 冷技巧与实用黑科技</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T07:40:00.000Z" title="发表于 2026-03-13 15:40:00">2026-03-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:38:32.567Z" title="更新于 2026-03-13 15:38:32">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Python/">Python</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E4%BB%A3%E7%A0%81%E6%8A%80%E5%B7%A7/">代码技巧</a></span></div><div class="content">前言Python 有很多不为人知的冷技巧和黑科技，掌握它们能让你的代码更简洁、更高效。本文整理了最实用的 Python 奇技淫巧，助你在日常开发中事半功倍。   一、语法糖与优雅写法1. 多重赋值与交换变量12345678910111213141516# 传统方式temp = aa = bb = temp# Pythonic 方式a, b = b, a# 多重赋值a, b, c = 1, 2, 3# 扩展解包（Python 3）first, *rest, last = [1, 2, 3, 4, 5]print(first)  # 1print(rest)   # [2, 3, 4]print(last)   # 5  2. 条件表达式（三元运算符）1234567891011# 传统方式if age &gt;= 18:    status = &quot;adult&quot;else:    status = &quot;minor&quot;# Pythonic 方式status = &quot;adult&quot; if age &gt;= 18 else &quot;mi...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 设计模式与工程实践"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践">Python 设计模式与工程实践</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T07:30:00.000Z" title="发表于 2026-03-13 15:30:00">2026-03-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:02:57.888Z" title="更新于 2026-03-13 15:02:57">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Python/">Python</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">工程实践</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">面向对象</a></span></div><div class="content">前言设计模式是解决特定问题的经典方案。本文将介绍 Python 中最常用的设计模式，以及如何在工程实践中优雅地应用它们。   一、单例模式（Singleton）1. 使用 new 实现123456789101112class Singleton:    _instance = None        def __new__(cls, *args, **kwargs):        if cls._instance is None:            cls._instance = super().__new__(cls)        return cls._instance# 使用s1 = Singleton()s2 = Singleton()print(s1 is s2)  # True  2. 线程安全单例（使用装饰器）1234567891011121314151617181920import threadingdef singleton(cls):    instances = &#123;&#125;    lock = threading.Lock()     ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 代码优化技巧与常见陷阱（错题集）"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）">Python 代码优化技巧与常见陷阱（错题集）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T07:20:00.000Z" title="发表于 2026-03-13 15:20:00">2026-03-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:38:32.578Z" title="更新于 2026-03-13 15:38:32">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Python/">Python</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a></span></div><div class="content">前言本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。   一、字符串操作优化1. 字符串连接：join vs +1234567# ❌ 低效：每次 + 都创建新字符串result = &quot;&quot;for s in list_of_strings:    result += s# ✅ 高效：使用 joinresult = &quot;&quot;.join(list_of_strings)  性能对比：当连接大量字符串时，join 比 + 快数十倍。 2. 字符串格式化对比12345678910111213name = &quot;小明&quot;age = 18# 方式一：% 格式化（较老，不推荐）&quot;%s is %d years old&quot; % (name, age)# 方式二：str.format()&quot;&#123;&#125; is &#123;&#125; years old&quot;.format(name, age)# 方式三：f-string（P...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" title="Python 协程与异步编程：从生成器到 asyncio"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 协程与异步编程：从生成器到 asyncio"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" title="Python 协程与异步编程：从生成器到 asyncio">Python 协程与异步编程：从生成器到 asyncio</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T07:10:00.000Z" title="发表于 2026-03-13 15:10:00">2026-03-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T06:59:27.895Z" title="更新于 2026-03-13 14:59:27">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Python/">Python</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">异步编程</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%8D%8F%E7%A8%8B/">协程</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/asyncio/">asyncio</a></span></div><div class="content">前言Python 的异步编程是处理高并发 IO 任务的利器。本文将从生成器入手，逐步深入到 yield from 和 asyncio，带你彻底掌握 Python 异步编程的核心概念。   一、可迭代、迭代器与生成器1. 三者的区别12345678910import collectionsfrom collections.abc import Iterable, Iterator, Generator# 可迭代对象（Iterable）astr = &quot;XiaoMing&quot;alist = [1, 2, 3]print(isinstance(astr, Iterable))  # Trueprint(isinstance(astr, Iterator))  # Falseprint(isinstance(astr, Generator)) # False  核心区别：  可迭代对象：有 __iter__ 方法，可以用 for 循环 迭代器：在可迭代基础上，增加了 __next__ 方法 生成器：在迭代器基础上，增加了 yield 关键字  2. 创建生成器1234567...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 并发编程进阶：多线程、锁机制与线程池"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池">Python 并发编程进阶：多线程、锁机制与线程池</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T07:00:00.000Z" title="发表于 2026-03-13 15:00:00">2026-03-13</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T06:57:36.341Z" title="更新于 2026-03-13 14:57:36">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Python/">Python</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池</a></span></div><div class="content">前言Python 的并发编程是进阶开发者必须掌握的核心技能。本文将深入探讨多线程的通信机制、锁的使用以及线程池的实现，帮助你写出更高效的并发程序。   一、单线程 vs 多线程 vs 多进程在深入之前，我们需要理解三种执行模式的区别：    场景 单线程 多线程 多进程    CPU计算密集型 83s 93s (更慢) 9s (最快)   磁盘IO密集型 15s 13s 1.3s   网络IO密集型 1.1s 0.18s 0.13s   模拟IO密集型 20s 2.0s 2.0s   核心结论：  多线程适合 IO密集型 场景（爬虫、网站开发） 多进程适合 CPU计算密集型 场景（大数据分析、机器学习） 多线程在 CPU 密集型任务中由于 GIL 存在，反而更慢  二、线程间的消息通信1. Event 事件机制Event 是最简单的线程通信方式，适合”触发-执行”场景： 123456789101112131415161718192021222324252627import timeimport threadingclass MyThread(threading.Thread): ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/" title="【华泰资产配置】变局下的大类资产宏观因子体系"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【华泰资产配置】变局下的大类资产宏观因子体系"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/01/2026-03-01-%E5%8D%8E%E6%B3%B0%E8%B5%84%E4%BA%A7%E9%85%8D%E7%BD%AE%E5%8F%98%E5%B1%80%E4%B8%8B%E7%9A%84%E5%A4%A7%E7%B1%BB%E8%B5%84%E4%BA%A7%E5%AE%8F%E8%A7%82%E5%9B%A0%E5%AD%90%E4%BD%93%E7%B3%BB/" title="【华泰资产配置】变局下的大类资产宏观因子体系">【华泰资产配置】变局下的大类资产宏观因子体系</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-01T04:23:35.000Z" title="发表于 2026-03-01 12:23:35">2026-03-01</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:36:34.344Z" title="更新于 2026-03-13 15:36:34">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%87%91%E8%9E%8D/">金融</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%8A%95%E7%A0%94/">投研</a></span></div><div class="content">如果您希望第一时间收到推送，别忘了加“星标”！ 核心观点 近年来，大类资产配置最大的痛点之一是全球经济周期规律弱化，过去一些经典的宏观模型，比如美林时钟等适用范围的局限性越发明显。我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对每个因子进行细化跟踪，并辅助进行大类资产中长期走势判断。基于该框架，我们构建了两个版本的资产配置模型：风险平价模型与风险预算模型，并以月度为调仓频率进行了模型构建，2019年至今，二者均在有效控制回撤的前提下，具备获取持续超额回报的能力。   全球宏观因子介绍 宏观因子是影响大类资产价格长期走势的核心驱动因素，也是我们理解资产配置的出发点。但传统方法存在披露滞后、噪声大等诸多缺陷。我们希望通过构建一套全面、精准的全球宏观因子框架，能够高频、动态地跟踪市场主线的变化，实现对“增长、通胀、流动性、法币信用、AI科技、风险偏好”等宏观维度进行细化跟踪。为此，我们尝试将FMP与PCA两种方法结合，先对选取的资产序列进行FMP操作，构建可投资的初级因子代理序列，再用PCA对这些初级因子进行合成，以得到相对稳健且可解释性较高...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/03/01/2026-03-01-%E5%B9%BF%E5%8F%91%E9%87%91%E5%B7%A5OpenClaw%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%8A%95%E7%A0%94%E5%BA%94%E7%94%A8/" title="【广发金工】OpenClaw多平台部署与投研应用"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【广发金工】OpenClaw多平台部署与投研应用"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/03/01/2026-03-01-%E5%B9%BF%E5%8F%91%E9%87%91%E5%B7%A5OpenClaw%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%8A%95%E7%A0%94%E5%BA%94%E7%94%A8/" title="【广发金工】OpenClaw多平台部署与投研应用">【广发金工】OpenClaw多平台部署与投研应用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-01T03:58:08.000Z" title="发表于 2026-03-01 11:58:08">2026-03-01</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:36:34.352Z" title="更新于 2026-03-13 15:36:34">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/AI/">AI</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7/">工具</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%8A%95%E7%A0%94/">投研</a></span></div><div class="content">广发证券首席金工分析师 安宁宁 SAC: S0260512020003 &#x61;&#110;&#x6e;&#105;&#x6e;&#103;&#x6e;&#x69;&#110;&#x67;&#64;&#x67;&#102;&#46;&#99;&#111;&#109;&#46;&#99;&#x6e;   广发证券联席首席金工分析师 陈原文 SAC: S0260517080003 &#99;&#x68;&#x65;&#x6e;&#121;&#117;&#97;&#110;&#x77;&#101;&#x6e;&#64;&#x67;&#102;&#46;&#x63;&#x6f;&#109;&#46;&#99;&#110; 联系人：广发证券金工高级研究员 林涛 SAC: S0260124060060 &#x67;&#102;&#108;&#x69;&#x6e;&#116;&#x61;&#x6f;&#x40;&#103;&#x66;&#x2e;&#x63;&#x6f;&#x6d;&#x2e;&#x63;&#110; 广发金工安宁宁陈原文团队 摘要 AI投研应用： 在2025年2月发布的研...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/" title="用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/" title="用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘">用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-28T12:40:41.000Z" title="发表于 2026-02-28 20:40:41">2026-02-28</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:58:45.433Z" title="更新于 2026-03-13 15:58:45">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/AI/">AI</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%87%91%E8%9E%8D/">金融</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Python/">Python</a></span></div><div class="content">一、一个被忽略的数据富矿 银登中心（银行业信贷资产登记流转中心）是银保监会批准设立的全国性不良贷款转让业务平台。不良贷款转让虽然也可以通过ABS等方式进行（且Wind等数据商已有较好的覆盖），但银登中心的逐笔公告数据至今无人系统化整理。 自2023年不良贷款转让业务正式扩容以来，银登中心已累计发布超过   4000份 个人不良贷款转让公告，涵盖了国有大行、股份制银行、城商行、农商行和消费金融公司等各类金融机构。每一份公告都以PDF附件形式挂在网站上，详细列明了转让资产包的关键信息：未偿本金总额、资产笔数、借款人户数、逾期天数、五级分类、担保方式等十余个字段。 银登中心官网（ https://www.yindeng.com.cn/index.html ） 如果系统化整理，这些数据将是研究中国个人不良贷款转让市场最直接、最底层的一手信息源。 然而，至今几乎没有人做过这件事。这在AI时代之前，几乎是一个 不可能完成的任务 。 4000多份PDF，要从中做到可靠的结构化提取，需要非常专业的开发支持，绝非安排实习生去”洗”数据就能解决的问题，人力去做相当于一个团队都耗在单一数据收集。 而对...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2026/02/28/2026-02-28-claude-cowork-bank-model/" title="Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/02/28/2026-02-28-claude-cowork-bank-model/" title="Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行">Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-28T09:44:00.000Z" title="发表于 2026-02-28 17:44:00">2026-02-28</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:58:45.430Z" title="更新于 2026-03-13 15:58:45">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/AI/">AI</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%87%91%E8%9E%8D/">金融</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/A%E8%82%A1/">A股</a></span></div><div class="content">之前用Claude做了一版Google的财务模型——读10-K、拆收入结构、搭forecast，整个流程跑得很顺（4小时 vs 3天）。做完之后发给首席看，翻了一下，问了一句：这个能做谷歌的，那A股银行它也能做吗？ 那A股银行还有谷歌复杂吗？Google那种多业务线、GAAP和Non-GAAP双轨的结构都能处理，于是当天晚上就试了。先拿招商银行开刀，四份年报（2021-2024）扔进去，几轮对话，出来一个8个sheet、422个公式的完整模型。   工作流：简单到有点无聊整个流程用的是 Claude 桌面端的 Cowork 模式。操作上没有任何技术门槛——不需要写代码，不需要配环境。 第一步把招行2021-2024四份年报PDF和谷歌的财务模型Excel一起拖进对话窗口。 第二步一句话prompt：  参考谷歌的财务报告模式，结合招行的年报，我们做个招行的财务模型，历史3年加预测3年  然后它就开始工作了。先翻年报提取数据，对着合并报表一项一项读数，搭建Excel的sheet结构，写公式，做格式。第一版大概几分钟就出来了。 迭代：像跟分析师对需求一样第一版出来之后打开看了一下，能...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2026/02/28/2026-02-28-kimiclaw-obsidian-guide/" title="KimiClaw+OpenClaw+Obsidian组合，打造AI驱动的知识管理系统"><img class="post-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="KimiClaw+OpenClaw+Obsidian组合，打造AI驱动的知识管理系统"></a></div><div class="recent-post-info"><a class="article-title" href="/2026/02/28/2026-02-28-kimiclaw-obsidian-guide/" title="KimiClaw+OpenClaw+Obsidian组合，打造AI驱动的知识管理系统">KimiClaw+OpenClaw+Obsidian组合，打造AI驱动的知识管理系统</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-28T09:21:00.000Z" title="发表于 2026-02-28 17:21:00">2026-02-28</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T07:58:45.432Z" title="更新于 2026-03-13 15:58:45">2026-03-13</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/AI/">AI</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7/">工具</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/">知识管理</a></span></div><div class="content">最近沉迷Obsidian，OpenClaw+Claude Code的组合可以定时帮我把所有信息都存到Obsidian里，提示语放里头，内容选题放里头，邮箱里的订阅也都搞里头，今天先就来说说我的阶段性踩过的坑，用Agent做知识管理！ 把URL，文件，图片啥的丢给OpenClaw读取只是第一步，用好定时和记忆系统才是真的爽。比方说做个第二大脑 or 定时定点追踪某一个领域的热门视频，入库的知识还能自动去重 or 在一个基础信息源的基础上直接迭代出一大堆有用的定时任务。   KimiClaw 介绍我用的是新的手机对话端，KimiClaw，好处就是没有飞书的一堆权限也可以在手机上用上。 Kimi选了一种更轻的方式，来驾驭我已经养了很久的OpenClaw。预测一把，会有更多家模型App把类似OpenClaw这样的Agent作为一个子功能，就跟之前App只能用来对话，现在还可以生图生视频生代码一样。 两种接入方式方式一：一键部署  自带联网搜索和Clawhub来安装Skills 40G云盘存储 云端跑全新的OpenClaw实例 自动配好了K2.5 Thinking模型和Kimi Searc...</div></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Thomas</div><div class="author-info-description">记录技术、思考与生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">21</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/msLiu98"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/msLiu98" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Thomas 的随笔思考 🎉</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 冷技巧与实用黑科技"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技">Python 冷技巧与实用黑科技</a><time datetime="2026-03-13T07:40:00.000Z" title="发表于 2026-03-13 15:40:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 设计模式与工程实践"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践">Python 设计模式与工程实践</a><time datetime="2026-03-13T07:30:00.000Z" title="发表于 2026-03-13 15:30:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 代码优化技巧与常见陷阱（错题集）"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）">Python 代码优化技巧与常见陷阱（错题集）</a><time datetime="2026-03-13T07:20:00.000Z" title="发表于 2026-03-13 15:20:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" title="Python 协程与异步编程：从生成器到 asyncio"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 协程与异步编程：从生成器到 asyncio"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" title="Python 协程与异步编程：从生成器到 asyncio">Python 协程与异步编程：从生成器到 asyncio</a><time datetime="2026-03-13T07:10:00.000Z" title="发表于 2026-03-13 15:10:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 并发编程进阶：多线程、锁机制与线程池"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池">Python 并发编程进阶：多线程、锁机制与线程池</a><time datetime="2026-03-13T07:00:00.000Z" title="发表于 2026-03-13 15:00:00">2026-03-13</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Python%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">Python进阶</span><span class="card-category-list-count">5</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/"><span class="card-category-list-name">技术教程</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/"><span class="card-category-list-name">随笔</span><span class="card-category-list-count">2</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/AI/" style="font-size: 1.38em; color: rgb(60, 155, 54);">AI</a><a href="/tags/%E9%87%91%E8%9E%8D/" style="font-size: 1.3em; color: rgb(182, 178, 161);">金融</a><a href="/tags/A%E8%82%A1/" style="font-size: 1.15em; color: rgb(141, 74, 78);">A股</a><a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 1.38em; color: rgb(50, 172, 50);">工具</a><a href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="font-size: 1.15em; color: rgb(50, 154, 124);">知识管理</a><a href="/tags/Python/" style="font-size: 1.45em; color: rgb(179, 115, 99);">Python</a><a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 1.15em; color: rgb(137, 66, 187);">并发编程</a><a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 1.15em; color: rgb(50, 63, 65);">多线程</a><a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="font-size: 1.15em; color: rgb(50, 50, 50);">线程池</a><a href="/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" style="font-size: 1.15em; color: rgb(181, 73, 198);">异步编程</a><a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 1.15em; color: rgb(176, 156, 66);">协程</a><a href="/tags/asyncio/" style="font-size: 1.15em; color: rgb(168, 184, 133);">asyncio</a><a href="/tags/%E4%BB%A3%E7%A0%81%E6%8A%80%E5%B7%A7/" style="font-size: 1.15em; color: rgb(50, 53, 94);">代码技巧</a><a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 1.15em; color: rgb(154, 56, 144);">设计模式</a><a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 1.15em; color: rgb(116, 158, 122);">工程实践</a><a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 1.15em; color: rgb(50, 50, 135);">面向对象</a><a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 1.15em; color: rgb(174, 122, 50);">性能优化</a><a href="/tags/Linux/" style="font-size: 1.22em; color: rgb(115, 152, 105);">Linux</a><a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 1.15em; color: rgb(50, 159, 199);">博客</a><a href="/tags/%E6%8A%95%E7%A0%94/" style="font-size: 1.22em; color: rgb(181, 140, 72);">投研</a><a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 1.15em; color: rgb(154, 50, 108);">数据库</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              三月 2026
+            </span>
+            <span class="card-archive-list-count">7</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/02/">
+            <span class="card-archive-list-date">
+              二月 2026
+            </span>
+            <span class="card-archive-list-count">4</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2021/10/">
+            <span class="card-archive-list-date">
+              十月 2021
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">14</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-03-13T09:19:14.202Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Thomas</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
