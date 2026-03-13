@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#11998e"/>
+      <stop offset="100%" style="stop-color:#38ef7d"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 六边形背景 -->
+  <polygon points="100,10 180,55 180,145 100,190 20,145 20,55" fill="url(#grad3)"/>
+  
+  <!-- T 字母 -->
+  <text x="100" y="130" 
+        font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" 
+        font-size="90" 
+        font-weight="700" 
+        text-anchor="middle" 
+        fill="white">T
+  </text>
+</svg>
