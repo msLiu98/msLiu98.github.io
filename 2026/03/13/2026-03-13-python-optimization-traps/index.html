@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Python 代码优化技巧与常见陷阱（错题集） | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 代码优化技巧与常见陷阱（错题集）">
+<meta property="og:url" content="http://example.com/2026/03/13/2026-03-13-python-optimization-traps/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-13T07:20:00.000Z">
+<meta property="article:modified_time" content="2026-03-13T07:00:41.444Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="代码优化">
+<meta property="article:tag" content="性能优化">
+<meta property="article:tag" content="常见错误">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2026-03-13-python-optimization-traps" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2026/03/13/2026-03-13-python-optimization-traps/" class="article-date">
+  <time datetime="2026-03-13T07:20:00.000Z" itemprop="datePublished">2026-03-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python 代码优化技巧与常见陷阱（错题集）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。</p>
+<span id="more"></span>
+
+<h2 id="一、字符串操作优化"><a href="#一、字符串操作优化" class="headerlink" title="一、字符串操作优化"></a>一、字符串操作优化</h2><h3 id="1-字符串连接：join-vs"><a href="#1-字符串连接：join-vs" class="headerlink" title="1. 字符串连接：join vs +"></a>1. 字符串连接：join vs +</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 低效：每次 + 都创建新字符串</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> list_of_strings:</span><br><span class="line">    result += s</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 高效：使用 join</span></span><br><span class="line">result = <span class="string">&quot;&quot;</span>.join(list_of_strings)</span><br></pre></td></tr></table></figure>
+
+<p><strong>性能对比</strong>：当连接大量字符串时，<code>join</code> 比 <code>+</code> 快数十倍。</p>
+<h3 id="2-字符串格式化对比"><a href="#2-字符串格式化对比" class="headerlink" title="2. 字符串格式化对比"></a>2. 字符串格式化对比</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&quot;小明&quot;</span></span><br><span class="line">age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式一：% 格式化（较老，不推荐）</span></span><br><span class="line"><span class="string">&quot;%s is %d years old&quot;</span> % (name, age)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式二：str.format()</span></span><br><span class="line"><span class="string">&quot;&#123;&#125; is &#123;&#125; years old&quot;</span>.<span class="built_in">format</span>(name, age)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方式三：f-string（Python 3.6+，推荐）</span></span><br><span class="line"><span class="string">f&quot;<span class="subst">&#123;name&#125;</span> is <span class="subst">&#123;age&#125;</span> years old&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能：f-string &gt; % &gt; format</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、列表操作优化"><a href="#二、列表操作优化" class="headerlink" title="二、列表操作优化"></a>二、列表操作优化</h2><h3 id="1-列表推导式-vs-for-循环"><a href="#1-列表推导式-vs-for-循环" class="headerlink" title="1. 列表推导式 vs for 循环"></a>1. 列表推导式 vs for 循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 低效</span></span><br><span class="line">squares = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>):</span><br><span class="line">    squares.append(x ** <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 高效：列表推导式</span></span><br><span class="line">squares = [x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能提升：约 2-3 倍</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-生成器表达式处理大数据"><a href="#2-生成器表达式处理大数据" class="headerlink" title="2. 生成器表达式处理大数据"></a>2. 生成器表达式处理大数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 内存爆炸：一次性生成所有数据</span></span><br><span class="line"><span class="built_in">sum</span>([x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000000</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 内存友好：惰性求值</span></span><br><span class="line"><span class="built_in">sum</span>(x ** <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10000000</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用-set-dict-进行-O-1-查找"><a href="#3-使用-set-dict-进行-O-1-查找" class="headerlink" title="3. 使用 set/dict 进行 O(1) 查找"></a>3. 使用 set/dict 进行 O(1) 查找</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ O(n) 查找</span></span><br><span class="line">target = <span class="number">100</span></span><br><span class="line"><span class="keyword">if</span> target <span class="keyword">in</span> large_list:  <span class="comment"># 慢！</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ O(1) 查找</span></span><br><span class="line">large_set = <span class="built_in">set</span>(large_list)</span><br><span class="line"><span class="keyword">if</span> target <span class="keyword">in</span> large_set:  <span class="comment"># 快！</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-列表去重并保持顺序"><a href="#4-列表去重并保持顺序" class="headerlink" title="4. 列表去重并保持顺序"></a>4. 列表去重并保持顺序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法：利用 dict 的 ordered 特性（Python 3.7+）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unique_ordered</span>(<span class="params">seq</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span>(<span class="built_in">dict</span>.fromkeys(seq))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">items = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>]</span><br><span class="line"><span class="built_in">print</span>(unique_ordered(items))  <span class="comment"># [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、循环优化技巧"><a href="#三、循环优化技巧" class="headerlink" title="三、循环优化技巧"></a>三、循环优化技巧</h2><h3 id="1-使用-enumerate-获取索引"><a href="#1-使用-enumerate-获取索引" class="headerlink" title="1. 使用 enumerate 获取索引"></a>1. 使用 enumerate 获取索引</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">items = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 不 Pythonic</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(items)):</span><br><span class="line">    <span class="built_in">print</span>(i, items[i])</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ Pythonic</span></span><br><span class="line"><span class="keyword">for</span> i, item <span class="keyword">in</span> <span class="built_in">enumerate</span>(items):</span><br><span class="line">    <span class="built_in">print</span>(i, item)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用-zip-并行迭代"><a href="#2-使用-zip-并行迭代" class="headerlink" title="2. 使用 zip 并行迭代"></a>2. 使用 zip 并行迭代</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">names = [<span class="string">&#x27;Alice&#x27;</span>, <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Charlie&#x27;</span>]</span><br><span class="line">ages = [<span class="number">25</span>, <span class="number">30</span>, <span class="number">35</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 优雅并行迭代</span></span><br><span class="line"><span class="keyword">for</span> name, age <span class="keyword">in</span> <span class="built_in">zip</span>(names, ages):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;name&#125;</span> is <span class="subst">&#123;age&#125;</span> years old&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Python 3.10+: zip 支持 strict 参数</span></span><br><span class="line"><span class="keyword">for</span> name, age <span class="keyword">in</span> <span class="built_in">zip</span>(names, ages, strict=<span class="literal">True</span>):  <span class="comment"># 长度不一致时报错</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用-map-filter-还是列表推导？"><a href="#3-使用-map-filter-还是列表推导？" class="headerlink" title="3. 使用 map/filter 还是列表推导？"></a>3. 使用 map/filter 还是列表推导？</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># map</span></span><br><span class="line">squares = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, numbers))</span><br><span class="line"></span><br><span class="line"><span class="comment"># filter</span></span><br><span class="line">evens = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, numbers))</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 列表推导式（通常更快且更易读）</span></span><br><span class="line">squares = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> numbers]</span><br><span class="line">evens = [x <span class="keyword">for</span> x <span class="keyword">in</span> numbers <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、函数优化"><a href="#四、函数优化" class="headerlink" title="四、函数优化"></a>四、函数优化</h2><h3 id="1-使用-lru-cache-缓存结果"><a href="#1-使用-lru-cache-缓存结果" class="headerlink" title="1. 使用 lru_cache 缓存结果"></a>1. 使用 lru_cache 缓存结果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache</span><br><span class="line"></span><br><span class="line"><span class="comment"># ❌ 重复计算</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fibonacci(n-<span class="number">1</span>) + fibonacci(n-<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 使用缓存</span></span><br><span class="line"><span class="meta">@lru_cache(<span class="params">maxsize=<span class="literal">None</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    <span class="keyword">return</span> fibonacci(n-<span class="number">1</span>) + fibonacci(n-<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能提升：从指数级到 O(n)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用-partial-固定参数"><a href="#2-使用-partial-固定参数" class="headerlink" title="2. 使用 partial 固定参数"></a>2. 使用 partial 固定参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partial</span><br><span class="line"></span><br><span class="line"><span class="comment"># 原始函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">power</span>(<span class="params">base, exponent</span>):</span></span><br><span class="line">    <span class="keyword">return</span> base ** exponent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建平方函数</span></span><br><span class="line">square = partial(power, exponent=<span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(square(<span class="number">5</span>))  <span class="comment"># 25</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建立方函数</span></span><br><span class="line">cube = partial(power, exponent=<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(cube(<span class="number">5</span>))  <span class="comment"># 125</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用-slots-减少内存占用"><a href="#3-使用-slots-减少内存占用" class="headerlink" title="3. 使用 slots 减少内存占用"></a>3. 使用 slots 减少内存占用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 默认使用 __dict__，内存占用大</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, x, y</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 使用 __slots__，内存节省约 50%</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span>:</span></span><br><span class="line">    __slots__ = [<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, x, y</span>):</span></span><br><span class="line">        self.x = x</span><br><span class="line">        self.y = y</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、常见陷阱与错题集"><a href="#五、常见陷阱与错题集" class="headerlink" title="五、常见陷阱与错题集"></a>五、常见陷阱与错题集</h2><h3 id="陷阱-1：可变默认参数"><a href="#陷阱-1：可变默认参数" class="headerlink" title="陷阱 1：可变默认参数"></a>陷阱 1：可变默认参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 经典陷阱</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">append_to</span>(<span class="params">element, to=[]</span>):</span></span><br><span class="line">    to.append(element)</span><br><span class="line">    <span class="keyword">return</span> to</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(append_to(<span class="number">1</span>))  <span class="comment"># [1]</span></span><br><span class="line"><span class="built_in">print</span>(append_to(<span class="number">2</span>))  <span class="comment"># [1, 2] - 居然保留了上次的结果！</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确做法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">append_to</span>(<span class="params">element, to=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> to <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        to = []</span><br><span class="line">    to.append(element)</span><br><span class="line">    <span class="keyword">return</span> to</span><br></pre></td></tr></table></figure>
+
+<p><strong>原因</strong>：默认参数在函数定义时只创建一次，而不是每次调用时。</p>
+<h3 id="陷阱-2：在循环中修改列表"><a href="#陷阱-2：在循环中修改列表" class="headerlink" title="陷阱 2：在循环中修改列表"></a>陷阱 2：在循环中修改列表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 危险操作</span></span><br><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> numbers:</span><br><span class="line">    <span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        numbers.remove(num)  <span class="comment"># 跳过元素！</span></span><br><span class="line"><span class="built_in">print</span>(numbers)  <span class="comment"># [1, 3, 5] - 结果正确但可能跳过元素</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确做法：创建新列表</span></span><br><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">numbers = [num <span class="keyword">for</span> num <span class="keyword">in</span> numbers <span class="keyword">if</span> num % <span class="number">2</span> != <span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或倒序遍历</span></span><br><span class="line"><span class="keyword">for</span> num <span class="keyword">in</span> <span class="built_in">reversed</span>(numbers):</span><br><span class="line">    <span class="keyword">if</span> num % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">        numbers.remove(num)</span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-3：闭包延迟绑定"><a href="#陷阱-3：闭包延迟绑定" class="headerlink" title="陷阱 3：闭包延迟绑定"></a>陷阱 3：闭包延迟绑定</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 输出都是 9</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_multipliers</span>():</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">lambda</span> x: i * x <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> multiplier <span class="keyword">in</span> make_multipliers():</span><br><span class="line">    <span class="built_in">print</span>(multiplier(<span class="number">2</span>))  <span class="comment"># 6, 6, 6, 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确做法：使用默认参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_multipliers</span>():</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">lambda</span> x, i=i: i * x <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> multiplier <span class="keyword">in</span> make_multipliers():</span><br><span class="line">    <span class="built_in">print</span>(multiplier(<span class="number">2</span>))  <span class="comment"># 0, 2, 4, 6</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-4：is-vs"><a href="#陷阱-4：is-vs" class="headerlink" title="陷阱 4：is vs =="></a>陷阱 4：is vs ==</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 可能出错</span></span><br><span class="line">a = <span class="number">1000</span></span><br><span class="line">b = <span class="number">1000</span></span><br><span class="line"><span class="built_in">print</span>(a <span class="keyword">is</span> b)  <span class="comment"># False（小整数缓存范围外）</span></span><br><span class="line"></span><br><span class="line">a = <span class="number">5</span></span><br><span class="line">b = <span class="number">5</span></span><br><span class="line"><span class="built_in">print</span>(a <span class="keyword">is</span> b)  <span class="comment"># True（小整数缓存范围内）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 比较值用 ==</span></span><br><span class="line"><span class="built_in">print</span>(a == b)  <span class="comment"># 始终正确</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-5：类属性与实例属性混淆"><a href="#陷阱-5：类属性与实例属性混淆" class="headerlink" title="陷阱 5：类属性与实例属性混淆"></a>陷阱 5：类属性与实例属性混淆</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span></span><br><span class="line">    tricks = []  <span class="comment"># ❌ 类属性，所有实例共享</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        self.name = name</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_trick</span>(<span class="params">self, trick</span>):</span></span><br><span class="line">        self.tricks.append(trick)</span><br><span class="line"></span><br><span class="line">dog1 = Dog(<span class="string">&quot;Fido&quot;</span>)</span><br><span class="line">dog2 = Dog(<span class="string">&quot;Buddy&quot;</span>)</span><br><span class="line">dog1.add_trick(<span class="string">&quot;roll over&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(dog2.tricks)  <span class="comment"># [&#x27;roll over&#x27;] - dog2 也有了！</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 正确做法</span></span><br><span class="line">dog1 = Dog(<span class="string">&quot;Fido&quot;</span>)</span><br><span class="line">dog1.tricks = []  <span class="comment"># 实例属性</span></span><br><span class="line">dog1.tricks.append(<span class="string">&quot;roll over&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-6：try-except-过于宽泛"><a href="#陷阱-6：try-except-过于宽泛" class="headerlink" title="陷阱 6：try/except 过于宽泛"></a>陷阱 6：try/except 过于宽泛</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 捕获所有异常，可能隐藏 bug</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    do_something()</span><br><span class="line"><span class="keyword">except</span>:  <span class="comment"># 捕获所有，包括 KeyboardInterrupt</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 捕获特定异常</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    do_something()</span><br><span class="line"><span class="keyword">except</span> ValueError <span class="keyword">as</span> e:</span><br><span class="line">    logger.error(<span class="string">f&quot;Value error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    logger.error(<span class="string">f&quot;Unexpected error: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">raise</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="陷阱-7：忘记关闭文件"><a href="#陷阱-7：忘记关闭文件" class="headerlink" title="陷阱 7：忘记关闭文件"></a>陷阱 7：忘记关闭文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 可能泄露资源</span></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">data = f.read()</span><br><span class="line"><span class="comment"># 如果这里抛出异常，文件不会关闭</span></span><br><span class="line">f.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 使用 with 语句</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line"><span class="comment"># 自动关闭，即使发生异常</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="六、import-优化"><a href="#六、import-优化" class="headerlink" title="六、import 优化"></a>六、import 优化</h2><h3 id="1-避免循环导入"><a href="#1-避免循环导入" class="headerlink" title="1. 避免循环导入"></a>1. 避免循环导入</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a.py</span></span><br><span class="line"><span class="keyword">from</span> b <span class="keyword">import</span> func_b  <span class="comment"># ❌ 循环导入</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_a</span>():</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># b.py</span></span><br><span class="line"><span class="keyword">from</span> a <span class="keyword">import</span> func_a  <span class="comment"># ❌ 循环导入</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_b</span>():</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ✅ 解决方案：延迟导入</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func_a</span>():</span></span><br><span class="line">    <span class="keyword">from</span> b <span class="keyword">import</span> func_b  <span class="comment"># 在函数内部导入</span></span><br><span class="line">    func_b()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用-all-控制导出"><a href="#2-使用-all-控制导出" class="headerlink" title="2. 使用 all 控制导出"></a>2. 使用 <strong>all</strong> 控制导出</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mymodule.py</span></span><br><span class="line">__all__ = [<span class="string">&#x27;public_func&#x27;</span>, <span class="string">&#x27;PublicClass&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">public_func</span>():</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_private_func</span>():</span>  <span class="comment"># 下划线开头表示私有</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PublicClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_PrivateClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="七、性能分析工具"><a href="#七、性能分析工具" class="headerlink" title="七、性能分析工具"></a>七、性能分析工具</h2><h3 id="1-使用-timeit-测量代码"><a href="#1-使用-timeit-测量代码" class="headerlink" title="1. 使用 timeit 测量代码"></a>1. 使用 timeit 测量代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> timeit</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试列表推导 vs for 循环</span></span><br><span class="line">list_comp_time = timeit.timeit(</span><br><span class="line">    <span class="string">&#x27;[x**2 for x in range(1000)]&#x27;</span>, </span><br><span class="line">    number=<span class="number">10000</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for_loop_time = timeit.timeit(<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">result = []</span></span><br><span class="line"><span class="string">for x in range(1000):</span></span><br><span class="line"><span class="string">    result.append(x**2)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span>, number=<span class="number">10000</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;列表推导: <span class="subst">&#123;list_comp_time:<span class="number">.4</span>f&#125;</span>s&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;for 循环: <span class="subst">&#123;for_loop_time:<span class="number">.4</span>f&#125;</span>s&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用-cProfile-分析性能瓶颈"><a href="#2-使用-cProfile-分析性能瓶颈" class="headerlink" title="2. 使用 cProfile 分析性能瓶颈"></a>2. 使用 cProfile 分析性能瓶颈</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cProfile</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">slow_function</span>():</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1000000</span>):</span><br><span class="line">        total += i</span><br><span class="line">    <span class="keyword">return</span> total</span><br><span class="line"></span><br><span class="line">cProfile.run(<span class="string">&#x27;slow_function()&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="八、实用优化清单"><a href="#八、实用优化清单" class="headerlink" title="八、实用优化清单"></a>八、实用优化清单</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>不推荐</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>字符串连接</td>
+<td><code>+</code></td>
+<td><code>join()</code></td>
+</tr>
+<tr>
+<td>字符串格式化</td>
+<td><code>%</code> 或 <code>format()</code></td>
+<td>f-string</td>
+</tr>
+<tr>
+<td>列表过滤</td>
+<td><code>filter()</code> + lambda</td>
+<td>列表推导式</td>
+</tr>
+<tr>
+<td>查找元素</td>
+<td><code>list.index()</code></td>
+<td><code>set</code> 或 <code>dict</code></td>
+</tr>
+<tr>
+<td>频繁函数调用</td>
+<td>直接调用</td>
+<td><code>@lru_cache</code></td>
+</tr>
+<tr>
+<td>大数据遍历</td>
+<td>列表</td>
+<td>生成器</td>
+</tr>
+<tr>
+<td>属性访问</td>
+<td><code>obj.attr</code></td>
+<td><code>local_var = obj.attr</code></td>
+</tr>
+<tr>
+<td>文件操作</td>
+<td><code>open/close</code></td>
+<td><code>with</code> 语句</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Python 代码优化是一门平衡的艺术：</p>
+<ol>
+<li><strong>先写对，再写好</strong>：功能正确是第一位</li>
+<li><strong>避免过早优化</strong>：除非性能确实是瓶颈</li>
+<li><strong>使用工具分析</strong>：不要凭感觉，用 profiler 找出真正的瓶颈</li>
+<li><strong>保持可读性</strong>：过度优化可能降低代码可维护性</li>
+</ol>
+<p>记住：”可读性 counts” 是 Python 的核心价值观！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/03/13/2026-03-13-python-optimization-traps/" data-id="cmmokt5mx000nuigr64kncij4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" rel="tag">常见错误</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag">性能优化</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/03/13/2026-03-13-python-design-patterns/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Python 设计模式与工程实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/13/2026-03-13-python-asyncio-coroutine/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Python 协程与异步编程：从生成器到 asyncio</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Python%E8%BF%9B%E9%98%B6/">Python进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/">技术教程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/A%E8%82%A1/" rel="tag">A股</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude/" rel="tag">Claude</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Claude-Cowork/" rel="tag">Claude Cowork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clawdbot/" rel="tag">Clawdbot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/KimiClaw/" rel="tag">KimiClaw</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Obsidian/" rel="tag">Obsidian</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenClaw/" rel="tag">OpenClaw</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asyncio/" rel="tag">asyncio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag">代码优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%B7%E6%8A%80%E5%B7%A7/" rel="tag">冷技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E7%A8%8B/" rel="tag">协程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" rel="tag">奇技淫巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" rel="tag">常见错误</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="tag">并发编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" rel="tag">异步编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag">性能优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%95%E7%A0%94/" rel="tag">投研</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%95%E8%B5%84%E9%93%B6%E8%A1%8C/" rel="tag">投资银行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8B%9B%E5%95%86%E9%93%B6%E8%A1%8C/" rel="tag">招商银行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" rel="tag">知识管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91/" rel="tag">第二大脑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="tag">线程池</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="tag">虚拟机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B4%A2%E5%8A%A1%E5%BB%BA%E6%A8%A1/" rel="tag">财务建模</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%87%91%E8%9E%8D%E5%B7%A5%E7%A8%8B/" rel="tag">金融工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%93%B6%E8%A1%8C/" rel="tag">银行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%BB%91%E7%A7%91%E6%8A%80/" rel="tag">黑科技</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 20px;">AI</a> <a href="/tags/A%E8%82%A1/" style="font-size: 10px;">A股</a> <a href="/tags/Claude/" style="font-size: 13.33px;">Claude</a> <a href="/tags/Claude-Cowork/" style="font-size: 10px;">Claude Cowork</a> <a href="/tags/Clawdbot/" style="font-size: 10px;">Clawdbot</a> <a href="/tags/KimiClaw/" style="font-size: 10px;">KimiClaw</a> <a href="/tags/Obsidian/" style="font-size: 10px;">Obsidian</a> <a href="/tags/OpenClaw/" style="font-size: 16.67px;">OpenClaw</a> <a href="/tags/Python/" style="font-size: 20px;">Python</a> <a href="/tags/asyncio/" style="font-size: 10px;">asyncio</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" style="font-size: 10px;">代码优化</a> <a href="/tags/%E5%86%B7%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">冷技巧</a> <a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 10px;">协程</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">多线程</a> <a href="/tags/%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" style="font-size: 10px;">奇技淫巧</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" style="font-size: 10px;">常见错误</a> <a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">并发编程</a> <a href="/tags/%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">异步编程</a> <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" style="font-size: 10px;">性能优化</a> <a href="/tags/%E6%8A%95%E7%A0%94/" style="font-size: 10px;">投研</a> <a href="/tags/%E6%8A%95%E8%B5%84%E9%93%B6%E8%A1%8C/" style="font-size: 13.33px;">投资银行</a> <a href="/tags/%E6%8B%9B%E5%95%86%E9%93%B6%E8%A1%8C/" style="font-size: 10px;">招商银行</a> <a href="/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" style="font-size: 10px;">知识管理</a> <a href="/tags/%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91/" style="font-size: 10px;">第二大脑</a> <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" style="font-size: 10px;">线程池</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/" style="font-size: 10px;">虚拟机</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%B4%A2%E5%8A%A1%E5%BB%BA%E6%A8%A1/" style="font-size: 10px;">财务建模</a> <a href="/tags/%E9%87%91%E8%9E%8D%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">金融工程</a> <a href="/tags/%E9%93%B6%E8%A1%8C/" style="font-size: 10px;">银行</a> <a href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" style="font-size: 10px;">面向对象</a> <a href="/tags/%E9%BB%91%E7%A7%91%E6%8A%80/" style="font-size: 10px;">黑科技</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">February 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/13/2026-03-13-python-cool-tricks/">Python 冷技巧与实用黑科技</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/13/2026-03-13-python-design-patterns/">Python 设计模式与工程实践</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/13/2026-03-13-python-optimization-traps/">Python 代码优化技巧与常见陷阱（错题集）</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/13/2026-03-13-python-asyncio-coroutine/">Python 协程与异步编程：从生成器到 asyncio</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/13/2026-03-13-python-concurrent-threading/">Python 并发编程进阶：多线程、锁机制与线程池</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2026 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
