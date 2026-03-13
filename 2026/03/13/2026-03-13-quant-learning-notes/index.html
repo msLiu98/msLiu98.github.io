@@ -1,0 +1,474 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>量化投资与算法学习笔记汇总 | Thomas的随笔思考</title><meta name="author" content="Thomas"><meta name="copyright" content="Thomas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言本文汇总了个人在学习量化投资、算法与机器学习过程中的核心笔记，涵盖量化策略、Python编程技巧、经典算法以及数学建模方法。希望能为同样在这些领域探索的朋友提供参考。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="量化投资与算法学习笔记汇总">
+<meta property="og:url" content="http://example.com/2026/03/13/2026-03-13-quant-learning-notes/index.html">
+<meta property="og:site_name" content="Thomas的随笔思考">
+<meta property="og:description" content="前言本文汇总了个人在学习量化投资、算法与机器学习过程中的核心笔记，涵盖量化策略、Python编程技巧、经典算法以及数学建模方法。希望能为同样在这些领域探索的朋友提供参考。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920">
+<meta property="article:published_time" content="2026-03-13T12:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-13T12:08:37.407Z">
+<meta property="article:author" content="Thomas">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="量化投资">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "量化投资与算法学习笔记汇总",
+  "url": "http://example.com/2026/03/13/2026-03-13-quant-learning-notes/",
+  "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920",
+  "datePublished": "2026-03-13T12:00:00.000Z",
+  "dateModified": "2026-03-13T12:08:37.407Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Thomas",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/03/13/2026-03-13-quant-learning-notes/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '量化投资与算法学习笔记汇总',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.svg" alt="Logo"><span class="site-name">Thomas的随笔思考</span></a><a class="nav-page-title" href="/"><span class="site-name">量化投资与算法学习笔记汇总</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">量化投资与算法学习笔记汇总</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T12:00:00.000Z" title="发表于 2026-03-13 20:00:00">2026-03-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T12:08:37.407Z" title="更新于 2026-03-13 20:08:37">2026-03-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文汇总了个人在学习量化投资、算法与机器学习过程中的核心笔记，涵盖量化策略、Python编程技巧、经典算法以及数学建模方法。希望能为同样在这些领域探索的朋友提供参考。</p>
+<span id="more"></span>
+
+<h2 id="一、量化投资基础"><a href="#一、量化投资基础" class="headerlink" title="一、量化投资基础"></a>一、量化投资基础</h2><h3 id="1-1-量化交易概述"><a href="#1-1-量化交易概述" class="headerlink" title="1.1 量化交易概述"></a>1.1 量化交易概述</h3><p>量化交易是利用数学模型和计算机技术进行投资决策的方法。核心流程包括：</p>
+<ul>
+<li><strong>数据获取</strong>：行情数据、财务数据、另类数据</li>
+<li><strong>因子挖掘</strong>：技术指标、基本面因子、量价因子</li>
+<li><strong>策略回测</strong>：历史数据验证策略有效性</li>
+<li><strong>风险管理</strong>：仓位控制、止损止盈、回撤管理</li>
+<li><strong>实盘交易</strong>：信号执行、滑点控制、系统监控</li>
+</ul>
+<h3 id="1-2-经典技术指标策略"><a href="#1-2-经典技术指标策略" class="headerlink" title="1.2 经典技术指标策略"></a>1.2 经典技术指标策略</h3><h4 id="MACD-策略"><a href="#MACD-策略" class="headerlink" title="MACD 策略"></a>MACD 策略</h4><p>MACD（Moving Average Convergence Divergence）是趋势跟踪指标，由快线（DIF）、慢线（DEA）和柱状图（MACD）组成。</p>
+<p><strong>交易信号</strong>：</p>
+<ul>
+<li>金叉：DIF 上穿 DEA，买入信号</li>
+<li>死叉：DIF 下穿 DEA，卖出信号</li>
+</ul>
+<h4 id="KDJ-策略"><a href="#KDJ-策略" class="headerlink" title="KDJ 策略"></a>KDJ 策略</h4><p>KDJ 是随机指标，反映价格波动的相对位置，取值范围 0-100。</p>
+<p><strong>关键阈值</strong>：</p>
+<ul>
+<li>K &gt; 80：超买区，考虑卖出</li>
+<li>K &lt; 20：超卖区，考虑买入</li>
+</ul>
+<h3 id="1-3-多因子模型（Barra-模型）"><a href="#1-3-多因子模型（Barra-模型）" class="headerlink" title="1.3 多因子模型（Barra 模型）"></a>1.3 多因子模型（Barra 模型）</h3><p>Barra 模型是业界标准的多因子风险模型，将股票收益分解为：</p>
+<p>$$<br>r_i = \sum_{k=1}^{K} X_{ik} f_k + u_i<br>$$</p>
+<p>其中：</p>
+<ul>
+<li>$X_{ik}$：股票$i$在因子$k$上的暴露</li>
+<li>$f_k$：因子$k$的收益</li>
+<li>$u_i$：特质收益</li>
+</ul>
+<p><strong>常见风险因子类别</strong>：</p>
+<ul>
+<li>市值因子（Size）</li>
+<li>估值因子（Value）：PE、PB</li>
+<li>动量因子（Momentum）</li>
+<li>波动率因子（Volatility）</li>
+<li>流动性因子（Liquidity）</li>
+</ul>
+<h3 id="1-4-量化交易框架"><a href="#1-4-量化交易框架" class="headerlink" title="1.4 量化交易框架"></a>1.4 量化交易框架</h3><table>
+<thead>
+<tr>
+<th>框架</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>VNPY</strong></td>
+<td>开源、功能完善、支持多品种</td>
+<td>国内期货市场</td>
+</tr>
+<tr>
+<td><strong>Backtrader</strong></td>
+<td>Pythonic、灵活、社区活跃</td>
+<td>策略研究</td>
+</tr>
+<tr>
+<td><strong>Freqtrade</strong></td>
+<td>开源、支持加密货币</td>
+<td>数字货币交易</td>
+</tr>
+<tr>
+<td><strong>Zipline</strong></td>
+<td>Quantopian 出品、与 PyFolio 配合</td>
+<td>学术研究</td>
+</tr>
+</tbody></table>
+<h3 id="1-5-遗传算法因子挖掘"><a href="#1-5-遗传算法因子挖掘" class="headerlink" title="1.5 遗传算法因子挖掘"></a>1.5 遗传算法因子挖掘</h3><p>遗传编程（Genetic Programming）可用于自动挖掘非线性因子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 gplearn 进行因子挖掘</span></span><br><span class="line"><span class="keyword">from</span> gplearn.genetic <span class="keyword">import</span> SymbolicRegressor</span><br><span class="line"><span class="keyword">from</span> gplearn.functions <span class="keyword">import</span> make_function</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义自定义函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rank</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> pd.Series(x).rank(pct=<span class="literal">True</span>).values</span><br><span class="line"></span><br><span class="line">rank_func = make_function(function=rank, name=<span class="string">&#x27;rank&#x27;</span>, arity=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遗传编程模型</span></span><br><span class="line">gp = SymbolicRegressor(</span><br><span class="line">    population_size=<span class="number">1000</span>,</span><br><span class="line">    generations=<span class="number">20</span>,</span><br><span class="line">    function_set=[<span class="string">&#x27;add&#x27;</span>, <span class="string">&#x27;sub&#x27;</span>, <span class="string">&#x27;mul&#x27;</span>, <span class="string">&#x27;div&#x27;</span>, rank_func],</span><br><span class="line">    parsimony_coefficient=<span class="number">0.01</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、Python-编程技巧"><a href="#二、Python-编程技巧" class="headerlink" title="二、Python 编程技巧"></a>二、Python 编程技巧</h2><h3 id="2-1-Pandas-高效数据处理"><a href="#2-1-Pandas-高效数据处理" class="headerlink" title="2.1 Pandas 高效数据处理"></a>2.1 Pandas 高效数据处理</h3><h4 id="分组运算"><a href="#分组运算" class="headerlink" title="分组运算"></a>分组运算</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加权求和</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">weighted_average</span>(<span class="params">df, value_col, weight_col</span>):</span></span><br><span class="line">    <span class="keyword">return</span> np.average(df[value_col], weights=df[weight_col])</span><br><span class="line"></span><br><span class="line"><span class="comment"># groupby 应用</span></span><br><span class="line">df.groupby(<span class="string">&#x27;category&#x27;</span>).apply(</span><br><span class="line">    <span class="keyword">lambda</span> x: weighted_average(x, <span class="string">&#x27;value&#x27;</span>, <span class="string">&#x27;weight&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据拼接"><a href="#数据拼接" class="headerlink" title="数据拼接"></a>数据拼接</h4><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>用途</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>concat</code></td>
+<td>轴向拼接</td>
+<td>按行或列方向拼接</td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td>表连接</td>
+<td>SQL 风格连接，支持多键</td>
+</tr>
+<tr>
+<td><code>join</code></td>
+<td>索引连接</td>
+<td>基于索引的快速拼接</td>
+</tr>
+</tbody></table>
+<h4 id="提速技巧"><a href="#提速技巧" class="headerlink" title="提速技巧"></a>提速技巧</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 日期处理设置格式</span></span><br><span class="line">df[<span class="string">&#x27;date&#x27;</span>] = pd.to_datetime(df[<span class="string">&#x27;date&#x27;</span>], <span class="built_in">format</span>=<span class="string">&quot;%Y-%m-%d&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 使用生成器逐行处理</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> df.itertuples():</span><br><span class="line">    process(row)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 使用 isin 替代循环</span></span><br><span class="line">mask = df[<span class="string">&#x27;col&#x27;</span>].isin([<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 完全矢量化操作</span></span><br><span class="line">df[<span class="string">&#x27;bucket&#x27;</span>] = pd.cut(df[<span class="string">&#x27;value&#x27;</span>], bins=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. NumPy 加速</span></span><br><span class="line">df[<span class="string">&#x27;digitized&#x27;</span>] = np.digitize(df[<span class="string">&#x27;value&#x27;</span>], bins)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Excel-多-Sheet-写入"><a href="#Excel-多-Sheet-写入" class="headerlink" title="Excel 多 Sheet 写入"></a>Excel 多 Sheet 写入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> pd.ExcelWriter(<span class="string">&quot;output.xlsx&quot;</span>) <span class="keyword">as</span> writer:</span><br><span class="line">    df1.to_excel(writer, sheet_name=<span class="string">&quot;Sheet1&quot;</span>)</span><br><span class="line">    df2.to_excel(writer, sheet_name=<span class="string">&quot;Sheet2&quot;</span>)</span><br><span class="line">    df3.to_excel(writer, sheet_name=<span class="string">&quot;Sheet3&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-Matplotlib-可视化基础"><a href="#2-2-Matplotlib-可视化基础" class="headerlink" title="2.2 Matplotlib 可视化基础"></a>2.2 Matplotlib 可视化基础</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 中文设置</span></span><br><span class="line">plt.rcParams[<span class="string">&#x27;font.sans-serif&#x27;</span>] = [<span class="string">&#x27;SimHei&#x27;</span>]</span><br><span class="line">plt.rcParams[<span class="string">&#x27;axes.unicode_minus&#x27;</span>] = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 基本绘图</span></span><br><span class="line">plt.figure(figsize=(<span class="number">20</span>, <span class="number">8</span>), dpi=<span class="number">150</span>)</span><br><span class="line">plt.plot(x, y, label=<span class="string">&#x27;Line&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置刻度</span></span><br><span class="line">plt.xticks(rotation=<span class="number">45</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标签与网格</span></span><br><span class="line">plt.title(<span class="string">&quot;图表标题&quot;</span>)</span><br><span class="line">plt.xlabel(<span class="string">&quot;X轴&quot;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&quot;Y轴&quot;</span>)</span><br><span class="line">plt.grid(axis=<span class="string">&#x27;y&#x27;</span>, linestyle=<span class="string">&#x27;--&#x27;</span>, alpha=<span class="number">0.5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图例与保存</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.savefig(<span class="string">&quot;figure.png&quot;</span>, dpi=<span class="number">300</span>, bbox_inches=<span class="string">&#x27;tight&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-自动化工具"><a href="#2-3-自动化工具" class="headerlink" title="2.3 自动化工具"></a>2.3 自动化工具</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Selenium</strong></td>
+<td>浏览器自动化</td>
+<td>功能全面，支持多浏览器</td>
+</tr>
+<tr>
+<td><strong>Playwright</strong></td>
+<td>现代浏览器自动化</td>
+<td>微软出品，自动等待，速度快</td>
+</tr>
+<tr>
+<td><strong>Requests</strong></td>
+<td>HTTP 请求</td>
+<td>轻量级，适合 API 调用</td>
+</tr>
+<tr>
+<td><strong>Scrapy</strong></td>
+<td>爬虫框架</td>
+<td>异步处理，适合大规模爬取</td>
+</tr>
+</tbody></table>
+<h2 id="三、算法基础"><a href="#三、算法基础" class="headerlink" title="三、算法基础"></a>三、算法基础</h2><h3 id="3-1-动态规划（Dynamic-Programming）"><a href="#3-1-动态规划（Dynamic-Programming）" class="headerlink" title="3.1 动态规划（Dynamic Programming）"></a>3.1 动态规划（Dynamic Programming）</h3><p>动态规划是通过分解子问题求解复杂问题的方法，适用于具有<strong>最优子结构</strong>和<strong>重叠子问题</strong>性质的问题。</p>
+<h4 id="核心要素"><a href="#核心要素" class="headerlink" title="核心要素"></a>核心要素</h4><ol>
+<li><strong>最优子结构</strong>：问题的最优解包含子问题的最优解</li>
+<li><strong>无后效性</strong>：子问题解确定后不再改变</li>
+<li><strong>重叠子问题</strong>：子问题被重复计算，可用记忆化优化</li>
+</ol>
+<h4 id="经典问题：背包问题"><a href="#经典问题：背包问题" class="headerlink" title="经典问题：背包问题"></a>经典问题：背包问题</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">knapsack</span>(<span class="params">n, c, w, v</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    n: 物品数量</span></span><br><span class="line"><span class="string">    c: 背包容量</span></span><br><span class="line"><span class="string">    w: 重量列表</span></span><br><span class="line"><span class="string">    v: 价值列表</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># DP 表</span></span><br><span class="line">    dp = [[<span class="number">0</span>] * (c + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n + <span class="number">1</span>)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, c + <span class="number">1</span>):</span><br><span class="line">            dp[i][j] = dp[i-<span class="number">1</span>][j]</span><br><span class="line">            <span class="keyword">if</span> j &gt;= w[i-<span class="number">1</span>]:</span><br><span class="line">                dp[i][j] = <span class="built_in">max</span>(dp[i][j], </span><br><span class="line">                               dp[i-<span class="number">1</span>][j-w[i-<span class="number">1</span>]] + v[i-<span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dp[n][c]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">n, c = <span class="number">5</span>, <span class="number">10</span></span><br><span class="line">w = [<span class="number">2</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>]</span><br><span class="line">v = [<span class="number">6</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">6</span>]</span><br><span class="line"><span class="built_in">print</span>(knapsack(n, c, w, v))  <span class="comment"># 输出: 15</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="最长公共子序列（LCS）"><a href="#最长公共子序列（LCS）" class="headerlink" title="最长公共子序列（LCS）"></a>最长公共子序列（LCS）</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lcs</span>(<span class="params">X, Y</span>):</span></span><br><span class="line">    m, n = <span class="built_in">len</span>(X), <span class="built_in">len</span>(Y)</span><br><span class="line">    dp = [[<span class="number">0</span>] * (n + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>)]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, m + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> X[i-<span class="number">1</span>] == Y[j-<span class="number">1</span>]:</span><br><span class="line">                dp[i][j] = dp[i-<span class="number">1</span>][j-<span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i][j] = <span class="built_in">max</span>(dp[i-<span class="number">1</span>][j], dp[i][j-<span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dp[m][n]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-双指针技巧"><a href="#3-2-双指针技巧" class="headerlink" title="3.2 双指针技巧"></a>3.2 双指针技巧</h3><p>双指针法充分利用数组有序特征，简化运算。</p>
+<h4 id="对撞指针（相向而行）"><a href="#对撞指针（相向而行）" class="headerlink" title="对撞指针（相向而行）"></a>对撞指针（相向而行）</h4><p>适用于<strong>有序数组</strong>，从两端向中间遍历。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_sum</span>(<span class="params">nums, target</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;两数之和 - 对撞指针&quot;&quot;&quot;</span></span><br><span class="line">    left, right = <span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        s = nums[left] + nums[right]</span><br><span class="line">        <span class="keyword">if</span> s == target:</span><br><span class="line">            <span class="keyword">return</span> [left, right]</span><br><span class="line">        <span class="keyword">elif</span> s &lt; target:</span><br><span class="line">            left += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right -= <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> []</span><br></pre></td></tr></table></figure>
+
+<h4 id="快慢指针（同向而行）"><a href="#快慢指针（同向而行）" class="headerlink" title="快慢指针（同向而行）"></a>快慢指针（同向而行）</h4><p>用于检测环、删除重复项等场景。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_duplicates</span>(<span class="params">nums</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;删除排序数组中的重复项&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> nums:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    slow = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> fast <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">        <span class="keyword">if</span> nums[fast] != nums[slow]:</span><br><span class="line">            slow += <span class="number">1</span></span><br><span class="line">            nums[slow] = nums[fast]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> slow + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="四、数学建模：核回归"><a href="#四、数学建模：核回归" class="headerlink" title="四、数学建模：核回归"></a>四、数学建模：核回归</h2><h3 id="4-1-核回归概述"><a href="#4-1-核回归概述" class="headerlink" title="4.1 核回归概述"></a>4.1 核回归概述</h3><p>核回归（Kernel Regression）是非参数回归方法，用于估计随机变量的条件期望，找到 $X$ 和 $Y$ 之间的非线性关系：</p>
+<p>$$E(Y|X) = m(X)$$</p>
+<p>其中 $m(·)$ 是未知函数，通过核函数进行局部加权估计。</p>
+<h3 id="4-2-Nadaraya-Watson-估计量"><a href="#4-2-Nadaraya-Watson-估计量" class="headerlink" title="4.2 Nadaraya-Watson 估计量"></a>4.2 Nadaraya-Watson 估计量</h3><p>1964年由 Nadaraya 和 Watson 独立提出，基本形式为：</p>
+<p>$$\hat{m_h}(x) = \frac{\sum_{i=1}^{n} K_h(x-x_i) y_i}{\sum_{j=1}^{n} K_h(x-x_j)}$$</p>
+<p><strong>直观理解</strong>：</p>
+<ul>
+<li>分子：加权求和，靠近 $x$ 的样本 $y_i$ 获得更大权重</li>
+<li>分母：权重归一化，确保总和为1</li>
+<li>$K_h$：带宽为 $h$ 的核函数</li>
+</ul>
+<h3 id="4-3-高斯核函数"><a href="#4-3-高斯核函数" class="headerlink" title="4.3 高斯核函数"></a>4.3 高斯核函数</h3><p>最常用的核函数之一：</p>
+<p>$$K_h(u) = \frac{1}{\sqrt{2\pi}h} \exp\left(-\frac{u^2}{2h^2}\right)$$</p>
+<p><strong>带宽 $h$ 的选择</strong>：</p>
+<ul>
+<li>$h$ 太小：过拟合，估计方差大</li>
+<li>$h$ 太大：欠拟合，估计偏差大</li>
+<li>交叉验证选择最优带宽</li>
+</ul>
+<h3 id="4-4-Python-实现"><a href="#4-4-Python-实现" class="headerlink" title="4.4 Python 实现"></a>4.4 Python 实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> rbf_kernel</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nadaraya_watson</span>(<span class="params">X_train, y_train, X_test, bandwidth=<span class="number">1.0</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Nadaraya-Watson 核回归</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 计算核权重 (高斯核)</span></span><br><span class="line">    K = rbf_kernel(X_test.reshape(-<span class="number">1</span>, <span class="number">1</span>), </span><br><span class="line">                   X_train.reshape(-<span class="number">1</span>, <span class="number">1</span>), </span><br><span class="line">                   gamma=<span class="number">1</span>/(<span class="number">2</span>*bandwidth**<span class="number">2</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 加权平均</span></span><br><span class="line">    weights = K / K.<span class="built_in">sum</span>(axis=<span class="number">1</span>, keepdims=<span class="literal">True</span>)</span><br><span class="line">    y_pred = weights @ y_train</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> y_pred</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 statsmodels</span></span><br><span class="line"><span class="keyword">import</span> statsmodels.api <span class="keyword">as</span> sm</span><br><span class="line"></span><br><span class="line">model = sm.nonparametric.KernelReg(</span><br><span class="line">    endog=y,      <span class="comment"># 因变量</span></span><br><span class="line">    exog=X,       <span class="comment"># 自变量</span></span><br><span class="line">    var_type=<span class="string">&#x27;c&#x27;</span>, <span class="comment"># 连续变量</span></span><br><span class="line">    bw=<span class="string">&#x27;cv_ls&#x27;</span>    <span class="comment"># 交叉验证选带宽</span></span><br><span class="line">)</span><br><span class="line">y_pred = model.fit(X_test)</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、机器学习与自然语言处理"><a href="#五、机器学习与自然语言处理" class="headerlink" title="五、机器学习与自然语言处理"></a>五、机器学习与自然语言处理</h2><h3 id="5-1-学习资源"><a href="#5-1-学习资源" class="headerlink" title="5.1 学习资源"></a>5.1 学习资源</h3><table>
+<thead>
+<tr>
+<th>课程</th>
+<th>平台</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>李宏毅机器学习</strong></td>
+<td>B站</td>
+<td>中文、理论与代码结合</td>
+</tr>
+<tr>
+<td><strong>吴恩达 ML</strong></td>
+<td>Coursera</td>
+<td>经典入门、系统全面</td>
+</tr>
+<tr>
+<td><strong>Attention is All You Need</strong></td>
+<td>论文</td>
+<td>Transformer 奠基之作</td>
+</tr>
+</tbody></table>
+<h3 id="5-2-Transformer-与-Attention"><a href="#5-2-Transformer-与-Attention" class="headerlink" title="5.2 Transformer 与 Attention"></a>5.2 Transformer 与 Attention</h3><p><strong>自注意力机制</strong>：</p>
+<p>$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$</p>
+<p><strong>核心思想</strong>：</p>
+<ul>
+<li>Query：查询向量</li>
+<li>Key：键向量</li>
+<li>Value：值向量</li>
+<li>通过 $Q$ 与 $K$ 的相似度，加权聚合 $V$</li>
+</ul>
+<h3 id="5-3-文本相似度分析流程"><a href="#5-3-文本相似度分析流程" class="headerlink" title="5.3 文本相似度分析流程"></a>5.3 文本相似度分析流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 文本预处理</span></span><br><span class="line">docs = [<span class="string">&quot;文本1&quot;</span>, <span class="string">&quot;文本2&quot;</span>, <span class="string">&quot;文本3&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 分词与向量化</span></span><br><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> corpora, models, similarities</span><br><span class="line"></span><br><span class="line">texts = [[word <span class="keyword">for</span> word <span class="keyword">in</span> doc.split()] <span class="keyword">for</span> doc <span class="keyword">in</span> docs]</span><br><span class="line">dictionary = corpora.Dictionary(texts)</span><br><span class="line">corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> texts]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. TF-IDF 转换</span></span><br><span class="line">tfidf = models.TfidfModel(corpus)</span><br><span class="line">corpus_tfidf = tfidf[corpus]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 相似度计算</span></span><br><span class="line">index = similarities.MatrixSimilarity(corpus_tfidf)</span><br><span class="line">sims = index[tfidf[dictionary.doc2bow(query.split())]]</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、学习资源汇总"><a href="#六、学习资源汇总" class="headerlink" title="六、学习资源汇总"></a>六、学习资源汇总</h2><h3 id="6-1-量化投资"><a href="#6-1-量化投资" class="headerlink" title="6.1 量化投资"></a>6.1 量化投资</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27158854">多因子模型 Barra 讲解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.joinquant.com/view/community/detail/5b3c2c3ba0d2926d099638737cf08a6d">遗传算法挖掘因子</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.vnpy.com/">VNPY 官网</a></li>
+</ul>
+<h3 id="6-2-Python-数据科学"><a href="#6-2-Python-数据科学" class="headerlink" title="6.2 Python 数据科学"></a>6.2 Python 数据科学</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://pandas.pydata.org/docs/">Pandas 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://matplotlib.org/stable/tutorials/index.html">Matplotlib 教程</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.akshare.xyz/">AKShare 金融数据接口</a></li>
+</ul>
+<h3 id="6-3-算法"><a href="#6-3-算法" class="headerlink" title="6.3 算法"></a>6.3 算法</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://leetcode-cn.com/tag/two-pointers/">LeetCode 双指针</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/91582909">动态规划详解</a></li>
+</ul>
+<h3 id="6-4-机器学习"><a href="#6-4-机器学习" class="headerlink" title="6.4 机器学习"></a>6.4 机器学习</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Wv411h7kN">李宏毅机器学习 (2022春)</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/">Transformers 库文档</a></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文汇总了量化投资、Python编程、算法与数学建模的核心知识点。量化投资需要综合金融知识、编程能力和数学建模技能；算法学习应注重理解原理而非死记硬背；机器学习领域更新迅速，保持学习和实践是关键。</p>
+<p>持续学习，持续迭代，与君共勉。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Thomas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2026/03/13/2026-03-13-quant-learning-notes/">http://example.com/2026/03/13/2026-03-13-quant-learning-notes/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Thomas的随笔思考</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84/">量化投资</a><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div><div class="post-share"><div class="social-share" data-image="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/13/2026-03-13-notes-quant-trading/" title="量化投资学习笔记：策略、因子与框架"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">量化投资学习笔记：策略、因子与框架</div></div><div class="info-2"><div class="info-item-1">前言量化投资是利用数学模型和计算机技术进行投资决策的方法。本文汇总了量化交易的核心概念、经典策略和常用框架。   一、量化交易概述量化交易的核心流程：  数据获取：行情数据、财务数据、另类数据 因子挖掘：技术指标、基本面因子、量价因子 策略回测：历史数据验证策略有效性 风险管理：仓位控制、止损止盈、回撤管理 实盘交易：信号执行、滑点控制、系统监控  二、经典技术指标策略2.1 MACD 策略MACD（Moving Average Convergence Divergence）是趋势跟踪指标，由三部分组成：  DIF（快线）：12日EMA - 26日EMA DEA（慢线）：DIF的9日EMA MACD柱状图：(DIF - DEA) × 2  交易信号：  金叉：DIF 上穿 DEA，买入信号 死叉：DIF 下穿 DEA，卖出信号  2.2 KDJ 策略KDJ 是随机指标，反映价格波动的相对位置，取值范围 0-100：  K &gt; 80：超买区，考虑卖出 K &lt; 20：超卖区，考虑买入  2.3 支撑阻力位支撑和阻力是技术分析的核心概念：  支撑位：价格下跌时可能反弹的水平...</div></div></div></a><a class="pagination-related" href="/2026/03/13/2026-03-13-python-cool-tricks/" title="Python 冷技巧与实用黑科技"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Python 冷技巧与实用黑科技</div></div><div class="info-2"><div class="info-item-1">前言Python 有很多不为人知的冷技巧和黑科技，掌握它们能让你的代码更简洁、更高效。本文整理了最实用的 Python 奇技淫巧，助你在日常开发中事半功倍。   一、语法糖与优雅写法1. 多重赋值与交换变量12345678910111213141516# 传统方式temp = aa = bb = temp# Pythonic 方式a, b = b, a# 多重赋值a, b, c = 1, 2, 3# 扩展解包（Python 3）first, *rest, last = [1, 2, 3, 4, 5]print(first)  # 1print(rest)   # [2, 3, 4]print(last)   # 5  2. 条件表达式（三元运算符）1234567891011# 传统方式if age &gt;= 18:    status = &quot;adult&quot;else:    status = &quot;minor&quot;# Pythonic 方式status = &quot;adult&quot; if age &gt;= 18 else &quot;mi...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/13/2026-03-13-python-optimization-traps/" title="Python 代码优化技巧与常见陷阱（错题集）"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">Python 代码优化技巧与常见陷阱（错题集）</div></div><div class="info-2"><div class="info-item-1">前言本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。   一、字符串操作优化1. 字符串连接：join vs +1234567# ❌ 低效：每次 + 都创建新字符串result = &quot;&quot;for s in list_of_strings:    result += s# ✅ 高效：使用 joinresult = &quot;&quot;.join(list_of_strings)  性能对比：当连接大量字符串时，join 比 + 快数十倍。 2. 字符串格式化对比12345678910111213name = &quot;小明&quot;age = 18# 方式一：% 格式化（较老，不推荐）&quot;%s is %d years old&quot; % (name, age)# 方式二：str.format()&quot;&#123;&#125; is &#123;&#125; years old&quot;.format(name, age)# 方式三：f-string（P...</div></div></div></a><a class="pagination-related" href="/2026/03/13/2026-03-13-notes-quant-trading/" title="量化投资学习笔记：策略、因子与框架"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">量化投资学习笔记：策略、因子与框架</div></div><div class="info-2"><div class="info-item-1">前言量化投资是利用数学模型和计算机技术进行投资决策的方法。本文汇总了量化交易的核心概念、经典策略和常用框架。   一、量化交易概述量化交易的核心流程：  数据获取：行情数据、财务数据、另类数据 因子挖掘：技术指标、基本面因子、量价因子 策略回测：历史数据验证策略有效性 风险管理：仓位控制、止损止盈、回撤管理 实盘交易：信号执行、滑点控制、系统监控  二、经典技术指标策略2.1 MACD 策略MACD（Moving Average Convergence Divergence）是趋势跟踪指标，由三部分组成：  DIF（快线）：12日EMA - 26日EMA DEA（慢线）：DIF的9日EMA MACD柱状图：(DIF - DEA) × 2  交易信号：  金叉：DIF 上穿 DEA，买入信号 死叉：DIF 下穿 DEA，卖出信号  2.2 KDJ 策略KDJ 是随机指标，反映价格波动的相对位置，取值范围 0-100：  K &gt; 80：超买区，考虑卖出 K &lt; 20：超卖区，考虑买入  2.3 支撑阻力位支撑和阻力是技术分析的核心概念：  支撑位：价格下跌时可能反弹的水平...</div></div></div></a><a class="pagination-related" href="/2026/03/13/2026-03-13-notes-algorithms/" title="算法学习笔记：动态规划与双指针"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">算法学习笔记：动态规划与双指针</div></div><div class="info-2"><div class="info-item-1">前言算法是编程的核心基础，本文汇总动态规划和双指针两大经典技巧的核心知识点与实战应用。   一、动态规划（Dynamic Programming）1.1 核心思想动态规划通过将原问题分解为相对简单的子问题来求解复杂问题，适用于具有以下性质的问题：  最优子结构：问题的最优解包含子问题的最优解 无后效性：子问题的解一旦确定，不再受后续决策影响 重叠子问题：子问题被重复计算，可用记忆化优化  1.2 解题步骤 定义状态：确定 DP 数组的含义 状态转移方程：找出状态之间的关系 初始化：设置边界条件 遍历顺序：确定计算顺序 返回结果：从 DP 数组中提取答案  1.3 经典问题：0/1 背包问题描述：有 n 件物品，每件物品重量为 $w_i$，价值为 $v_i$。背包容量为 $C$，求能装入背包的最大价值。 状态定义：$dp[i][j]$ 表示前 $i$ 件物品，容量为 $j$ 时的最大价值 状态转移：$$dp[i][j] = \max(dp[i-1][j], \quad dp[i-1][j-w_i] + v_i)$$ 代码实现： 123456789101112131415161718...</div></div></div></a><a class="pagination-related" href="/2026/03/13/2026-03-13-python-design-patterns/" title="Python 设计模式与工程实践"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">Python 设计模式与工程实践</div></div><div class="info-2"><div class="info-item-1">前言设计模式是解决特定问题的经典方案。本文将介绍 Python 中最常用的设计模式，以及如何在工程实践中优雅地应用它们。   一、单例模式（Singleton）1. 使用 new 实现123456789101112class Singleton:    _instance = None        def __new__(cls, *args, **kwargs):        if cls._instance is None:            cls._instance = super().__new__(cls)        return cls._instance# 使用s1 = Singleton()s2 = Singleton()print(s1 is s2)  # True  2. 线程安全单例（使用装饰器）1234567891011121314151617181920import threadingdef singleton(cls):    instances = &#123;&#125;    lock = threading.Lock()     ...</div></div></div></a><a class="pagination-related" href="/2026/02/28/2026-02-28-%E7%94%A8Claude%E7%A7%92%E8%AF%BB4000%E4%BB%BDPDF%E9%93%B6%E7%99%BB%E4%B8%AD%E5%BF%83%E4%B8%8D%E8%89%AF%E8%B4%B7%E6%AC%BE%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A6%96%E6%AC%A1/" title="用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-28</div><div class="info-item-2">用Claude秒读4000+份PDF：银登中心不良贷款数据的首次系统化挖掘</div></div><div class="info-2"><div class="info-item-1">一、一个被忽略的数据富矿 银登中心（银行业信贷资产登记流转中心）是银保监会批准设立的全国性不良贷款转让业务平台。不良贷款转让虽然也可以通过ABS等方式进行（且Wind等数据商已有较好的覆盖），但银登中心的逐笔公告数据至今无人系统化整理。 自2023年不良贷款转让业务正式扩容以来，银登中心已累计发布超过   4000份 个人不良贷款转让公告，涵盖了国有大行、股份制银行、城商行、农商行和消费金融公司等各类金融机构。每一份公告都以PDF附件形式挂在网站上，详细列明了转让资产包的关键信息：未偿本金总额、资产笔数、借款人户数、逾期天数、五级分类、担保方式等十余个字段。 银登中心官网（ https://www.yindeng.com.cn/index.html ） 如果系统化整理，这些数据将是研究中国个人不良贷款转让市场最直接、最底层的一手信息源。 然而，至今几乎没有人做过这件事。这在AI时代之前，几乎是一个 不可能完成的任务 。 4000多份PDF，要从中做到可靠的结构化提取，需要非常专业的开发支持，绝非安排实习生去”洗”数据就能解决的问题，人力去做相当于一个团队都耗在单一数据收集。 而对...</div></div></div></a><a class="pagination-related" href="/2026/03/13/2026-03-13-python-concurrent-threading/" title="Python 并发编程进阶：多线程、锁机制与线程池"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">Python 并发编程进阶：多线程、锁机制与线程池</div></div><div class="info-2"><div class="info-item-1">前言Python 的并发编程是进阶开发者必须掌握的核心技能。本文将深入探讨多线程的通信机制、锁的使用以及线程池的实现，帮助你写出更高效的并发程序。   一、单线程 vs 多线程 vs 多进程在深入之前，我们需要理解三种执行模式的区别：    场景 单线程 多线程 多进程    CPU计算密集型 83s 93s (更慢) 9s (最快)   磁盘IO密集型 15s 13s 1.3s   网络IO密集型 1.1s 0.18s 0.13s   模拟IO密集型 20s 2.0s 2.0s   核心结论：  多线程适合 IO密集型 场景（爬虫、网站开发） 多进程适合 CPU计算密集型 场景（大数据分析、机器学习） 多线程在 CPU 密集型任务中由于 GIL 存在，反而更慢  二、线程间的消息通信1. Event 事件机制Event 是最简单的线程通信方式，适合”触发-执行”场景： 123456789101112131415161718192021222324252627import timeimport threadingclass MyThread(threading.Thread): ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Thomas</div><div class="author-info-description">记录技术、思考与生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/msLiu98"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/msLiu98" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Thomas 的随笔思考 🎉</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">一、量化投资基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%A6%82%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 量化交易概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%BB%8F%E5%85%B8%E6%8A%80%E6%9C%AF%E6%8C%87%E6%A0%87%E7%AD%96%E7%95%A5"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 经典技术指标策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#MACD-%E7%AD%96%E7%95%A5"><span class="toc-number">2.2.1.</span> <span class="toc-text">MACD 策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#KDJ-%E7%AD%96%E7%95%A5"><span class="toc-number">2.2.2.</span> <span class="toc-text">KDJ 策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%A4%9A%E5%9B%A0%E5%AD%90%E6%A8%A1%E5%9E%8B%EF%BC%88Barra-%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 多因子模型（Barra 模型）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93%E6%A1%86%E6%9E%B6"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 量化交易框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E5%9B%A0%E5%AD%90%E6%8C%96%E6%8E%98"><span class="toc-number">2.5.</span> <span class="toc-text">1.5 遗传算法因子挖掘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Python-%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7"><span class="toc-number">3.</span> <span class="toc-text">二、Python 编程技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Pandas-%E9%AB%98%E6%95%88%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 Pandas 高效数据处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E8%BF%90%E7%AE%97"><span class="toc-number">3.1.1.</span> <span class="toc-text">分组运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8B%BC%E6%8E%A5"><span class="toc-number">3.1.2.</span> <span class="toc-text">数据拼接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E9%80%9F%E6%8A%80%E5%B7%A7"><span class="toc-number">3.1.3.</span> <span class="toc-text">提速技巧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Excel-%E5%A4%9A-Sheet-%E5%86%99%E5%85%A5"><span class="toc-number">3.1.4.</span> <span class="toc-text">Excel 多 Sheet 写入</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Matplotlib-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%9F%BA%E7%A1%80"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 Matplotlib 可视化基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 自动化工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="toc-number">4.</span> <span class="toc-text">三、算法基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88Dynamic-Programming%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 动态规划（Dynamic Programming）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%A6%81%E7%B4%A0"><span class="toc-number">4.1.1.</span> <span class="toc-text">核心要素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%EF%BC%9A%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="toc-number">4.1.2.</span> <span class="toc-text">经典问题：背包问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%EF%BC%88LCS%EF%BC%89"><span class="toc-number">4.1.3.</span> <span class="toc-text">最长公共子序列（LCS）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%8F%8C%E6%8C%87%E9%92%88%E6%8A%80%E5%B7%A7"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 双指针技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%92%9E%E6%8C%87%E9%92%88%EF%BC%88%E7%9B%B8%E5%90%91%E8%80%8C%E8%A1%8C%EF%BC%89"><span class="toc-number">4.2.1.</span> <span class="toc-text">对撞指针（相向而行）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88%EF%BC%88%E5%90%8C%E5%90%91%E8%80%8C%E8%A1%8C%EF%BC%89"><span class="toc-number">4.2.2.</span> <span class="toc-text">快慢指针（同向而行）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1%EF%BC%9A%E6%A0%B8%E5%9B%9E%E5%BD%92"><span class="toc-number">5.</span> <span class="toc-text">四、数学建模：核回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A0%B8%E5%9B%9E%E5%BD%92%E6%A6%82%E8%BF%B0"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 核回归概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Nadaraya-Watson-%E4%BC%B0%E8%AE%A1%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 Nadaraya-Watson 估计量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E9%AB%98%E6%96%AF%E6%A0%B8%E5%87%BD%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 高斯核函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Python-%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.4.</span> <span class="toc-text">4.4 Python 实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E4%B8%8E%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">五、机器学习与自然语言处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90"><span class="toc-number">6.1.</span> <span class="toc-text">5.1 学习资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Transformer-%E4%B8%8E-Attention"><span class="toc-number">6.2.</span> <span class="toc-text">5.2 Transformer 与 Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">6.3.</span> <span class="toc-text">5.3 文本相似度分析流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90%E6%B1%87%E6%80%BB"><span class="toc-number">7.</span> <span class="toc-text">六、学习资源汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E9%87%8F%E5%8C%96%E6%8A%95%E8%B5%84"><span class="toc-number">7.1.</span> <span class="toc-text">6.1 量化投资</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Python-%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6"><span class="toc-number">7.2.</span> <span class="toc-text">6.2 Python 数据科学</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E7%AE%97%E6%B3%95"><span class="toc-number">7.3.</span> <span class="toc-text">6.3 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="toc-number">7.4.</span> <span class="toc-text">6.4 机器学习</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-job-search/" title="求职面试与学习技巧汇总"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="求职面试与学习技巧汇总"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-job-search/" title="求职面试与学习技巧汇总">求职面试与学习技巧汇总</a><time datetime="2026-03-13T12:40:00.000Z" title="发表于 2026-03-13 20:40:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-machine-learning/" title="机器学习与深度学习入门笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器学习与深度学习入门笔记"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-machine-learning/" title="机器学习与深度学习入门笔记">机器学习与深度学习入门笔记</a><time datetime="2026-03-13T12:35:00.000Z" title="发表于 2026-03-13 20:35:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-algorithms/" title="算法学习笔记：动态规划与双指针"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算法学习笔记：动态规划与双指针"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-algorithms/" title="算法学习笔记：动态规划与双指针">算法学习笔记：动态规划与双指针</a><time datetime="2026-03-13T12:30:00.000Z" title="发表于 2026-03-13 20:30:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-python-data-science/" title="Python 数据科学技巧汇总"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 数据科学技巧汇总"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-python-data-science/" title="Python 数据科学技巧汇总">Python 数据科学技巧汇总</a><time datetime="2026-03-13T12:25:00.000Z" title="发表于 2026-03-13 20:25:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-kernel-regression/" title="核回归与数学建模笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="核回归与数学建模笔记"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-kernel-regression/" title="核回归与数学建模笔记">核回归与数学建模笔记</a><time datetime="2026-03-13T12:20:00.000Z" title="发表于 2026-03-13 20:20:00">2026-03-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Thomas</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

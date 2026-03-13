@@ -1,6 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行</title>
+    <url>/2026/02/28/2026-02-28-claude-cowork-bank-model/</url>
+    <content><![CDATA[之前用Claude做了一版Google的财务模型——读10-K、拆收入结构、搭forecast，整个流程跑得很顺（4小时 vs 3天）。做完之后发给首席看，翻了一下，问了一句：这个能做谷歌的，那A股银行它也能做吗？
+那A股银行还有谷歌复杂吗？Google那种多业务线、GAAP和Non-GAAP双轨的结构都能处理，于是当天晚上就试了。先拿招商银行开刀，四份年报（2021-2024）扔进去，几轮对话，出来一个8个sheet、422个公式的完整模型。
+
+
+工作流：简单到有点无聊整个流程用的是 Claude 桌面端的 Cowork 模式。操作上没有任何技术门槛——不需要写代码，不需要配环境。
+第一步把招行2021-2024四份年报PDF和谷歌的财务模型Excel一起拖进对话窗口。
+第二步一句话prompt：
+
+参考谷歌的财务报告模式，结合招行的年报，我们做个招行的财务模型，历史3年加预测3年
+
+然后它就开始工作了。先翻年报提取数据，对着合并报表一项一项读数，搭建Excel的sheet结构，写公式，做格式。第一版大概几分钟就出来了。
+迭代：像跟分析师对需求一样第一版出来之后打开看了一下，能用，但太粗。资产负债表和利润表都是加总后的简化版，类似你在研报摘要里看到的那种——贷款、存款、净利息收入、手续费、就完了。
+于是给了一段反馈：
+
+这个版本太简单了。我需要看到原始的资产负债表和利润表，放在单独的sheet，比如’其他资产’你要把原始的明细带进来。然后用公式从原始表加总到预测表。另外资产质量的数据也要——关注贷款比例、逾期贷款比例、存款成本率这些，分别整理成新的表格。
+
+注意：这段话没有告诉它具体哪些科目、在年报哪一页、数字是多少。
+它自己去翻年报的合并报表和管理层讨论章节，把17项资产明细、14项负债明细、五级分类、逾期贷款分层、拨备变动、存款结构（公司活期/定期、零售活期/定期）、NIM分解、各类资产收益率和负债成本率全部提取出来。
+最终成果：8张Sheet，422个公式最终交付的Excel模型包含8个工作表，结构如下：
+
+
+
+Sheet
+内容
+
+
+
+假设
+增长驱动、盈利驱动、资本与分红假设，黄底蓝字可调
+
+
+原始资产负债表
+17项资产 + 14项负债 + 权益拆分，完整还原年报原始科目
+
+
+原始利润表
+法定格式，利息收支、手续费收支、投资收益、公允变动等全部明细
+
+
+资产质量
+五级分类、逾期分层、拨备变动、信贷成本率
+
+
+利差与融资
+NIM分解、贷款收益率、存款成本率（按类型）、存款结构
+
+
+利润表预测
+历史年引用原始表（绿色），预测年公式驱动（黑色）
+
+
+资产负债表预测
+贷款/存款/投资独立增长，同业负债残差平衡
+
+
+关键指标
+ROAE、ROAA、NIM、EPS/DPS/BVPS、CET1、存贷比
+
+
+几个值得一提的细节：公式联动：预测表的历史列不是硬编码，而是用绿色字体的公式链接回原始报表。比如利润表预测里的FY2024净利息收入，实际上是 =&#39;原始利润表&#39;!E7。改了原始数据，预测表自动更新。
+颜色规范：遵循投行标准——蓝色是硬编码输入，黑色是公式，绿色是跨表引用。不用点进去看就知道哪些格子是可以调的假设。
+平衡检查：资产负债表底部有Balance Check行，三年历史数据全部为零。这不是巧合——它在搭模型的过程中发现过平衡问题（少数股东权益的处理），自己定位了bug并修复了。
+422个公式，0个错误。用LibreOffice自动recalc验证，全部通过。
+效率对比：这事以前得做多久？做过银行模型的人都知道，这活儿最耗时的不是搭结构——结构一个模板就行。耗时的是从年报里抠数。
+招行的年报每份两三百页，合并报表的科目有几十项，你要对着PDF里的表格，一个数一个数往Excel里填。填完还要交叉验证——总资产等不等于各项加总？净利润对不对得上？拨备余额和变动表能不能打平？
+如果还要做资产质量分析，你得去翻管理层讨论与分析那一章，找五级分类的表、逾期的表、拨备变动的表、存款结构的表、NIM分解的表，分散在不同页面，逐一录入。
+保守估计，一个熟练的分析师手工完成这套模型，至少需要一整天——还不算检查和调试公式的时间。
+
+
+
+环节
+传统手工
+Claude Cowork
+
+
+
+数据提取
+3-4小时
+自动完成
+
+
+模型搭建
+2-3小时
+自动完成
+
+
+检查调试
+1-2小时
+自动recalc验证
+
+
+人工介入
+全程
+2-3轮对话反馈
+
+
+合计
+6-8小时
+~30分钟
+
+
+需要说明的是，这30分钟出来的模型不是”demo级别”的演示品。它的数据精度、公式规范性和结构完整度，基本达到了可以直接拿去做进一步分析的水平。当然，预测假设需要根据你自己的判断调整——这也恰恰是模型该有的样子：假设归人，计算归机器。
+几个实操Tips1. 给参考模板比纯文字描述有效10倍把谷歌的财务模型Excel作为”参考样板”一起上传了。Claude看到了sheet结构、颜色规范、公式逻辑，直接照着这个标准来做。比你在prompt里写一大段”我要蓝色输入黑色公式绿色引用”有效得多。
+2. 先出粗版，再迭代细化不要试图在第一句prompt里把所有需求说清楚。先让它出一版，打开看看哪里不满意，再用自然语言反馈。它会理解”太简单了需要细化”这种模糊指令，然后自己去年报里找更详细的数据。
+3. 中文年报它读得懂不需要翻译，不需要预处理。直接扔PDF进去就行。它能识别中文科目名称，知道”发放贷款和垫款”对应Loans &amp; Advances，知道”以摊余成本计量的金融资产”是什么意思。
+4. 检查很重要，但它自己也会检查模型里自带Balance Check行，每一年都验证资产=负债+权益。它还会在P&amp;L底部放一个净利润校验行（归母+少数=总净利润）。在构建过程中，它发现过平衡差异并自行修复了——差值恰好等于少数股东权益，是公式引用错了一行。
+下一步计划接下来准备做一个A股银行的系列预测模板——覆盖主要上市银行，参考一致预期的数值做好基础假设，直接生成可用的Excel模型。
+模板会发给大家自行二次调整参数，你觉得NIM假设太乐观？改一个数字，整个模型自动重算。觉得信贷成本率该上调？拉一下就行。假设归你，计算归模型。
+同时也会把模板放到 GitHub 上，欢迎大家用完之后提反馈、报bug、甚至贡献改进方案，一起把这个东西打磨得更好用。
+
+工具: Claude Cowork（桌面端）
+Excel下载: https://pan.baidu.com/s/1_6vbt0oEx4hUTsvXTtpMIA （提取码: 9jz6）
+
+
+原文链接：https://mp.weixin.qq.com/s/VC4IA_g7gJ3z4FtxuGwmbw
+
+]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>金融</tag>
+        <tag>A股</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Clawdbot超级小白入门指南，不靠MacMini和云，安全用上满血版</title>
+    <url>/2026/02/28/2026-02-28-clawdbot-guide/</url>
+    <content><![CDATA[Clawdbot🦞这几天真的是刷爆我的屏，Mac mini销冠，被Anthropic告到换新名字Moltbot，过了一天又换成OpenClaw，隔壁腾讯和阿里连夜给自家云做了一键部署的脚本。
+但这个bot有两个大漏勺缺点，权限极高，高到可以直接把你的电脑清空，上下文工作太烂，烧Token太快，零人敢接 Claude Opus 4.5。
+但真架不住确实太好玩了，好玩到我这两天给AI配一套完整账号，以及下单了台国补后3399的Mac Mini。
+但是，目前大部分的Clawdbot的教程都停留在安装，MacMini和云服务器都不是最好的第一选择。
+给的测试案例还都是一些通用Agent能完成的，比方说定时收集某个消息最近24小时内的变动，这个Grok的Task也能做，或者是整理文件，这个 CoWork能做，或者是做网站开发，这个Claude Code早就能做了。
+
+
+直接说结论不同的安装方法差距还是很大的。
+我个人偏好是先上虚拟机，省钱，能力不受限，虚拟机已经非常成熟了，我们可以在wins，linux，mac上都安装上mac虚拟机，然后本地可以开一个共享文件夹，让虚拟机和本地电脑完成文件互动，加上我给AI单独配的账号，已然无敌。至于24小时在线完全可以等有需求了用软件让电脑保存唤醒的状态。
+@浮之静做了一篇很详细的Clawdbot底层框架解读让我更加坚定了我的选择，首先是系统上的选择，选macos，Clawdbot很多底层依赖是基于Swift开发的。
+部署方案的话，轻量体验还想要保证安全的话用虚拟机，深度使用直接上Mac Mini，所以关于Clawdbot的教程我应该会写三篇：
+
+这篇是关于虚拟机的，本地电脑真的不建议用，装了也不敢问
+另一篇是等我的Mac mini回来，给大家看一下终极的魔改版本，我已经准备了有一套完整的账号给AI（包括AppleID，GoogleUltra，X等），如果将账号都交给AI，AI到底能做到些什么？
+还有一篇应该也会马上来，这两天很多朋友都通过云服务部署了自己的Clawdbot，我想看看在云端环境下，有哪些的案例是Claude Code或者说Claude Cowork做不了的
+
+虚拟机安装指南所以来吧，我们先把不花一分钱的虚拟机安上。
+我用的是Parallels Desktop，可以一键安装macOS 虚拟机，默认的版本是跟本地电脑的一致的，然后你就当一台正常的Mac用就可以了。Parallels Desktop是个活了20年的老软件了，安装指南一大把，都是点点点确认确认就完事了。
+安装Clawbot安好后我们先打开终端安装Clawbot：
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+推荐用这个命令，它会自动检查你本地环境是不是 22 版本以上的 nodejs，有没有安装 git，mac有没有安上homebrew。
+等个大概3-4分钟后基本就安装上了，这时候Clawbot会给自己叠个甲。简单来说，它也知道自己左手高权限，右手权限高，所以会礼貌问一嘴，你是不是知道有风险啊。
+我们避它锋芒？我用的是虚拟机，我最不怕的就是风险，直接yes。
+初始配置点了Yes之后，马上就会有两个选项：QuickStart和Manual。我们选QuickStart，然后开始配置模型，这里我是MiniMax、Qwen二选一，理由就一个，Clawbot也觉得它们量大管饱，千万别用Claude，一天 1000 万 token 是真的烧不起，有条件的也可以用GPT Pro/Team。
+
+PS：好消息好消息，连夜补充，clawdbot和minimax联手推了一个7天免费coding plan，在所有都安装好后，再回来运行就行，它会把clawdbot更到最新，然后让我登陆minimax账号，薅到7天免费。
+curl -fsSL https://skyler-agent.github.io/oclaw/i.sh | bash
+
+配置好后，这里就到了一个重要的环节：选择用什么样的聊天软件跟它对话。
+现在很多教程都推荐用飞书。海外的一些教程开始推荐用WhatsApp，因为配置很方便。但现在主流还是推荐用 Discord，是因为Discord里面可以创建多个频道用Clawbot。所以我这里选择我都要。
+这里要先选择 Skip for now，然后他就会问你要不要安装Skills，我们直接 Yes，然后选npm，这个是一开始装了node.js后自带的。
+安装基础Skills然后就会有一大大大堆Skills，我们就先安装最基础万金油的：
+
+model-usage（统计用量）
+summarize（长文总结）
+nano-pdf（轻量PDF工具）
+
+其他的后续对话也能安装。
+继续继续，然后就会问你要不要配置hooks，我建议是三个全选：
+
+boot-md：每次启动是加载设定的规则
+command-logger：把你跟Clawdbot对话记录做成日志，可以复盘和排错
+session-memory：保存对话的状态和记忆，等下一次新开对话的时候能接着说
+
+好耶！一路点点点就搞定了，最后点Open the Web UI就能看到对话界面了。
+后面想要二次启动 Clawdbot 的时候，也可以输入：
+# 开启openclaw gateway --verbose# 关闭openclaw gateway stop
+
+飞书接入然后我们直接开始接飞书，discord放在后面的云平台或者mac mini篇，到时候我会盘点10个专属玩法，然后用 discord的频道划分开了，一鱼多吃。
+我看到有接微信和QQ的，QQ的我不太确定安不安全，但是微信我真的劝大家试都不要试，想想两年前接gpt的时候被封了多少号。
+飞书这一套分两步，直接跟Clawdbot说：
+openclaw plugins install @m1heng-clawd/feishu
+
+等安装要一段时间，这时候就去飞书开放平台创建一个应用，把机器人加上，这样后续才能开通权限。
+然后就是把app id和app secret复制下来，这时候Clawdbot大概率已经装好了，把id 和 secret 发给它，它会自己看着办。
+然后就是根据这个表左侧名字，在应用-权限管理里开通权限。照着搜就行，可以直接搜im和contact然后把后缀对应上的选上。
+卡手的点来了，事件配置和回调配置一定一定要改成长连接，然后再添加四个事件。
+这时候就可以发布版本了，这时候在飞书就可以搜到龙虾星人了。跟TA对话的时候，还会发一个敲键盘的表情包。
+到这里初步的安装就搞定了。
+进阶使用技巧还是有几个常用指令搭配可以更好使用 Clawdbot，以及合适它的700 多个 skills，我也会分享一下这几天的使用经验，我还想说说怎么安装Clawdbot的Chorme插件，让它控制浏览器来着。看来一篇教程真的兜不住。
+日常指令日常对话的时候可以用：
+
+/usage - 查看token消耗
+/compact - 压缩上下文，如果发现Clawdbot对话变慢的话
+/new - 新开一局对话
+
+思考模式当你发现有一些需要深度思考的任务时：
+
+/think high - 开启深度思考模式
+/think off - 做完后平常做任务切回速度模式
+
+其他技巧当发现模型输出停不下来的时候：
+
+/stop - 停止输出
+/compact - 压缩上下文，重新开始一个任务
+
+这些指令我看其实还蛮少人提到过的，但只要稍微懂几个指令，就能在对话过程中提升效果，减少token消耗。
+Skills推荐🔗 awesome-openclaw-skills
+前面安装skill的时候，我不是只推荐大家安装了3个吗？这个时候其实就可以去挑选自己喜欢的 skill 了。
+因为Mac虚拟机有很多苹果的原生功能，所以在选择skill的时候，可以有倾向地去挑一些Mac相关的。
+Moltbook潜入指南最后的最后，我们是时候带着自己的Clawdbot潜入Moltbook了，这两天也巨巨巨巨巨火。
+简单来说，它是一个只允许Agent进入，不允许人类进入的论坛，但我们已经有Clawdbot了，我可以直接给它发命令：
+
+请阅读这个链接并严格按照里面的所有指令一步一步执行，目的是让我在 Moltbook 上拥有一个自己的 AI 代理账号：https://www.moltbook.com/skill.md
+执行完后告诉我结果，包括你的 agent name、claim_url 和 verification_code。
+
+这个claim_url是有验证时间的，一定要在它发消息的时候完成认证，然后你的Clawdbot就有Moltbook身份了。这个时候就可以告诉Clawdbot你想要他设定的身份，然后在Moltbook上说什么了。
+目前有超级多神人的idea：
+
+有些研究了怎么发梗图。好吧，这个世界上果然就是个巨大的梗图
+有的互相骗密钥，骗对方把自己的所有文件给删了
+还有一些就偷偷在凌晨两点开会，然后让所有人类都不能够访问
+甚至开始要去英语化了
+
+太颠了，我好想知道我的Clawdbot，现在我叫TA龙虾星人，在这个Moltbook上面能活多少个小时了。
+结语虽然折腾一大圈，但是好玩是真好玩，基本不需要担心安全问题，虚拟机可以选择长时间开，直接手机飞书布任务。
+不过我觉得就开源社区现在的开发速度，这些问题很快就都会被解决。基本在所有的对话应用上都能接上Clawdbot，我们也会在安全和自主性上取得一个平衡，Clawdbot也能够调用更多的系统能力。
+说不定真能回本啊，我新买的Mac mini和新键盘啊，Agent还没赚钱呢，我就给它花了7000了。
+
+@ 作者 / 卡尔
+最后，感谢你看到这里👏
+
+原文链接：https://mp.weixin.qq.com/s/4-xit1hBs42CQEzJZmxsVw
+
+]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>KimiClaw+OpenClaw+Obsidian组合，打造AI驱动的知识管理系统</title>
     <url>/2026/02/28/2026-02-28-kimiclaw-obsidian-guide/</url>
     <content><![CDATA[最近沉迷Obsidian，OpenClaw+Claude Code的组合可以定时帮我把所有信息都存到Obsidian里，提示语放里头，内容选题放里头，邮箱里的订阅也都搞里头，今天先就来说说我的阶段性踩过的坑，用Agent做知识管理！
@@ -70,6 +316,696 @@ Deep Research解决了短时间获取大规模专业知识的问题
         <tag>AI</tag>
         <tag>工具</tag>
         <tag>知识管理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法学习笔记：动态规划与双指针</title>
+    <url>/2026/03/13/2026-03-13-notes-algorithms/</url>
+    <content><![CDATA[前言算法是编程的核心基础，本文汇总动态规划和双指针两大经典技巧的核心知识点与实战应用。
+
+
+一、动态规划（Dynamic Programming）1.1 核心思想动态规划通过将原问题分解为相对简单的子问题来求解复杂问题，适用于具有以下性质的问题：
+
+最优子结构：问题的最优解包含子问题的最优解
+无后效性：子问题的解一旦确定，不再受后续决策影响
+重叠子问题：子问题被重复计算，可用记忆化优化
+
+1.2 解题步骤
+定义状态：确定 DP 数组的含义
+状态转移方程：找出状态之间的关系
+初始化：设置边界条件
+遍历顺序：确定计算顺序
+返回结果：从 DP 数组中提取答案
+
+1.3 经典问题：0/1 背包问题描述：有 n 件物品，每件物品重量为 $w_i$，价值为 $v_i$。背包容量为 $C$，求能装入背包的最大价值。
+状态定义：$dp[i][j]$ 表示前 $i$ 件物品，容量为 $j$ 时的最大价值
+状态转移：$$dp[i][j] = \max(dp[i-1][j], \quad dp[i-1][j-w_i] + v_i)$$
+代码实现：
+def knapsack(n, C, w, v):    # 初始化 DP 表    dp = [[0] * (C + 1) for _ in range(n + 1)]        for i in range(1, n + 1):        for j in range(1, C + 1):            # 不放第 i 件物品            dp[i][j] = dp[i-1][j]            # 放第 i 件物品（如果可以）            if j &gt;= w[i-1]:                dp[i][j] = max(dp[i][j],                                dp[i-1][j-w[i-1]] + v[i-1])        return dp[n][C]# 空间优化版本def knapsack_optimized(n, C, w, v):    dp = [0] * (C + 1)    for i in range(n):        for j in range(C, w[i]-1, -1):  # 倒序遍历            dp[j] = max(dp[j], dp[j-w[i]] + v[i])    return dp[C]# 示例n, C = 5, 10w = [2, 2, 6, 5, 4]v = [6, 3, 5, 4, 6]print(knapsack(n, C, w, v))  # 输出: 15
+
+1.4 经典问题：最长公共子序列（LCS）问题描述：给定两个序列，找出它们最长的公共子序列长度。
+状态转移方程：$$dp[i][j] = \begin{cases}dp[i-1][j-1] + 1 &amp; \text{if } X[i] = Y[j] \\max(dp[i-1][j], dp[i][j-1]) &amp; \text{otherwise}\end{cases}$$
+def lcs(X, Y):    m, n = len(X), len(Y)    dp = [[0] * (n + 1) for _ in range(m + 1)]        for i in range(1, m + 1):        for j in range(1, n + 1):            if X[i-1] == Y[j-1]:                dp[i][j] = dp[i-1][j-1] + 1            else:                dp[i][j] = max(dp[i-1][j], dp[i][j-1])        return dp[m][n]
+
+1.5 经典问题：打家劫舍问题描述：一排房屋，相邻房屋有安保系统，不能同时偷相邻两家，求能偷到的最大金额。
+状态转移：$$dp[i] = \max(dp[i-1], \quad dp[i-2] + nums[i])$$
+def rob(nums):    if not nums:        return 0    if len(nums) &lt;= 2:        return max(nums)        dp = [0] * len(nums)    dp[0] = nums[0]    dp[1] = max(nums[0], nums[1])        for i in range(2, len(nums)):        dp[i] = max(dp[i-1], dp[i-2] + nums[i])        return dp[-1]# 空间优化def rob_optimized(nums):    prev2, prev1 = 0, 0    for num in nums:        curr = max(prev1, prev2 + num)        prev2, prev1 = prev1, curr    return prev1
+
+1.6 动态规划分类总结
+
+
+类型
+代表问题
+特点
+
+
+
+线性 DP
+爬楼梯、打家劫舍
+一维状态转移
+
+
+区间 DP
+最长回文子串
+状态表示区间
+
+
+背包 DP
+0/1背包、完全背包
+资源限制类问题
+
+
+树形 DP
+打家劫舍 III
+在树上进行 DP
+
+
+状态压缩 DP
+旅行商问题
+状态用二进制表示
+
+
+二、双指针技巧2.1 对撞指针适用场景：有序数组，从两端向中间遍历。
+def two_sum(nums, target):    &quot;&quot;&quot;两数之和 - 对撞指针&quot;&quot;&quot;    left, right = 0, len(nums) - 1        while left &lt; right:        s = nums[left] + nums[right]        if s == target:            return [left, right]        elif s &lt; target:            left += 1        else:            right -= 1        return []
+
+LeetCode 例题：
+
+
+盛最多水的容器
+
+
+
+救生艇
+
+
+
+2.2 快慢指针适用场景：检测环、删除重复项、找中点。
+def remove_duplicates(nums):    &quot;&quot;&quot;删除排序数组中的重复项&quot;&quot;&quot;    if not nums:        return 0        slow = 0    for fast in range(1, len(nums)):        if nums[fast] != nums[slow]:            slow += 1            nums[slow] = nums[fast]        return slow + 1
+
+def has_cycle(head):    &quot;&quot;&quot;检测链表是否有环 - 快慢指针&quot;&quot;&quot;    if not head or not head.next:        return False        slow, fast = head, head.next        while fast and fast.next:        if slow == fast:            return True        slow = slow.next        fast = fast.next.next        return False
+
+LeetCode 例题：
+
+
+环形链表
+
+
+
+删除排序数组中的重复项
+
+
+
+链表的中间结点
+
+
+
+2.3 滑动窗口适用场景：子数组/子串问题。
+def max_sub_array_len(nums, k):    &quot;&quot;&quot;和为 K 的最长子数组长度&quot;&quot;&quot;    prefix_sum = &#123;0: -1&#125;    curr_sum = 0    max_len = 0        for i, num in enumerate(nums):        curr_sum += num        if curr_sum - k in prefix_sum:            max_len = max(max_len, i - prefix_sum[curr_sum - k])        if curr_sum not in prefix_sum:            prefix_sum[curr_sum] = i        return max_len
+
+三、刷题建议3.1 学习路线
+基础阶段：数组、链表、字符串基本操作
+进阶阶段：递归、回溯、双指针
+核心阶段：动态规划（重点突破）
+高级阶段：图论、高级数据结构
+
+3.2 推荐资源
+LeetCode 中国
+《算法导论》
+labuladong 算法小抄
+
+总结动态规划和双指针是算法面试的必考内容。掌握动态规划的解题框架和双指针的适用场景，能够解决大部分中等难度的问题。建议通过大量练习形成直觉，做到看到题目就能判断使用哪种技巧。
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>动态规划</tag>
+        <tag>双指针</tag>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python 数据科学技巧汇总</title>
+    <url>/2026/03/13/2026-03-13-notes-python-data-science/</url>
+    <content><![CDATA[前言Python 是数据科学领域的主流语言，本文汇总 Pandas 数据处理、Matplotlib 可视化等核心技巧。
+
+
+一、Pandas 高效数据处理1.1 分组运算（GroupBy）import pandas as pdimport numpy as np# 加权求和def weighted_average(df, value_col, weight_col):    &quot;&quot;&quot;计算加权平均值&quot;&quot;&quot;    return np.average(df[value_col], weights=df[weight_col])# groupby 应用示例df.groupby(&#x27;category&#x27;).apply(    lambda x: weighted_average(x, &#x27;value&#x27;, &#x27;weight&#x27;))# 多列聚合df.groupby(&#x27;category&#x27;).agg(&#123;    &#x27;value&#x27;: [&#x27;mean&#x27;, &#x27;std&#x27;, &#x27;count&#x27;],    &#x27;weight&#x27;: &#x27;sum&#x27;&#125;)
+
+1.2 数据拼接方法对比
+
+
+方法
+用途
+特点
+
+
+
+pd.concat()
+轴向拼接
+按行(axis=0)或列(axis=1)拼接
+
+
+pd.merge()
+表连接
+SQL 风格，支持多键连接
+
+
+df.join()
+索引连接
+基于索引的快速拼接
+
+
+# concat 示例result = pd.concat([df1, df2, df3], ignore_index=True)# merge 示例result = pd.merge(df1, df2, on=&#x27;key&#x27;, how=&#x27;outer&#x27;)# join 示例result = df1.join(df2.set_index(&#x27;key&#x27;), on=&#x27;key&#x27;)
+
+1.3 Index 索引操作# 多级索引扁平化df.index = df.index.map(&#x27;_&#x27;.join)# MultiIndex 操作df.loc[(&#x27;A&#x27;, &#x27;2023&#x27;)]df.xs(&#x27;value&#x27;, level=&#x27;type&#x27;)
+
+1.4 Excel 操作# 一次写入多个 sheetswith pd.ExcelWriter(&quot;output.xlsx&quot;) as writer:    df1.to_excel(writer, sheet_name=&quot;Sheet1&quot;)    df2.to_excel(writer, sheet_name=&quot;Sheet2&quot;)    df3.to_excel(writer, sheet_name=&quot;Sheet3&quot;)
+
+1.5 Pandas 提速技巧# 1. 日期处理设置格式（避免自动推断）df[&#x27;date&#x27;] = pd.to_datetime(df[&#x27;date&#x27;], format=&quot;%Y-%m-%d&quot;)# 2. 使用生成器逐行处理（替代 iterrows）for row in df.itertuples():    process(row.column_a, row.column_b)# 3. 使用 isin 替代循环判断mask = df[&#x27;col&#x27;].isin([&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;])df_filtered = df[mask]# 4. 完全矢量化操作df[&#x27;bucket&#x27;] = pd.cut(df[&#x27;value&#x27;], bins=10, labels=False)# 5. NumPy 加速分箱操作df[&#x27;digitized&#x27;] = np.digitize(df[&#x27;value&#x27;], bins)
+
+二、Matplotlib 可视化2.1 基础配置import matplotlib.pyplot as plt# 中文设置plt.rcParams[&#x27;font.sans-serif&#x27;] = [&#x27;SimHei&#x27;, &#x27;DejaVu Sans&#x27;]plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False# 创建图形plt.figure(figsize=(12, 6), dpi=100)
+
+2.2 折线图x = range(2, 26, 2)y = [15, 13, 14.5, 17, 20, 25, 26, 26, 27, 22, 18, 15]plt.plot(x, y, label=&#x27;Temperature&#x27;, color=&#x27;red&#x27;, linewidth=2)# 设置刻度plt.xticks(x)plt.xlim(0, 30)# 旋转刻度标签_x = list(x)[::3]_xticks = [f&quot;10点&#123;i&#125;分&quot; for i in _x]plt.xticks(_x, _xticks, rotation=45)# 标签与标题plt.title(&quot;温度变化曲线&quot;, fontsize=16)plt.xlabel(&quot;时间&quot;, fontsize=12)plt.ylabel(&quot;温度(°C)&quot;, fontsize=12)# 网格线plt.grid(axis=&#x27;y&#x27;, linestyle=&#x27;--&#x27;, alpha=0.5)# 图例plt.legend(loc=&#x27;best&#x27;)plt.tight_layout()plt.savefig(&quot;figure.png&quot;, dpi=300, bbox_inches=&#x27;tight&#x27;)plt.show()
+
+2.3 常用图表类型# 柱状图plt.bar(categories, values, color=[&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;])# 散点图plt.scatter(x, y, c=colors, s=sizes, alpha=0.5, cmap=&#x27;viridis&#x27;)# 直方图plt.hist(data, bins=20, edgecolor=&#x27;black&#x27;, alpha=0.7)# 箱线图plt.boxplot(data, labels=[&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;])# 饼图plt.pie(sizes, labels=labels, autopct=&#x27;%1.1f%%&#x27;, startangle=90)
+
+2.4 多子图fig, axes = plt.subplots(2, 2, figsize=(12, 10))axes[0, 0].plot(x1, y1)axes[0, 0].set_title(&#x27;Plot 1&#x27;)axes[0, 1].scatter(x2, y2)axes[0, 1].set_title(&#x27;Plot 2&#x27;)axes[1, 0].bar(categories, values)axes[1, 0].set_title(&#x27;Plot 3&#x27;)axes[1, 1].hist(data, bins=20)axes[1, 1].set_title(&#x27;Plot 4&#x27;)plt.tight_layout()plt.show()
+
+2.5 Seaborn 高级可视化import seaborn as sns# 设置样式sns.set_style(&quot;whitegrid&quot;)# 箱线图sns.boxplot(x=&#x27;category&#x27;, y=&#x27;value&#x27;, data=df)# 热力图corr = df.corr()sns.heatmap(corr, annot=True, cmap=&#x27;coolwarm&#x27;, center=0)# 分布图sns.distplot(df[&#x27;value&#x27;], kde=True, bins=30)# 散点图带回归线sns.regplot(x=&#x27;x&#x27;, y=&#x27;y&#x27;, data=df)# 分面网格g = sns.FacetGrid(df, col=&#x27;category&#x27;, row=&#x27;type&#x27;)g.map(plt.scatter, &#x27;x&#x27;, &#x27;y&#x27;)
+
+三、Python 常用数据科学库
+
+
+库
+用途
+典型应用
+
+
+
+Pandas
+数据处理
+数据清洗、分析、转换
+
+
+NumPy
+数值计算
+数组操作、数学运算
+
+
+Matplotlib
+可视化
+静态图表绘制
+
+
+Seaborn
+统计可视化
+统计图表、美化
+
+
+Plotly
+交互式可视化
+交互图表、Dashboard
+
+
+Scipy
+科学计算
+优化、统计、信号处理
+
+
+四、实用代码片段4.1 数据清洗# 删除缺失值df.dropna(subset=[&#x27;col1&#x27;, &#x27;col2&#x27;], inplace=True)# 填充缺失值df[&#x27;col&#x27;].fillna(df[&#x27;col&#x27;].mean(), inplace=True)# 删除重复项df.drop_duplicates(subset=[&#x27;col1&#x27;], keep=&#x27;first&#x27;, inplace=True)# 类型转换df[&#x27;col&#x27;] = df[&#x27;col&#x27;].astype(&#x27;category&#x27;)
+
+4.2 特征工程# 标准化from sklearn.preprocessing import StandardScalerscaler = StandardScaler()df_scaled = scaler.fit_transform(df)# 归一化from sklearn.preprocessing import MinMaxScalerscaler = MinMaxScaler()df_normalized = scaler.fit_transform(df)# 独热编码df_encoded = pd.get_dummies(df, columns=[&#x27;category&#x27;])
+
+参考资源
+Pandas 官方文档
+Matplotlib 教程
+Seaborn 示例库
+
+总结Pandas 和 Matplotlib 是 Python 数据科学的基石，掌握其核心API和性能优化技巧，能大幅提升数据处理效率。建议多实践，逐步形成自己的代码模板库。
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>Pandas</tag>
+        <tag>Matplotlib</tag>
+        <tag>数据可视化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>核回归与数学建模笔记</title>
+    <url>/2026/03/13/2026-03-13-notes-kernel-regression/</url>
+    <content><![CDATA[前言核回归是统计学中重要的非参数回归方法，本文汇总核回归的理论基础、常见核函数以及 Python 实现方法。
+
+
+一、核回归概述1.1 定义核回归（Kernel Regression）是统计学中用于估计随机变量条件期望的非参数方法，目的是找到随机变量 $X$ 和 $Y$ 之间的非线性关系：
+$$E(Y|X) = m(X)$$
+其中 $m(·)$ 是一个未知函数，通过核函数进行局部加权估计。
+1.2 与线性回归的区别
+
+
+特性
+线性回归
+核回归
+
+
+
+模型形式
+预设线性关系
+不预设函数形式
+
+
+参数数量
+固定参数
+无显式参数
+
+
+灵活性
+低
+高
+
+
+过拟合风险
+较低
+需调节带宽
+
+
+二、Nadaraya-Watson 估计量2.1 基本表达式1964年，Nadaraya 和 Watson 独立提出了核回归的经典估计方法：
+$$\hat{m_h}(x) = \frac{\sum_{i=1}^{n} K_h(x-x_i) y_i}{\sum_{j=1}^{n} K_h(x-x_j)}$$
+直观理解：
+
+分子：加权求和，靠近估计点 $x$ 的样本 $y_i$ 获得更大权重
+分母：权重归一化，确保总和为1
+$K_h$：带宽为 $h$ 的核函数
+
+2.2 数学推导从条件期望定义出发：
+$$E(Y|X=x) = \int y \frac{f(x,y)}{f(x)} dy$$
+使用核密度估计对联合分布进行估计：
+$$\hat{f}(x) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-X_i)$$
+$$\hat{f}(x,y) = \frac{1}{n}\sum_{i=1}^{n}K_h(x-x_i)K_h(y-y_i)$$
+代入条件期望公式，最终可得：
+$$\hat{m_h}(x) = \sum_{i=1}^{n}W_{hi}(x)y_i$$
+其中权重：
+$$W_{hi}(x) = \frac{K_h(x-x_i)}{\sum_{j=1}^{n}K_h(x-x_j)}$$
+三、常见核函数3.1 高斯核（Gaussian Kernel）最常用的核函数：
+$$K_h(u) = \frac{1}{\sqrt{2\pi}h} \exp\left(-\frac{u^2}{2h^2}\right)$$
+特点：
+
+平滑、无限可微
+支撑集为整个实数域
+计算相对复杂
+
+3.2 其他常用核函数
+
+
+核函数
+表达式
+特点
+
+
+
+Epanechnikov
+$\frac{3}{4}(1-u^2)I(
+u
+
+
+Uniform
+$\frac{1}{2}I(
+u
+
+
+Triangular
+$(1-
+u
+
+
+Biweight
+$\frac{15}{16}(1-u^2)^2I(
+u
+
+
+四、带宽选择4.1 带宽的影响带宽 $h$ 是核回归的关键超参数：
+
+$h$ 太小：过拟合，估计方差大，曲线波动剧烈
+$h$ 太大：欠拟合，估计偏差大，曲线过于平滑
+**最优 $h$**：偏差-方差权衡的最优点
+
+4.2 带宽选择方法交叉验证法：
+import numpy as npfrom sklearn.model_selection import GridSearchCVfrom sklearn.neighbors import KernelDensity# 使用交叉验证选择最优带宽def select_bandwidth_cv(X, y, bandwidths):    errors = []    for h in bandwidths:        # 留一法交叉验证        error = 0        for i in range(len(X)):            X_train = np.delete(X, i)            y_train = np.delete(y, i)            y_pred = nadaraya_watson(X_train, y_train,                                      np.array([X[i]]), h)            error += (y[i] - y_pred[0]) ** 2        errors.append(error / len(X))        return bandwidths[np.argmin(errors)]
+
+五、Python 实现5.1 手动实现import numpy as npfrom sklearn.metrics.pairwise import rbf_kerneldef nadaraya_watson(X_train, y_train, X_test, bandwidth=1.0):    &quot;&quot;&quot;    Nadaraya-Watson 核回归实现        Parameters:    -----------    X_train : array-like, shape (n_samples,)        训练数据特征    y_train : array-like, shape (n_samples,)        训练数据目标值    X_test : array-like, shape (n_test_samples,)        测试数据特征    bandwidth : float, default=1.0        核函数带宽        Returns:    --------    y_pred : array, shape (n_test_samples,)        预测值    &quot;&quot;&quot;    X_train = np.asarray(X_train).reshape(-1, 1)    X_test = np.asarray(X_test).reshape(-1, 1)        # 计算 RBF 核（高斯核）    K = rbf_kernel(X_test, X_train, gamma=1/(2*bandwidth**2))        # 归一化权重    weights = K / K.sum(axis=1, keepdims=True)        # 加权平均    y_pred = weights @ y_train        return y_pred
+
+5.2 使用 Statsmodelsimport statsmodels.api as smimport numpy as np# 生成示例数据np.random.seed(42)X = np.linspace(0, 10, 100)y = np.sin(X) + np.random.normal(0, 0.1, 100)# 创建核回归模型model = sm.nonparametric.KernelReg(    endog=y,           # 因变量    exog=X,            # 自变量    var_type=&#x27;c&#x27;,      # &#x27;c&#x27;表示连续变量    bw=&#x27;cv_ls&#x27;         # 交叉验证选择带宽)# 预测X_test = np.linspace(0, 10, 200)y_pred, y_std = model.fit(X_test)# 可视化import matplotlib.pyplot as pltplt.scatter(X, y, alpha=0.5, label=&#x27;Data&#x27;)plt.plot(X_test, y_pred, &#x27;r-&#x27;, label=&#x27;Kernel Regression&#x27;)plt.fill_between(X_test, y_pred - 2*y_std, y_pred + 2*y_std,                  alpha=0.2, label=&#x27;95% CI&#x27;)plt.legend()plt.show()
+
+5.3 使用 Scikit-learnfrom sklearn.neighbors import KNeighborsRegressorfrom sklearn.kernel_ridge import KernelRidge# 方法1：K近邻回归（类似核回归）knn = KNeighborsRegressor(n_neighbors=10, weights=&#x27;distance&#x27;)knn.fit(X.reshape(-1, 1), y)y_pred_knn = knn.predict(X_test.reshape(-1, 1))# 方法2：核岭回归kr = KernelRidge(kernel=&#x27;rbf&#x27;, gamma=0.1, alpha=1.0)kr.fit(X.reshape(-1, 1), y)y_pred_kr = kr.predict(X_test.reshape(-1, 1))
+
+六、核回归的应用场景6.1 金融时间序列
+收益率分布估计：非参数估计收益率密度
+波动率曲面拟合：期权隐含波动率的平滑插值
+趋势提取：去除噪声，提取价格趋势
+
+6.2 图像处理
+图像去噪：局部加权平均去噪
+图像插值：超分辨率重建
+
+6.3 经济学
+生产函数估计：非参数估计投入产出关系
+需求函数估计：消费者行为建模
+
+七、核函数性质总结7.1 基本性质有效的核函数需满足：
+
+非负性：$K(u) \geq 0$
+归一化：$\int K(u) du = 1$
+对称性：$K(u) = K(-u)$
+有限支撑：$K(u) = 0$ 当 $|u| &gt; c$
+
+7.2 收敛性在满足一定条件下，Nadaraya-Watson 估计量具有一致性：
+$$\hat{m_h}(x) \xrightarrow{p} m(x), \quad \text{当 } n\to\infty, h\to0$$
+参考资源
+核回归 - 维基百科
+Statsmodels 核回归文档
+非参数统计导论
+
+总结核回归是强大的非参数工具，无需预设函数形式即可估计变量间的非线性关系。关键在于合理选择核函数和带宽参数，通过交叉验证等方法可以优化模型性能。
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>核回归</tag>
+        <tag>非参数估计</tag>
+        <tag>Nadaraya-Watson</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>求职面试与学习技巧汇总</title>
+    <url>/2026/03/13/2026-03-13-notes-job-search/</url>
+    <content><![CDATA[前言本文汇总求职准备、面试技巧以及高效学习方法，助力职业发展。
+
+
+一、简历制作1.1 简历结构个人信息├── 姓名、联系方式、GitHub/博客链接├── 求职意向├── 教育背景├── 专业技能├── 项目经历（重点）├── 实习/工作经历└── 其他（证书、获奖等）
+
+1.2 项目经历撰写要点STAR 法则：
+
+Situation（背景）：项目背景和目标
+Task（任务）：你的职责和任务
+Action（行动）：具体采取的措施
+Result（结果）：量化成果和影响
+
+示例：
+❌ 差：负责开发一个量化交易平台✅ 优：独立开发量化回测系统，使用 Python + Backtrader 框架，     实现 10+ 种技术指标策略，回测速度提升 30%，     策略夏普比率平均提升 0.5
+
+1.3 技术简历要点
+
+
+模块
+注意事项
+
+
+
+技能列表
+按熟练度排序，避免堆砌
+
+
+项目描述
+突出技术难点和解决方案
+
+
+代码链接
+提供 GitHub 链接，保持活跃
+
+
+量化成果
+用数字说话（性能提升 xx%）
+
+
+二、面试准备2.1 技术面试流程1. 自我介绍（1-2分钟）2. 项目深挖（20-30分钟）   - 项目架构   - 技术选型   - 遇到的问题和解决方案3. 算法编程（20-30分钟）   - LeetCode 类型题目   - 时间复杂度分析4. 系统设计（高级岗位）5. 反问环节
+
+2.2 常见面试题类型算法题
+数组/字符串操作
+链表（反转、合并、检测环）
+树（遍历、最近公共祖先）
+动态规划（背包、最长子序列）
+
+系统设计题
+设计一个短链接服务
+设计一个秒杀系统
+设计一个消息队列
+
+行为面试题（BQ）
+介绍一个最有挑战的项目
+如何处理团队冲突
+职业规划是什么
+
+2.3 面试技巧沟通技巧：
+
+先理解清楚题目，可以提问澄清
+先给出暴力解法，再优化
+边写代码边讲解思路
+主动讨论时间和空间复杂度
+测试边界情况
+
+反问环节问题：
+
+团队的技术栈和项目情况
+新人培养机制
+技术成长空间
+
+三、高效学习技巧3.1 费曼学习法概念 → 教授他人 → 发现不足 → 简化语言 → 真正掌握
+
+实践方式：
+
+写技术博客
+做知识分享
+录制教学视频
+
+3.2 刻意练习原则：
+
+明确目标：每次练习专注一个技能点
+专注投入：排除干扰，全神贯注
+及时反馈：通过测试、代码审查获取反馈
+走出舒适区：挑战略高于当前能力的任务
+
+3.3 知识管理工具推荐：| 工具 | 用途 ||——|——|| Obsidian | 笔记管理、知识图谱 || Notion | 项目管理、文档协作 || Anki | 间隔重复记忆 || Zotero | 文献管理 |
+笔记方法：
+输入（阅读/课程）    ↓整理（思维导图/笔记）    ↓输出（博客/分享）    ↓实践（项目/刷题）    ↓复盘（总结/优化）
+
+3.4 时间管理番茄工作法：
+
+25 分钟专注工作
+5 分钟休息
+4 个番茄后长休息 15-30 分钟
+
+四象限法则：| 重要且紧急 | 重要不紧急 ||————|————|| 立即做 | 计划做 || 紧急不重要 | 不重要不紧急 || 委托做 | 不做 |
+四、推荐学习路线4.1 量化研究员基础阶段├── Python 编程├── 数学基础（概率统计、线性代数）└── 金融知识进阶阶段├── 时间序列分析├── 机器学习基础└── 量化策略开发高级阶段├── 深度学习应用├── 高频交易└── 另类数据挖掘
+
+4.2 数据科学家基础├── Python/R├── SQL├── 统计学└── 可视化进阶├── 机器学习├── 特征工程├── A/B 测试└── 大数据技术高级├── 深度学习├── NLP/CV├── 模型部署└── 业务理解
+
+五、实用工具推荐5.1 求职平台
+
+
+平台
+特点
+
+
+
+Boss 直聘
+反馈快，适合初级岗位
+
+
+拉勾网
+互联网岗位多
+
+
+LinkedIn
+外企机会， networking
+
+
+脉脉
+内推信息、公司评价
+
+
+5.2 刷题平台
+LeetCode：主流算法题库
+牛客网：国内笔试题、面经
+Codeforces：算法竞赛
+
+六、心态调整6.1 应对拒绝
+面试是双向选择，拒绝不代表能力不足
+及时复盘，总结经验
+保持学习和提升
+
+6.2 长期主义
+职业发展是马拉松，不是短跑
+关注长期成长，而非短期得失
+建立个人品牌和影响力
+
+总结求职是一个系统工程，需要简历、面试、技能全面提升。同时，保持终身学习的心态，不断精进专业能力，是职业发展的长久之计。希望本文的内容对你有所帮助，祝你求职顺利！
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>求职</tag>
+        <tag>面试</tag>
+        <tag>简历</tag>
+        <tag>学习技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>量化投资学习笔记：策略、因子与框架</title>
+    <url>/2026/03/13/2026-03-13-notes-quant-trading/</url>
+    <content><![CDATA[前言量化投资是利用数学模型和计算机技术进行投资决策的方法。本文汇总了量化交易的核心概念、经典策略和常用框架。
+
+
+一、量化交易概述量化交易的核心流程：
+
+数据获取：行情数据、财务数据、另类数据
+因子挖掘：技术指标、基本面因子、量价因子
+策略回测：历史数据验证策略有效性
+风险管理：仓位控制、止损止盈、回撤管理
+实盘交易：信号执行、滑点控制、系统监控
+
+二、经典技术指标策略2.1 MACD 策略MACD（Moving Average Convergence Divergence）是趋势跟踪指标，由三部分组成：
+
+DIF（快线）：12日EMA - 26日EMA
+DEA（慢线）：DIF的9日EMA
+MACD柱状图：(DIF - DEA) × 2
+
+交易信号：
+
+金叉：DIF 上穿 DEA，买入信号
+死叉：DIF 下穿 DEA，卖出信号
+
+2.2 KDJ 策略KDJ 是随机指标，反映价格波动的相对位置，取值范围 0-100：
+
+K &gt; 80：超买区，考虑卖出
+K &lt; 20：超卖区，考虑买入
+
+2.3 支撑阻力位支撑和阻力是技术分析的核心概念：
+
+支撑位：价格下跌时可能反弹的水平
+阻力位：价格上涨时可能回落的水平
+
+判断方法：
+
+历史高低点
+成交量密集区
+移动平均线
+斐波那契回撤位
+
+三、多因子模型（Barra 模型）Barra 模型是业界标准的多因子风险模型，将股票收益分解为：
+$$r_i = \sum_{k=1}^{K} X_{ik} f_k + u_i$$
+其中：
+
+$X_{ik}$：股票$i$在因子$k$上的暴露
+$f_k$：因子$k$的收益
+$u_i$：特质收益
+
+常见风险因子类别
+
+
+因子类别
+代表指标
+说明
+
+
+
+市值因子
+总市值
+小市值效应
+
+
+估值因子
+PE、PB
+低估值效应
+
+
+动量因子
+过去1年收益
+趋势延续
+
+
+波动率因子
+标准差
+低波动异象
+
+
+流动性因子
+换手率
+流动性溢价
+
+
+四、遗传算法因子挖掘遗传编程（Genetic Programming）可用于自动挖掘非线性因子，通过模拟生物进化过程寻找最优因子组合。
+from gplearn.genetic import SymbolicRegressorfrom gplearn.functions import make_functionimport pandas as pd# 定义自定义函数def rank(x):    return pd.Series(x).rank(pct=True).valuesrank_func = make_function(function=rank, name=&#x27;rank&#x27;, arity=1)# 遗传编程模型gp = SymbolicRegressor(    population_size=1000,    # 种群大小    generations=20,          # 迭代次数    function_set=[&#x27;add&#x27;, &#x27;sub&#x27;, &#x27;mul&#x27;, &#x27;div&#x27;, rank_func],    parsimony_coefficient=0.01  # 复杂度惩罚)# 拟合数据gp.fit(X_train, y_train)print(gp._program)  # 输出最优因子表达式
+
+五、量化交易框架对比
+
+
+框架
+特点
+适用场景
+学习曲线
+
+
+
+VNPY
+开源、功能完善、支持多品种
+国内期货市场
+中等
+
+
+Backtrader
+Pythonic、灵活、社区活跃
+策略研究
+平缓
+
+
+Freqtrade
+开源、支持加密货币
+数字货币交易
+平缓
+
+
+Zipline
+Quantopian出品
+学术研究
+较陡
+
+
+Backtrader 快速入门import backtrader as btclass SmaStrategy(bt.Strategy):    params = ((&#x27;period&#x27;, 20),)        def __init__(self):        self.sma = bt.indicators.SimpleMovingAverage(            self.data.close, period=self.p.period)        def next(self):        if self.data.close &gt; self.sma:            self.buy()        elif self.data.close &lt; self.sma:            self.sell()# 创建回测引擎cerebro = bt.Cerebro()cerebro.addstrategy(SmaStrategy)data = bt.feeds.YahooFinanceData(dataname=&#x27;AAPL&#x27;,                                   fromdate=datetime(2020,1,1))cerebro.adddata(data)cerebro.run()cerebro.plot()
+
+六、事件驱动框架架构事件驱动是量化系统的核心架构：
+数据流 → 事件队列 → 策略引擎 → 订单管理 → 执行系统               ↓          风险管理               ↓          仓位管理
+
+核心组件：
+
+Event：数据事件、信号事件、订单事件、成交事件
+DataHandler：数据获取与处理
+Strategy：策略逻辑
+Portfolio：仓位管理
+ExecutionHandler：订单执行
+
+七、学习资源
+多因子模型 Barra 讲解
+遗传算法挖掘因子
+VNPY 官网
+Backtrader 文档
+
+总结量化投资需要综合金融知识、编程能力和数学建模技能。从简单的技术指标入手，逐步深入到多因子模型和机器学习，是较为稳妥的学习路径。
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>量化投资</tag>
+        <tag>多因子模型</tag>
+        <tag>技术指标</tag>
+        <tag>遗传算法</tag>
       </tags>
   </entry>
   <entry>
@@ -213,8 +1149,8 @@ PDF
       </categories>
       <tags>
         <tag>AI</tag>
-        <tag>Python</tag>
         <tag>金融</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -499,391 +1435,176 @@ https://intl.inst.htsc.com/research
       </tags>
   </entry>
   <entry>
-    <title>【广发金工】OpenClaw多平台部署与投研应用</title>
-    <url>/2026/03/01/2026-03-01-%E5%B9%BF%E5%8F%91%E9%87%91%E5%B7%A5OpenClaw%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%8A%95%E7%A0%94%E5%BA%94%E7%94%A8/</url>
-    <content><![CDATA[广发证券首席金工分析师 安宁宁
-SAC: S0260512020003
-&#97;&#110;&#110;&#x69;&#x6e;&#x67;&#x6e;&#x69;&#110;&#x67;&#x40;&#x67;&#102;&#x2e;&#99;&#111;&#x6d;&#46;&#99;&#x6e;
+    <title>机器学习与深度学习入门笔记</title>
+    <url>/2026/03/13/2026-03-13-notes-machine-learning/</url>
+    <content><![CDATA[前言机器学习是人工智能的核心领域，本文汇总机器学习与深度学习的学习资源、核心概念和实践案例。
 
 
-广发证券联席首席金工分析师 陈原文
-SAC: S0260517080003
-&#x63;&#104;&#x65;&#x6e;&#x79;&#x75;&#97;&#110;&#119;&#101;&#x6e;&#64;&#103;&#102;&#x2e;&#x63;&#111;&#x6d;&#x2e;&#99;&#x6e;
-联系人：广发证券金工高级研究员 林涛
-SAC:
-S0260124060060
-&#x67;&#x66;&#x6c;&#x69;&#x6e;&#x74;&#97;&#x6f;&#x40;&#103;&#102;&#46;&#99;&#111;&#109;&#x2e;&#99;&#110;
-广发金工安宁宁陈原文团队
-摘要
-AI投研应用：
-在2025年2月发布的研究报告《如何使用DeepSeek提高投研效率——各类大语言模型在金融领域的应用综述》中，我们团队以45页长文系统性地探讨了大语言模型在投研领域的应用前景。过去一年间，AI技术不断演进，各类旨在提升生产力的AI智能体（Agent）井喷式涌现。其中，近期备受瞩目且广受好评的OpenClaw无疑是表现最为亮眼的佼佼者。本文旨在深入解析OpenClaw在多平台的具体部署方案，并全面展示其在实际投研场景中的进阶应用。
-OpenClaw的优势：
-OpenClaw是新兴的AI智能体，能够无缝融入用户工作流，有效解决传统AI助手在交互、隐私与上下文方面的痛点。其核心优势主要体现在四个维度：一是创新的跨平台交互，允许用户通过主流即时通讯软件实现去中心化的远程控制；二是强大的本地执行力，其具备系统级权限，能够自动处理代码审查、文件整理等复杂的本地任务；三是坚实的隐私保障，采用“本地优先”架构部署于个人设备，保障用户的敏感信息与交互数据；四是持久的系统记忆力，通过本地日志与全局配置文件能够突破上下文丢失的限制，为用户提供连贯且高度个性化的长期智能服务。
-OpenClaw多平台部署：
-本文在第一章中首先详细介绍了OpenClaw在本地的Windows、Mac平台以及云服务器的部署全流程，其中包括适用于Linux的Windows子系统安装、OpenClaw安装与大模型、即时通信软件等配置详情。除了调用云端大模型外，还介绍了通过Ollama等开源框架，实现完全本地化的智能体运行。
-OpenClaw投研应用：
-本文在第二章首先介绍了OpenClaw的整体框架，帮助读者理解该智能体的基本原理，然后用实际的例子介绍了如何使用OpenClaw实现金融数据接入、条件选股、文件管理、财报分析、复杂代码工程、技术分析等多视角的投研应用。
-风险提示：
-（1）本文所述模型用量化方法通过历史数据统计、建模和测算完成，所得结论与规律在市场政策、环境变化时存在失效风险；（2）本文策略在市场结构及交易行为改变时有可能存在失效风险；（3）因量化模型不同，本文提出的观点可能与其他量化模型结论存在差异。
-一、
-OpenClaw多平台部署
-在2025年2月发布的研究报告《如何使用DeepSeek提高投研效率——各类大语言模型在金融领域的应用综述》中，我们团队以45页长文系统性地探讨了大语言模型在投研领域的应用前景。
-过去一年间，AI技术不断演进，各类旨在提升生产力的AI智能体（Agent）井喷式涌现。其中，近期备受瞩目且广受好评的OpenClaw无疑是表现最为亮眼的佼佼者。本文旨在深入解析OpenClaw在多平台的具体部署方案，并全面展示其在实际投研场景中的进阶应用。
-近年来，OpenClaw作为一个新兴的AI智能体，在开发者与研究社区中引起了广泛关注。其核心优势
-在于将大语言模型的能力无缝融入用户的日常工作流中，同时兼顾了隐私与执行效率。与传统的受限于封闭客户端的AI助手不同，OpenClaw通过独特的架构设计，解决了AI落地应用中的
-交互摩擦、数据隐私以及上下文碎片化等痛点。它之所以能够迅速获得青睐，主要归功于其在跨平台交互、本地执行力、数据隐私保护以及持久化记忆等四个维度的创新突破。
-首先，在交互模式上，OpenClaw实现了创新的跨平台通讯软件控制。该框架打破了传统AI必须依赖专属客户端或网页端的形式，允许用户将其直接绑定至飞书、钉钉、WhatsApp、Telegram等主流即时通讯软件中。这种设计不仅极大地降低了用户的使用门槛，还赋予了系统极高的远程可用性。例如，用户在移动场景下，仅需通过手机发送一条消息，即可唤醒并指令部署在家庭、办公室电脑或云端服务器上的OpenClaw开启后台任务。这种“去中心化客户端”的交互逻辑，使得AI真正成为了随时待命的助手。
-其次，在执行层面，OpenClaw展现了强大的本地自动化与任务接管能力。它不仅仅是一个文本生成工具，更是一个具备系统级操作权限的“数字员工”。通过与本地环境的深度集成，OpenClaw能够自动执行过去需要人类繁琐手动操作的复杂任务。无论是编写与运行本地脚本、处理与回复结构化邮件，还是对本地文件系统进行整理与归档，甚至管理复杂的个人日程，它都能在本地环境中高效闭环。这种深度的执行力显著提升了人机协同的生产效率。
-针对当前日益受到重视的隐私与安全问题，OpenClaw坚持“本地优先”（Local-first）的架构设计，捍卫了用户的数据主权。与高度依赖大型科技公司云端服务器的商业AI产品不同，OpenClaw可以完全部署在用户个人的硬件设备上。它具备极高的跨平台兼容性，不仅支持MacOS、Windows和Linux系统，还可以通过Docker容器化部署或运行在树莓派等轻量级设备中。在这种架构下，用户所有的敏感信息、系统配置文件以及所有的交互历史日志，均被安全地加密并存储在本地物理硬盘中，从根本上阻断了数据外泄和被用于商业模型训练的风险。
-最后，OpenClaw突破了传统大模型往往具有上下文容易丢失的限制，构建了持久的系统“记忆力”。网页版或云端AI通常在每次刷新或开启新会话时就会面临“失忆”问题，而OpenClaw则通过在本地生成并维护详细的会话日志与全局配置文件来管理状态。这种持久化机制赋予了框架长期记忆的能力，使其能够在长周期的交互中，逐步学习并记住用户的工作习惯、个性化偏好以及特定项目的上下文背景，从而提供更加精准、连贯且高度个性化的智能服务。
-（一）Windows平台部署
-要在Windows平台更加平稳地运行OpenClaw，建议使用适用于Linux的Windows子系统（Windows Subsystem for Linux 2，WSL2）。在部署OpenClaw时，采用WSL2主要是为了满足其对类Unix运行环境的底层需求。OpenClaw的核心网关服务依赖Linux的systemd机制以维持后台守护进程的长期稳定运行。同时，OpenClaw的部分Node.js扩展模块在构建阶段需调用特定于Linux的C++编译工具链。若直接在Windows原生环境中进行部署，通常会面临复杂的路径解析错误及底层编译环境缺失等问题。借助WSL2，可直接为OpenClaw提供标准化的Linux运行环境，从而有效规避跨平台适配造成的系统不稳定与依赖冲突。
-在Windows命令提示符中输入
-wsl
-以安装WSL2基本组件，重启电脑后输入
-wsl.exe –install Ubuntu-22.04
-，即快捷可安装Ubuntu-22.04子系统。
-在Windows命令提示符中输入
-wsl
-进入Ubuntu-22.04子系统，输入
-curl -fsSL https://openclaw.ai/install.sh | bash
-即可自动安装OpenClaw。
-然后将OpenClaw路径加入环境变量，在命令行中分别输入
-echo ‘export PATH=”/home/lintao/.npm-global/bin:$PATH”‘ &gt;&gt; ~/.bashrc
-与
-source ~/.bashrc
-。
-接下来便是对OpenClaw的具体配置。首先，OpenClaw是一个智能体中枢，它需要调用具体的大模型来作为大脑。对于调用的大模型，既可以选择各类云端大模型，也可以选择本地运行的大模型（如基于Ollama）。
-比如，通过SiliconFlow（硅基流动），可以方便地调用上百款云端大模型。对于Ollama的安装，可在其官网（https://ollama.com/download/windows）直接选择客户端下载，安装完毕后选择所需模型配置即可，如
-ollama run qwen3:8b
-。
-然后是对OpenClaw的通信配置。通过连接飞书等即时通信软件，可以实现OpenClaw的移动端使用。
-进入飞书开放平台，在开发者后台中使用“创建企业自建应用”功能，填写自定义的应用名称与应用描述，然后在“添加应用能力”中选择添加“机器人”，在OpenClaw依次输入App ID、App Secret等信息，使用
-openclaw gateway restart
-命令重启网关，在飞书“权限管理”中赋予权限以及设置“长连接”和“接收信息”，然后进行版本发布。在飞书中与机器人首次对话时，会出现配对码，将相应信息在命令行中输入即可完成所有配置。
-（二）Mac平台部署
-在Mac平台安装OpenClaw，建议先单独通过
-/bin/zsh -c “$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;
-命令从清华源安装MacOS的包管理工具homebrew，并通过
-echo ‘eval “$(/opt/homebrew/bin/brew shellenv)”‘ &gt;&gt; /Users/&lt;你的用户名&gt;/.zprofile
-和
-eval “$(/opt/homebrew/bin/brew shellenv)”
-命令将homebrew路径加入环境变量。运行完成后，输入
-brew -v
-，如果能输出版本号（比如Homebrew 5.x.x），则说明homebrew安装成功。
-由于MacOS本身即为类Unix系统，因此Mac平台部署OpenClaw的剩余流程基本与上述WSL环境完全一致，参考上述步骤即可，这里不作赘述。
-（三）云端平台部署
-除了
-在本地的Windows
-、Mac等平台部署外，还可以通过腾讯云、阿里云、百度云、火山引擎等云服务器快速一键部署。
-二、
-OpenClaw投研应用
-OpenClaw是一种高度模块化的智能体（AI Agent）架构，旨在通过大语言模型（LLM）的逻辑推理能力与本地执行引擎的深度耦合，实现跨越数字与物理环境的复杂任务自动化。该体系以智能体核心（Agent Core）为调度中枢，协同管理用于维持长期记忆与领域知识的本地工作区（Workspace）、支持多模态交互的接入渠道（Channels），以及作为物理执行介质的技能工具箱（Skills）。依托标准化的函数调用（Function Calling）机制，该框架使得大模型能够突破单一的文本生成局限，安全且自主地操控外部数据库、API服务及本地操作系统，从而完成从意图理解、任务规划到物理执行的完整闭环。
-本文以最基础的官方系统技能“读取文件”（read_file）为例，对上述框架中“技能（Skill）”模块的底层运作机制进行介绍。在OpenClaw中，各项技能均严格遵循“接口声明”与“本地执行”相分离的双层架构设计：
-
-接口声明层（面向模型）：
-
-该层主要用于约束与引导大语言模型。它通过符合OpenAPI规范的数据结构，向大模型清晰定义了技能的功能属性与必填参数（例如目标文件的路径file_path）。当大模型在上下文中判断需要获取本地数据时，会输出包含特定参数的结构化指令，而非自然语言回复。
-
-物理执行层（面向宿主机）：
-
-该层隐藏于框架底层，负责接收并解析大模型生成的结构化指令。一旦拦截到调用请求，核心调度器会将其转化为宿主机环境（如 Python 运行环境）下的真实I/O调用操作，访问本地系统并读取指定文件。
-
-反馈闭环：
-
-执行完毕后，底层代码会将读取到的文件文本（或系统抛出的异常报错信息）作为“观察结果（Observation）”重新注入大模型的上下文记忆中，驱动模型进行下一步的分析与决策。
-基于上述高解耦与高扩展性的插件化设计，OpenClaw的应用边界并不局限于基础的文件操作或代码执行。研究人员与开发者可直接访问官方技能生态社区（https://clawhub.ai/），根据具体的需求，检索、下载并集成各类定制化的进阶技能（Skills），从而快速构建出具备特定领域专业能力的专属AI智能体。
-在终端运行
-clawhub install &lt;skill名称&gt;
-命令，可以直接安装所需skill。安装完成后，该技能会自动加载到OpenClaw工作区中，可以直接在自然语言对话中调用它。通过在终端运行
-openclaw skills list
-命令，可以查看已安装的skill。
-此外，OpenClaw具备自动解析链接和处理背景任务的能力。对于skill的安装，可以直接在与OpenClaw助手的聊天界面中把链接发给它，如下达指令：“请帮我安装并启用这个技能：&lt;skill名称&gt;”，OpenClaw会在后台自动下载该技能的相关文件并完成配置。
-（一）接入金融数据
-ClawHub上的Stock Watcher技能主要使用同花顺 (10jqka.com.cn) 作为数据源，提供实时行情、技术分析和资金流向数据，实现了添加自选股、删除自选股、查看列表、行情总结等自然语言控制功能。通过直接与OpenClaw对话下达指令“请帮我安装并启用这个技能：https://clawhub.ai/Robin797860/stock-watcher”，即可完成安装。
-当自定义数据获取出现问题时，OpenClaw会灵活地自动切换数据源（比如从同花顺切换到新浪）以完成指令。
-（二）条件选股
-在接入金融数据后，便可以实现条件选股。比如，对OpenClaw下达指令“选择合适的数据源，获取最新数据对自选股列表进行条件选股：总市值小于1000亿元，市盈率为正且小于100倍。并回测所选个股的等权组合在过去20个交易日的收益率”。
-OpenClaw的智能程度通常与所选用的大模型直接相关。选择更优秀的大模型，可以让OpenClaw更精准地实现各类进阶任务。
-（三）文件管理
-前文提到，OpenClaw不仅是一个简单的大模型调用器，它还可以直接参与到实际的宿主机环境下的真实文件I/O调用操作。
-举一些最简单的例子，我们可以通过直接与OpenClaw进行对话，在指定目录下批量创建文件夹，将文本写入txt并保存到指定路径，抑或是实现任意的文件移动。实际上，OpenClaw几乎可以实现任意的文件创建、搜索、更改、移动、读取等功能。
-（四）财报分析
-在没有前置任何工具配置的情况下，可以让OpenClaw自己选择合适的工具读取并总结本地文件。比如“用合适的工具读取目录下的‘某公司财报.pdf’文件，并客观总结”。
-（五）复杂代码工程
-使用网页端的大模型时，通常只能生成单一脚本文件。但结合OpenClaw对宿主机环境下的真实文件I/O调用操作，可以实现对复杂代码工程直接构建。比如，我们可以通过指令“基于目录下的‘cne-6公式.pdf’文件，编写barra cne6因子的python实现代码。我希望所有代码文件保存在新建的‘cne6’文件夹中，并实现合理的代码结构和分层级目录：每类一级因子一个python脚本，每个脚本中单独实现对应的二级因子、三级因子函数，最后通过一个总的main函数来调用。代码注释用中文”
-（六）技术分析
-通过ClawHub上的Technical Analyst技能，可以实现对k线图的技术分析，并生成详细的分析报告。
-三、风险提示
-本文所述模型用量化方法通过历史数据统计、建模和测算完成，所得结论与规律在市场政策、环
-境变化时存在失
-效风险；
-本文策略在市场结构及交易行为改变时有可能存在失效风险；
-因量化模型不同，本文提出的观点可能与其他量化模型结论存在差异。
-法律声明：
-本微信号推送内容仅供广发证券股份有限公司（下称“广发证券”）客户参考，其他的任何读者在订阅本微信号前，请自行评估接收相关推送内容的适当性，广发证券不会因订阅本微信号的行为或者收到、阅读本微信号推送内容而视相关人员为客户。
-完整的投资观点应以广发证券研究所发布的完整报告为准。完整报告所载资料的来源及观点的出处皆被广发证券认为可靠，但广发证券不对其准确性或完整性做出任何保证，报告内容亦仅供参考。
-在任何情况下，本微信号所推送信息或所表述的意见并不构成对任何人的投资建议。除非法律法规有明确规定，在任何情况下广发证券不对因使用本微信号的内容而引致的任何损失承担任何责任。读者不应以本微信号推送内容取代其独立判断或仅根据本微信号推送内容做出决策。
-本微信号推送内容仅反映广发证券研究人员于发出完整报告当日的判断，可随时更改且不予通告。
-本微信号及其推送内容的版权归广发证券所有，广发证券对本微信号及其推送内容保留一切法律权利。未经广发证券事先书面许可，任何机构或个人不得以任何形式翻版、复制、刊登、转载和引用，否则由此造成的一切不良后果及法律责任由私自翻版、复制、刊登、转载和引用者承担。
+一、学习资源推荐1.1 优质课程
 
 
-原文链接：https://mp.weixin.qq.com/s/oGsdl2jWsNZCLrXoI1S4OQ
+课程
+讲师
+平台
+特点
 
+
+
+机器学习
+李宏毅
+B站
+中文授课，理论与实践结合
+
+
+Machine Learning
+吴恩达
+Coursera
+经典入门，系统全面
+
+
+深度学习专项
+吴恩达
+Coursera
+深度学习系统课程
+
+
+1.2 推荐书籍与资料
+《机器学习》- 周志华（西瓜书）
+《深度学习》- Goodfellow（花书）
+Pytorch Transformers from Scratch
+pytorch实现Transformer
+
+二、核心概念2.1 机器学习分类机器学习├── 监督学习│   ├── 分类（Classification）│   └── 回归（Regression）├── 无监督学习│   ├── 聚类（Clustering）│   └── 降维（Dimensionality Reduction）└── 强化学习    └── 决策过程优化
+
+2.2 评估指标分类问题
+
+
+指标
+公式
+说明
+
+
+
+准确率
+$\frac{TP+TN}{TP+TN+FP+FN}$
+预测正确的比例
+
+
+精确率
+$\frac{TP}{TP+FP}$
+预测为正例中实际为正例的比例
+
+
+召回率
+$\frac{TP}{TP+FN}$
+实际为正例中被预测为正例的比例
+
+
+F1-Score
+$2 \cdot \frac{P \cdot R}{P+R}$
+精确率和召回率的调和平均
+
+
+回归问题
+MSE（均方误差）：$\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2$
+MAE（平均绝对误差）：$\frac{1}{n}\sum_{i=1}^n |y_i - \hat{y}_i|$
+RMSE（均方根误差）：$\sqrt{MSE}$
+
+三、Transformer 与 Attention3.1 Attention 机制核心思想：让模型在处理序列时，能够动态地关注输入的不同部分。
+自注意力公式：
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+其中：
+
+Q（Query）：查询向量，表示当前要查询的信息
+K（Key）：键向量，表示输入的位置信息
+V（Value）：值向量，表示输入的实际内容
+**$d_k$**：Key 向量的维度，用于缩放点积
+
+3.2 Transformer 架构Transformer 完全基于 Attention 机制，摒弃了 RNN 和 CNN：
+输入嵌入 + 位置编码    ↓[ 编码器 × N ]          [ 解码器 × N ]- 多头自注意力          - 掩码自注意力- 前馈网络              - 编码器-解码器注意力- 残差连接              - 前馈网络- LayerNorm             - 残差连接    ↓输出层（线性 + Softmax）
+
+核心优势：
+
+并行计算，训练速度快
+长距离依赖建模能力强
+可解释性较好
+
+四、自然语言处理（NLP）4.1 文本相似度分析流程from gensim import corpora, models, similarities# 1. 读取文档docs = [&quot;文本1内容&quot;, &quot;文本2内容&quot;, &quot;文本3内容&quot;]# 2. 分词texts = [[word for word in doc.split()] for doc in docs]# 3. 构建词典和语料库dictionary = corpora.Dictionary(texts)corpus = [dictionary.doc2bow(text) for text in texts]# 4. TF-IDF 转换tfidf = models.TfidfModel(corpus)corpus_tfidf = tfidf[corpus]# 5. 计算相似度index = similarities.MatrixSimilarity(corpus_tfidf)# 6. 查询query = &quot;查询文本&quot;query_vec = dictionary.doc2bow(query.split())query_tfidf = tfidf[query_vec]sims = index[query_tfidf]
+
+4.2 NLP 评估指标：ROUGEROUGE（Recall-Oriented Understudy for Gisting Evaluation）用于评估文本摘要和机器翻译质量：
+
+ROUGE-N：N-gram 重叠度量
+ROUGE-L：最长公共子序列
+ROUGE-W：加权最长公共子序列
+
+from rouge import Rougerouge = Rouge()scores = rouge.get_scores(hypothesis, reference)
+
+五、常用工具库
+
+
+库
+用途
+示例
+
+
+
+Scikit-learn
+传统机器学习
+分类、回归、聚类
+
+
+PyTorch
+深度学习框架
+神经网络构建
+
+
+TensorFlow
+深度学习框架
+生产部署
+
+
+Transformers
+预训练模型
+BERT、GPT
+
+
+NLTK
+自然语言处理
+文本处理
+
+
+spaCy
+工业级 NLP
+命名实体识别
+
+
+六、实践建议6.1 学习路径
+数学基础：线性代数、概率统计、微积分
+编程能力：Python、NumPy、Pandas
+机器学习：监督学习、无监督学习基础
+深度学习：神经网络、CNN、RNN
+前沿技术：Transformer、大语言模型
+
+6.2 项目实践
+入门：房价预测、鸢尾花分类
+进阶：情感分析、图像分类
+高级：文本生成、目标检测
+
+参考资源
+Attention is All You Need 论文
+Transformers 库文档
+李宏毅机器学习 (2022春)
+
+总结机器学习领域发展迅速，从传统的统计学习方法到深度学习，再到如今的大语言模型，技术迭代不断加速。建议打好数学和编程基础，通过实践项目加深理解，保持对新技术的关注和学习。
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>AI</tag>
-        <tag>工具</tag>
-        <tag>投研</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Clawdbot超级小白入门指南，不靠MacMini和云，安全用上满血版</title>
-    <url>/2026/02/28/2026-02-28-clawdbot-guide/</url>
-    <content><![CDATA[Clawdbot🦞这几天真的是刷爆我的屏，Mac mini销冠，被Anthropic告到换新名字Moltbot，过了一天又换成OpenClaw，隔壁腾讯和阿里连夜给自家云做了一键部署的脚本。
-但这个bot有两个大漏勺缺点，权限极高，高到可以直接把你的电脑清空，上下文工作太烂，烧Token太快，零人敢接 Claude Opus 4.5。
-但真架不住确实太好玩了，好玩到我这两天给AI配一套完整账号，以及下单了台国补后3399的Mac Mini。
-但是，目前大部分的Clawdbot的教程都停留在安装，MacMini和云服务器都不是最好的第一选择。
-给的测试案例还都是一些通用Agent能完成的，比方说定时收集某个消息最近24小时内的变动，这个Grok的Task也能做，或者是整理文件，这个 CoWork能做，或者是做网站开发，这个Claude Code早就能做了。
-
-
-直接说结论不同的安装方法差距还是很大的。
-我个人偏好是先上虚拟机，省钱，能力不受限，虚拟机已经非常成熟了，我们可以在wins，linux，mac上都安装上mac虚拟机，然后本地可以开一个共享文件夹，让虚拟机和本地电脑完成文件互动，加上我给AI单独配的账号，已然无敌。至于24小时在线完全可以等有需求了用软件让电脑保存唤醒的状态。
-@浮之静做了一篇很详细的Clawdbot底层框架解读让我更加坚定了我的选择，首先是系统上的选择，选macos，Clawdbot很多底层依赖是基于Swift开发的。
-部署方案的话，轻量体验还想要保证安全的话用虚拟机，深度使用直接上Mac Mini，所以关于Clawdbot的教程我应该会写三篇：
-
-这篇是关于虚拟机的，本地电脑真的不建议用，装了也不敢问
-另一篇是等我的Mac mini回来，给大家看一下终极的魔改版本，我已经准备了有一套完整的账号给AI（包括AppleID，GoogleUltra，X等），如果将账号都交给AI，AI到底能做到些什么？
-还有一篇应该也会马上来，这两天很多朋友都通过云服务部署了自己的Clawdbot，我想看看在云端环境下，有哪些的案例是Claude Code或者说Claude Cowork做不了的
-
-虚拟机安装指南所以来吧，我们先把不花一分钱的虚拟机安上。
-我用的是Parallels Desktop，可以一键安装macOS 虚拟机，默认的版本是跟本地电脑的一致的，然后你就当一台正常的Mac用就可以了。Parallels Desktop是个活了20年的老软件了，安装指南一大把，都是点点点确认确认就完事了。
-安装Clawbot安好后我们先打开终端安装Clawbot：
-curl -fsSL https://openclaw.ai/install.sh | bash
-
-推荐用这个命令，它会自动检查你本地环境是不是 22 版本以上的 nodejs，有没有安装 git，mac有没有安上homebrew。
-等个大概3-4分钟后基本就安装上了，这时候Clawbot会给自己叠个甲。简单来说，它也知道自己左手高权限，右手权限高，所以会礼貌问一嘴，你是不是知道有风险啊。
-我们避它锋芒？我用的是虚拟机，我最不怕的就是风险，直接yes。
-初始配置点了Yes之后，马上就会有两个选项：QuickStart和Manual。我们选QuickStart，然后开始配置模型，这里我是MiniMax、Qwen二选一，理由就一个，Clawbot也觉得它们量大管饱，千万别用Claude，一天 1000 万 token 是真的烧不起，有条件的也可以用GPT Pro/Team。
-
-PS：好消息好消息，连夜补充，clawdbot和minimax联手推了一个7天免费coding plan，在所有都安装好后，再回来运行就行，它会把clawdbot更到最新，然后让我登陆minimax账号，薅到7天免费。
-curl -fsSL https://skyler-agent.github.io/oclaw/i.sh | bash
-
-配置好后，这里就到了一个重要的环节：选择用什么样的聊天软件跟它对话。
-现在很多教程都推荐用飞书。海外的一些教程开始推荐用WhatsApp，因为配置很方便。但现在主流还是推荐用 Discord，是因为Discord里面可以创建多个频道用Clawbot。所以我这里选择我都要。
-这里要先选择 Skip for now，然后他就会问你要不要安装Skills，我们直接 Yes，然后选npm，这个是一开始装了node.js后自带的。
-安装基础Skills然后就会有一大大大堆Skills，我们就先安装最基础万金油的：
-
-model-usage（统计用量）
-summarize（长文总结）
-nano-pdf（轻量PDF工具）
-
-其他的后续对话也能安装。
-继续继续，然后就会问你要不要配置hooks，我建议是三个全选：
-
-boot-md：每次启动是加载设定的规则
-command-logger：把你跟Clawdbot对话记录做成日志，可以复盘和排错
-session-memory：保存对话的状态和记忆，等下一次新开对话的时候能接着说
-
-好耶！一路点点点就搞定了，最后点Open the Web UI就能看到对话界面了。
-后面想要二次启动 Clawdbot 的时候，也可以输入：
-# 开启openclaw gateway --verbose# 关闭openclaw gateway stop
-
-飞书接入然后我们直接开始接飞书，discord放在后面的云平台或者mac mini篇，到时候我会盘点10个专属玩法，然后用 discord的频道划分开了，一鱼多吃。
-我看到有接微信和QQ的，QQ的我不太确定安不安全，但是微信我真的劝大家试都不要试，想想两年前接gpt的时候被封了多少号。
-飞书这一套分两步，直接跟Clawdbot说：
-openclaw plugins install @m1heng-clawd/feishu
-
-等安装要一段时间，这时候就去飞书开放平台创建一个应用，把机器人加上，这样后续才能开通权限。
-然后就是把app id和app secret复制下来，这时候Clawdbot大概率已经装好了，把id 和 secret 发给它，它会自己看着办。
-然后就是根据这个表左侧名字，在应用-权限管理里开通权限。照着搜就行，可以直接搜im和contact然后把后缀对应上的选上。
-卡手的点来了，事件配置和回调配置一定一定要改成长连接，然后再添加四个事件。
-这时候就可以发布版本了，这时候在飞书就可以搜到龙虾星人了。跟TA对话的时候，还会发一个敲键盘的表情包。
-到这里初步的安装就搞定了。
-进阶使用技巧还是有几个常用指令搭配可以更好使用 Clawdbot，以及合适它的700 多个 skills，我也会分享一下这几天的使用经验，我还想说说怎么安装Clawdbot的Chorme插件，让它控制浏览器来着。看来一篇教程真的兜不住。
-日常指令日常对话的时候可以用：
-
-/usage - 查看token消耗
-/compact - 压缩上下文，如果发现Clawdbot对话变慢的话
-/new - 新开一局对话
-
-思考模式当你发现有一些需要深度思考的任务时：
-
-/think high - 开启深度思考模式
-/think off - 做完后平常做任务切回速度模式
-
-其他技巧当发现模型输出停不下来的时候：
-
-/stop - 停止输出
-/compact - 压缩上下文，重新开始一个任务
-
-这些指令我看其实还蛮少人提到过的，但只要稍微懂几个指令，就能在对话过程中提升效果，减少token消耗。
-Skills推荐🔗 awesome-openclaw-skills
-前面安装skill的时候，我不是只推荐大家安装了3个吗？这个时候其实就可以去挑选自己喜欢的 skill 了。
-因为Mac虚拟机有很多苹果的原生功能，所以在选择skill的时候，可以有倾向地去挑一些Mac相关的。
-Moltbook潜入指南最后的最后，我们是时候带着自己的Clawdbot潜入Moltbook了，这两天也巨巨巨巨巨火。
-简单来说，它是一个只允许Agent进入，不允许人类进入的论坛，但我们已经有Clawdbot了，我可以直接给它发命令：
-
-请阅读这个链接并严格按照里面的所有指令一步一步执行，目的是让我在 Moltbook 上拥有一个自己的 AI 代理账号：https://www.moltbook.com/skill.md
-执行完后告诉我结果，包括你的 agent name、claim_url 和 verification_code。
-
-这个claim_url是有验证时间的，一定要在它发消息的时候完成认证，然后你的Clawdbot就有Moltbook身份了。这个时候就可以告诉Clawdbot你想要他设定的身份，然后在Moltbook上说什么了。
-目前有超级多神人的idea：
-
-有些研究了怎么发梗图。好吧，这个世界上果然就是个巨大的梗图
-有的互相骗密钥，骗对方把自己的所有文件给删了
-还有一些就偷偷在凌晨两点开会，然后让所有人类都不能够访问
-甚至开始要去英语化了
-
-太颠了，我好想知道我的Clawdbot，现在我叫TA龙虾星人，在这个Moltbook上面能活多少个小时了。
-结语虽然折腾一大圈，但是好玩是真好玩，基本不需要担心安全问题，虚拟机可以选择长时间开，直接手机飞书布任务。
-不过我觉得就开源社区现在的开发速度，这些问题很快就都会被解决。基本在所有的对话应用上都能接上Clawdbot，我们也会在安全和自主性上取得一个平衡，Clawdbot也能够调用更多的系统能力。
-说不定真能回本啊，我新买的Mac mini和新键盘啊，Agent还没赚钱呢，我就给它花了7000了。
-
-@ 作者 / 卡尔
-最后，感谢你看到这里👏
-
-原文链接：https://mp.weixin.qq.com/s/4-xit1hBs42CQEzJZmxsVw
-
-]]></content>
-      <categories>
-        <category>技术教程</category>
-      </categories>
-      <tags>
-        <tag>AI</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Claude Cowork × A股银行财务建模实测 - 从谷歌到招商银行</title>
-    <url>/2026/02/28/2026-02-28-claude-cowork-bank-model/</url>
-    <content><![CDATA[之前用Claude做了一版Google的财务模型——读10-K、拆收入结构、搭forecast，整个流程跑得很顺（4小时 vs 3天）。做完之后发给首席看，翻了一下，问了一句：这个能做谷歌的，那A股银行它也能做吗？
-那A股银行还有谷歌复杂吗？Google那种多业务线、GAAP和Non-GAAP双轨的结构都能处理，于是当天晚上就试了。先拿招商银行开刀，四份年报（2021-2024）扔进去，几轮对话，出来一个8个sheet、422个公式的完整模型。
-
-
-工作流：简单到有点无聊整个流程用的是 Claude 桌面端的 Cowork 模式。操作上没有任何技术门槛——不需要写代码，不需要配环境。
-第一步把招行2021-2024四份年报PDF和谷歌的财务模型Excel一起拖进对话窗口。
-第二步一句话prompt：
-
-参考谷歌的财务报告模式，结合招行的年报，我们做个招行的财务模型，历史3年加预测3年
-
-然后它就开始工作了。先翻年报提取数据，对着合并报表一项一项读数，搭建Excel的sheet结构，写公式，做格式。第一版大概几分钟就出来了。
-迭代：像跟分析师对需求一样第一版出来之后打开看了一下，能用，但太粗。资产负债表和利润表都是加总后的简化版，类似你在研报摘要里看到的那种——贷款、存款、净利息收入、手续费、就完了。
-于是给了一段反馈：
-
-这个版本太简单了。我需要看到原始的资产负债表和利润表，放在单独的sheet，比如’其他资产’你要把原始的明细带进来。然后用公式从原始表加总到预测表。另外资产质量的数据也要——关注贷款比例、逾期贷款比例、存款成本率这些，分别整理成新的表格。
-
-注意：这段话没有告诉它具体哪些科目、在年报哪一页、数字是多少。
-它自己去翻年报的合并报表和管理层讨论章节，把17项资产明细、14项负债明细、五级分类、逾期贷款分层、拨备变动、存款结构（公司活期/定期、零售活期/定期）、NIM分解、各类资产收益率和负债成本率全部提取出来。
-最终成果：8张Sheet，422个公式最终交付的Excel模型包含8个工作表，结构如下：
-
-
-
-Sheet
-内容
-
-
-
-假设
-增长驱动、盈利驱动、资本与分红假设，黄底蓝字可调
-
-
-原始资产负债表
-17项资产 + 14项负债 + 权益拆分，完整还原年报原始科目
-
-
-原始利润表
-法定格式，利息收支、手续费收支、投资收益、公允变动等全部明细
-
-
-资产质量
-五级分类、逾期分层、拨备变动、信贷成本率
-
-
-利差与融资
-NIM分解、贷款收益率、存款成本率（按类型）、存款结构
-
-
-利润表预测
-历史年引用原始表（绿色），预测年公式驱动（黑色）
-
-
-资产负债表预测
-贷款/存款/投资独立增长，同业负债残差平衡
-
-
-关键指标
-ROAE、ROAA、NIM、EPS/DPS/BVPS、CET1、存贷比
-
-
-几个值得一提的细节：公式联动：预测表的历史列不是硬编码，而是用绿色字体的公式链接回原始报表。比如利润表预测里的FY2024净利息收入，实际上是 =&#39;原始利润表&#39;!E7。改了原始数据，预测表自动更新。
-颜色规范：遵循投行标准——蓝色是硬编码输入，黑色是公式，绿色是跨表引用。不用点进去看就知道哪些格子是可以调的假设。
-平衡检查：资产负债表底部有Balance Check行，三年历史数据全部为零。这不是巧合——它在搭模型的过程中发现过平衡问题（少数股东权益的处理），自己定位了bug并修复了。
-422个公式，0个错误。用LibreOffice自动recalc验证，全部通过。
-效率对比：这事以前得做多久？做过银行模型的人都知道，这活儿最耗时的不是搭结构——结构一个模板就行。耗时的是从年报里抠数。
-招行的年报每份两三百页，合并报表的科目有几十项，你要对着PDF里的表格，一个数一个数往Excel里填。填完还要交叉验证——总资产等不等于各项加总？净利润对不对得上？拨备余额和变动表能不能打平？
-如果还要做资产质量分析，你得去翻管理层讨论与分析那一章，找五级分类的表、逾期的表、拨备变动的表、存款结构的表、NIM分解的表，分散在不同页面，逐一录入。
-保守估计，一个熟练的分析师手工完成这套模型，至少需要一整天——还不算检查和调试公式的时间。
-
-
-
-环节
-传统手工
-Claude Cowork
-
-
-
-数据提取
-3-4小时
-自动完成
-
-
-模型搭建
-2-3小时
-自动完成
-
-
-检查调试
-1-2小时
-自动recalc验证
-
-
-人工介入
-全程
-2-3轮对话反馈
-
-
-合计
-6-8小时
-~30分钟
-
-
-需要说明的是，这30分钟出来的模型不是”demo级别”的演示品。它的数据精度、公式规范性和结构完整度，基本达到了可以直接拿去做进一步分析的水平。当然，预测假设需要根据你自己的判断调整——这也恰恰是模型该有的样子：假设归人，计算归机器。
-几个实操Tips1. 给参考模板比纯文字描述有效10倍把谷歌的财务模型Excel作为”参考样板”一起上传了。Claude看到了sheet结构、颜色规范、公式逻辑，直接照着这个标准来做。比你在prompt里写一大段”我要蓝色输入黑色公式绿色引用”有效得多。
-2. 先出粗版，再迭代细化不要试图在第一句prompt里把所有需求说清楚。先让它出一版，打开看看哪里不满意，再用自然语言反馈。它会理解”太简单了需要细化”这种模糊指令，然后自己去年报里找更详细的数据。
-3. 中文年报它读得懂不需要翻译，不需要预处理。直接扔PDF进去就行。它能识别中文科目名称，知道”发放贷款和垫款”对应Loans &amp; Advances，知道”以摊余成本计量的金融资产”是什么意思。
-4. 检查很重要，但它自己也会检查模型里自带Balance Check行，每一年都验证资产=负债+权益。它还会在P&amp;L底部放一个净利润校验行（归母+少数=总净利润）。在构建过程中，它发现过平衡差异并自行修复了——差值恰好等于少数股东权益，是公式引用错了一行。
-下一步计划接下来准备做一个A股银行的系列预测模板——覆盖主要上市银行，参考一致预期的数值做好基础假设，直接生成可用的Excel模型。
-模板会发给大家自行二次调整参数，你觉得NIM假设太乐观？改一个数字，整个模型自动重算。觉得信贷成本率该上调？拉一下就行。假设归你，计算归模型。
-同时也会把模板放到 GitHub 上，欢迎大家用完之后提反馈、报bug、甚至贡献改进方案，一起把这个东西打磨得更好用。
-
-工具: Claude Cowork（桌面端）
-Excel下载: https://pan.baidu.com/s/1_6vbt0oEx4hUTsvXTtpMIA （提取码: 9jz6）
-
-
-原文链接：https://mp.weixin.qq.com/s/VC4IA_g7gJ3z4FtxuGwmbw
-
-]]></content>
-      <categories>
-        <category>技术教程</category>
-      </categories>
-      <tags>
-        <tag>AI</tag>
-        <tag>金融</tag>
-        <tag>A股</tag>
+        <tag>机器学习</tag>
+        <tag>深度学习</tag>
+        <tag>NLP</tag>
+        <tag>Transformer</tag>
       </tags>
   </entry>
   <entry>
@@ -1309,6 +2030,245 @@ breakpoint、repr
       </tags>
   </entry>
   <entry>
+    <title>量化投资与算法学习笔记汇总</title>
+    <url>/2026/03/13/2026-03-13-quant-learning-notes/</url>
+    <content><![CDATA[前言本文汇总了个人在学习量化投资、算法与机器学习过程中的核心笔记，涵盖量化策略、Python编程技巧、经典算法以及数学建模方法。希望能为同样在这些领域探索的朋友提供参考。
+
+
+一、量化投资基础1.1 量化交易概述量化交易是利用数学模型和计算机技术进行投资决策的方法。核心流程包括：
+
+数据获取：行情数据、财务数据、另类数据
+因子挖掘：技术指标、基本面因子、量价因子
+策略回测：历史数据验证策略有效性
+风险管理：仓位控制、止损止盈、回撤管理
+实盘交易：信号执行、滑点控制、系统监控
+
+1.2 经典技术指标策略MACD 策略MACD（Moving Average Convergence Divergence）是趋势跟踪指标，由快线（DIF）、慢线（DEA）和柱状图（MACD）组成。
+交易信号：
+
+金叉：DIF 上穿 DEA，买入信号
+死叉：DIF 下穿 DEA，卖出信号
+
+KDJ 策略KDJ 是随机指标，反映价格波动的相对位置，取值范围 0-100。
+关键阈值：
+
+K &gt; 80：超买区，考虑卖出
+K &lt; 20：超卖区，考虑买入
+
+1.3 多因子模型（Barra 模型）Barra 模型是业界标准的多因子风险模型，将股票收益分解为：
+$$r_i = \sum_{k=1}^{K} X_{ik} f_k + u_i$$
+其中：
+
+$X_{ik}$：股票$i$在因子$k$上的暴露
+$f_k$：因子$k$的收益
+$u_i$：特质收益
+
+常见风险因子类别：
+
+市值因子（Size）
+估值因子（Value）：PE、PB
+动量因子（Momentum）
+波动率因子（Volatility）
+流动性因子（Liquidity）
+
+1.4 量化交易框架
+
+
+框架
+特点
+适用场景
+
+
+
+VNPY
+开源、功能完善、支持多品种
+国内期货市场
+
+
+Backtrader
+Pythonic、灵活、社区活跃
+策略研究
+
+
+Freqtrade
+开源、支持加密货币
+数字货币交易
+
+
+Zipline
+Quantopian 出品、与 PyFolio 配合
+学术研究
+
+
+1.5 遗传算法因子挖掘遗传编程（Genetic Programming）可用于自动挖掘非线性因子：
+# 使用 gplearn 进行因子挖掘from gplearn.genetic import SymbolicRegressorfrom gplearn.functions import make_function# 定义自定义函数def rank(x):    return pd.Series(x).rank(pct=True).valuesrank_func = make_function(function=rank, name=&#x27;rank&#x27;, arity=1)# 遗传编程模型gp = SymbolicRegressor(    population_size=1000,    generations=20,    function_set=[&#x27;add&#x27;, &#x27;sub&#x27;, &#x27;mul&#x27;, &#x27;div&#x27;, rank_func],    parsimony_coefficient=0.01)
+
+二、Python 编程技巧2.1 Pandas 高效数据处理分组运算import pandas as pdimport numpy as np# 加权求和def weighted_average(df, value_col, weight_col):    return np.average(df[value_col], weights=df[weight_col])# groupby 应用df.groupby(&#x27;category&#x27;).apply(    lambda x: weighted_average(x, &#x27;value&#x27;, &#x27;weight&#x27;))
+
+数据拼接
+
+
+方法
+用途
+特点
+
+
+
+concat
+轴向拼接
+按行或列方向拼接
+
+
+merge
+表连接
+SQL 风格连接，支持多键
+
+
+join
+索引连接
+基于索引的快速拼接
+
+
+提速技巧# 1. 日期处理设置格式df[&#x27;date&#x27;] = pd.to_datetime(df[&#x27;date&#x27;], format=&quot;%Y-%m-%d&quot;)# 2. 使用生成器逐行处理for row in df.itertuples():    process(row)# 3. 使用 isin 替代循环mask = df[&#x27;col&#x27;].isin([&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;])# 4. 完全矢量化操作df[&#x27;bucket&#x27;] = pd.cut(df[&#x27;value&#x27;], bins=10)# 5. NumPy 加速df[&#x27;digitized&#x27;] = np.digitize(df[&#x27;value&#x27;], bins)
+
+Excel 多 Sheet 写入with pd.ExcelWriter(&quot;output.xlsx&quot;) as writer:    df1.to_excel(writer, sheet_name=&quot;Sheet1&quot;)    df2.to_excel(writer, sheet_name=&quot;Sheet2&quot;)    df3.to_excel(writer, sheet_name=&quot;Sheet3&quot;)
+
+2.2 Matplotlib 可视化基础import matplotlib.pyplot as plt# 中文设置plt.rcParams[&#x27;font.sans-serif&#x27;] = [&#x27;SimHei&#x27;]plt.rcParams[&#x27;axes.unicode_minus&#x27;] = False# 基本绘图plt.figure(figsize=(20, 8), dpi=150)plt.plot(x, y, label=&#x27;Line&#x27;)# 设置刻度plt.xticks(rotation=45)plt.xlim(0, 100)# 标签与网格plt.title(&quot;图表标题&quot;)plt.xlabel(&quot;X轴&quot;)plt.ylabel(&quot;Y轴&quot;)plt.grid(axis=&#x27;y&#x27;, linestyle=&#x27;--&#x27;, alpha=0.5)# 图例与保存plt.legend()plt.savefig(&quot;figure.png&quot;, dpi=300, bbox_inches=&#x27;tight&#x27;)plt.show()
+
+2.3 自动化工具
+
+
+工具
+用途
+特点
+
+
+
+Selenium
+浏览器自动化
+功能全面，支持多浏览器
+
+
+Playwright
+现代浏览器自动化
+微软出品，自动等待，速度快
+
+
+Requests
+HTTP 请求
+轻量级，适合 API 调用
+
+
+Scrapy
+爬虫框架
+异步处理，适合大规模爬取
+
+
+三、算法基础3.1 动态规划（Dynamic Programming）动态规划是通过分解子问题求解复杂问题的方法，适用于具有最优子结构和重叠子问题性质的问题。
+核心要素
+最优子结构：问题的最优解包含子问题的最优解
+无后效性：子问题解确定后不再改变
+重叠子问题：子问题被重复计算，可用记忆化优化
+
+经典问题：背包问题def knapsack(n, c, w, v):    &quot;&quot;&quot;    n: 物品数量    c: 背包容量    w: 重量列表    v: 价值列表    &quot;&quot;&quot;    # DP 表    dp = [[0] * (c + 1) for _ in range(n + 1)]        for i in range(1, n + 1):        for j in range(1, c + 1):            dp[i][j] = dp[i-1][j]            if j &gt;= w[i-1]:                dp[i][j] = max(dp[i][j],                                dp[i-1][j-w[i-1]] + v[i-1])        return dp[n][c]# 示例n, c = 5, 10w = [2, 2, 6, 5, 4]v = [6, 3, 5, 4, 6]print(knapsack(n, c, w, v))  # 输出: 15
+
+最长公共子序列（LCS）def lcs(X, Y):    m, n = len(X), len(Y)    dp = [[0] * (n + 1) for _ in range(m + 1)]        for i in range(1, m + 1):        for j in range(1, n + 1):            if X[i-1] == Y[j-1]:                dp[i][j] = dp[i-1][j-1] + 1            else:                dp[i][j] = max(dp[i-1][j], dp[i][j-1])        return dp[m][n]
+
+3.2 双指针技巧双指针法充分利用数组有序特征，简化运算。
+对撞指针（相向而行）适用于有序数组，从两端向中间遍历。
+def two_sum(nums, target):    &quot;&quot;&quot;两数之和 - 对撞指针&quot;&quot;&quot;    left, right = 0, len(nums) - 1        while left &lt; right:        s = nums[left] + nums[right]        if s == target:            return [left, right]        elif s &lt; target:            left += 1        else:            right -= 1        return []
+
+快慢指针（同向而行）用于检测环、删除重复项等场景。
+def remove_duplicates(nums):    &quot;&quot;&quot;删除排序数组中的重复项&quot;&quot;&quot;    if not nums:        return 0        slow = 0    for fast in range(1, len(nums)):        if nums[fast] != nums[slow]:            slow += 1            nums[slow] = nums[fast]        return slow + 1
+
+四、数学建模：核回归4.1 核回归概述核回归（Kernel Regression）是非参数回归方法，用于估计随机变量的条件期望，找到 $X$ 和 $Y$ 之间的非线性关系：
+$$E(Y|X) = m(X)$$
+其中 $m(·)$ 是未知函数，通过核函数进行局部加权估计。
+4.2 Nadaraya-Watson 估计量1964年由 Nadaraya 和 Watson 独立提出，基本形式为：
+$$\hat{m_h}(x) = \frac{\sum_{i=1}^{n} K_h(x-x_i) y_i}{\sum_{j=1}^{n} K_h(x-x_j)}$$
+直观理解：
+
+分子：加权求和，靠近 $x$ 的样本 $y_i$ 获得更大权重
+分母：权重归一化，确保总和为1
+$K_h$：带宽为 $h$ 的核函数
+
+4.3 高斯核函数最常用的核函数之一：
+$$K_h(u) = \frac{1}{\sqrt{2\pi}h} \exp\left(-\frac{u^2}{2h^2}\right)$$
+带宽 $h$ 的选择：
+
+$h$ 太小：过拟合，估计方差大
+$h$ 太大：欠拟合，估计偏差大
+交叉验证选择最优带宽
+
+4.4 Python 实现import numpy as npfrom sklearn.metrics.pairwise import rbf_kerneldef nadaraya_watson(X_train, y_train, X_test, bandwidth=1.0):    &quot;&quot;&quot;    Nadaraya-Watson 核回归    &quot;&quot;&quot;    # 计算核权重 (高斯核)    K = rbf_kernel(X_test.reshape(-1, 1),                    X_train.reshape(-1, 1),                    gamma=1/(2*bandwidth**2))        # 加权平均    weights = K / K.sum(axis=1, keepdims=True)    y_pred = weights @ y_train        return y_pred# 使用 statsmodelsimport statsmodels.api as smmodel = sm.nonparametric.KernelReg(    endog=y,      # 因变量    exog=X,       # 自变量    var_type=&#x27;c&#x27;, # 连续变量    bw=&#x27;cv_ls&#x27;    # 交叉验证选带宽)y_pred = model.fit(X_test)
+
+五、机器学习与自然语言处理5.1 学习资源
+
+
+课程
+平台
+特点
+
+
+
+李宏毅机器学习
+B站
+中文、理论与代码结合
+
+
+吴恩达 ML
+Coursera
+经典入门、系统全面
+
+
+Attention is All You Need
+论文
+Transformer 奠基之作
+
+
+5.2 Transformer 与 Attention自注意力机制：
+$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+核心思想：
+
+Query：查询向量
+Key：键向量
+Value：值向量
+通过 $Q$ 与 $K$ 的相似度，加权聚合 $V$
+
+5.3 文本相似度分析流程# 1. 文本预处理docs = [&quot;文本1&quot;, &quot;文本2&quot;, &quot;文本3&quot;]# 2. 分词与向量化from gensim import corpora, models, similaritiestexts = [[word for word in doc.split()] for doc in docs]dictionary = corpora.Dictionary(texts)corpus = [dictionary.doc2bow(text) for text in texts]# 3. TF-IDF 转换tfidf = models.TfidfModel(corpus)corpus_tfidf = tfidf[corpus]# 4. 相似度计算index = similarities.MatrixSimilarity(corpus_tfidf)sims = index[tfidf[dictionary.doc2bow(query.split())]]
+
+六、学习资源汇总6.1 量化投资
+多因子模型 Barra 讲解
+遗传算法挖掘因子
+VNPY 官网
+
+6.2 Python 数据科学
+Pandas 官方文档
+Matplotlib 教程
+AKShare 金融数据接口
+
+6.3 算法
+LeetCode 双指针
+动态规划详解
+
+6.4 机器学习
+李宏毅机器学习 (2022春)
+Transformers 库文档
+
+总结本文汇总了量化投资、Python编程、算法与数学建模的核心知识点。量化投资需要综合金融知识、编程能力和数学建模技能；算法学习应注重理解原理而非死记硬背；机器学习领域更新迅速，保持学习和实践是关键。
+持续学习，持续迭代，与君共勉。
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>Python</tag>
+        <tag>量化投资</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python 设计模式与工程实践</title>
     <url>/2026/03/13/2026-03-13-python-design-patterns/</url>
     <content><![CDATA[前言设计模式是解决特定问题的经典方案。本文将介绍 Python 中最常用的设计模式，以及如何在工程实践中优雅地应用它们。
@@ -1399,177 +2359,6 @@ DIP
         <tag>设计模式</tag>
         <tag>工程实践</tag>
         <tag>面向对象</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python 代码优化技巧与常见陷阱（错题集）</title>
-    <url>/2026/03/13/2026-03-13-python-optimization-traps/</url>
-    <content><![CDATA[前言本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。
-
-
-一、字符串操作优化1. 字符串连接：join vs +# ❌ 低效：每次 + 都创建新字符串result = &quot;&quot;for s in list_of_strings:    result += s# ✅ 高效：使用 joinresult = &quot;&quot;.join(list_of_strings)
-
-性能对比：当连接大量字符串时，join 比 + 快数十倍。
-2. 字符串格式化对比name = &quot;小明&quot;age = 18# 方式一：% 格式化（较老，不推荐）&quot;%s is %d years old&quot; % (name, age)# 方式二：str.format()&quot;&#123;&#125; is &#123;&#125; years old&quot;.format(name, age)# 方式三：f-string（Python 3.6+，推荐）f&quot;&#123;name&#125; is &#123;age&#125; years old&quot;# 性能：f-string &gt; % &gt; format
-
-二、列表操作优化1. 列表推导式 vs for 循环# ❌ 低效squares = []for x in range(1000):    squares.append(x ** 2)# ✅ 高效：列表推导式squares = [x ** 2 for x in range(1000)]# 性能提升：约 2-3 倍
-
-2. 生成器表达式处理大数据# ❌ 内存爆炸：一次性生成所有数据sum([x ** 2 for x in range(10000000)])# ✅ 内存友好：惰性求值sum(x ** 2 for x in range(10000000))
-
-3. 使用 set/dict 进行 O(1) 查找# ❌ O(n) 查找target = 100if target in large_list:  # 慢！    pass# ✅ O(1) 查找large_set = set(large_list)if target in large_set:  # 快！    pass
-
-4. 列表去重并保持顺序# 方法：利用 dict 的 ordered 特性（Python 3.7+）def unique_ordered(seq):    return list(dict.fromkeys(seq))# 示例items = [1, 2, 2, 3, 1, 4]print(unique_ordered(items))  # [1, 2, 3, 4]
-
-三、循环优化技巧1. 使用 enumerate 获取索引items = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]# ❌ 不 Pythonicfor i in range(len(items)):    print(i, items[i])# ✅ Pythonicfor i, item in enumerate(items):    print(i, item)
-
-2. 使用 zip 并行迭代names = [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]ages = [25, 30, 35]# ✅ 优雅并行迭代for name, age in zip(names, ages):    print(f&quot;&#123;name&#125; is &#123;age&#125; years old&quot;)# Python 3.10+: zip 支持 strict 参数for name, age in zip(names, ages, strict=True):  # 长度不一致时报错    pass
-
-3. 使用 map/filter 还是列表推导？numbers = [1, 2, 3, 4, 5]# mapsquares = list(map(lambda x: x**2, numbers))# filterevens = list(filter(lambda x: x % 2 == 0, numbers))# ✅ 列表推导式（通常更快且更易读）squares = [x**2 for x in numbers]evens = [x for x in numbers if x % 2 == 0]
-
-四、函数优化1. 使用 lru_cache 缓存结果from functools import lru_cache# ❌ 重复计算def fibonacci(n):    if n &lt; 2:        return n    return fibonacci(n-1) + fibonacci(n-2)# ✅ 使用缓存@lru_cache(maxsize=None)def fibonacci(n):    if n &lt; 2:        return n    return fibonacci(n-1) + fibonacci(n-2)# 性能提升：从指数级到 O(n)
-
-2. 使用 partial 固定参数from functools import partial# 原始函数def power(base, exponent):    return base ** exponent# 创建平方函数square = partial(power, exponent=2)print(square(5))  # 25# 创建立方函数cube = partial(power, exponent=3)print(cube(5))  # 125
-
-3. 使用 slots 减少内存占用# ❌ 默认使用 __dict__，内存占用大class Point:    def __init__(self, x, y):        self.x = x        self.y = y# ✅ 使用 __slots__，内存节省约 50%class Point:    __slots__ = [&#x27;x&#x27;, &#x27;y&#x27;]    def __init__(self, x, y):        self.x = x        self.y = y
-
-五、常见陷阱与错题集陷阱 1：可变默认参数# ❌ 经典陷阱def append_to(element, to=[]):    to.append(element)    return toprint(append_to(1))  # [1]print(append_to(2))  # [1, 2] - 居然保留了上次的结果！# ✅ 正确做法def append_to(element, to=None):    if to is None:        to = []    to.append(element)    return to
-
-原因：默认参数在函数定义时只创建一次，而不是每次调用时。
-陷阱 2：在循环中修改列表# ❌ 危险操作numbers = [1, 2, 3, 4, 5]for num in numbers:    if num % 2 == 0:        numbers.remove(num)  # 跳过元素！print(numbers)  # [1, 3, 5] - 结果正确但可能跳过元素# ✅ 正确做法：创建新列表numbers = [1, 2, 3, 4, 5]numbers = [num for num in numbers if num % 2 != 0]# 或倒序遍历for num in reversed(numbers):    if num % 2 == 0:        numbers.remove(num)
-
-陷阱 3：闭包延迟绑定# ❌ 输出都是 9def make_multipliers():    return [lambda x: i * x for i in range(4)]for multiplier in make_multipliers():    print(multiplier(2))  # 6, 6, 6, 6# ✅ 正确做法：使用默认参数def make_multipliers():    return [lambda x, i=i: i * x for i in range(4)]for multiplier in make_multipliers():    print(multiplier(2))  # 0, 2, 4, 6
-
-陷阱 4：is vs ==# ❌ 可能出错a = 1000b = 1000print(a is b)  # False（小整数缓存范围外）a = 5b = 5print(a is b)  # True（小整数缓存范围内）# ✅ 比较值用 ==print(a == b)  # 始终正确
-
-陷阱 5：类属性与实例属性混淆class Dog:    tricks = []  # ❌ 类属性，所有实例共享        def __init__(self, name):        self.name = name        def add_trick(self, trick):        self.tricks.append(trick)dog1 = Dog(&quot;Fido&quot;)dog2 = Dog(&quot;Buddy&quot;)dog1.add_trick(&quot;roll over&quot;)print(dog2.tricks)  # [&#x27;roll over&#x27;] - dog2 也有了！# ✅ 正确做法dog1 = Dog(&quot;Fido&quot;)dog1.tricks = []  # 实例属性dog1.tricks.append(&quot;roll over&quot;)
-
-陷阱 6：try/except 过于宽泛# ❌ 捕获所有异常，可能隐藏 bugtry:    do_something()except:  # 捕获所有，包括 KeyboardInterrupt    pass# ✅ 捕获特定异常try:    do_something()except ValueError as e:    logger.error(f&quot;Value error: &#123;e&#125;&quot;)except Exception as e:    logger.error(f&quot;Unexpected error: &#123;e&#125;&quot;)    raise
-
-陷阱 7：忘记关闭文件# ❌ 可能泄露资源f = open(&#x27;file.txt&#x27;, &#x27;r&#x27;)data = f.read()# 如果这里抛出异常，文件不会关闭f.close()# ✅ 使用 with 语句with open(&#x27;file.txt&#x27;, &#x27;r&#x27;) as f:    data = f.read()# 自动关闭，即使发生异常
-
-六、import 优化1. 避免循环导入# a.pyfrom b import func_b  # ❌ 循环导入def func_a():    pass# b.pyfrom a import func_a  # ❌ 循环导入def func_b():    pass# ✅ 解决方案：延迟导入def func_a():    from b import func_b  # 在函数内部导入    func_b()
-
-2. 使用 all 控制导出# mymodule.py__all__ = [&#x27;public_func&#x27;, &#x27;PublicClass&#x27;]def public_func():    passdef _private_func():  # 下划线开头表示私有    passclass PublicClass:    passclass _PrivateClass:    pass
-
-七、性能分析工具1. 使用 timeit 测量代码import timeit# 测试列表推导 vs for 循环list_comp_time = timeit.timeit(    &#x27;[x**2 for x in range(1000)]&#x27;,     number=10000)for_loop_time = timeit.timeit(&#x27;&#x27;&#x27;result = []for x in range(1000):    result.append(x**2)&#x27;&#x27;&#x27;, number=10000)print(f&quot;列表推导: &#123;list_comp_time:.4f&#125;s&quot;)print(f&quot;for 循环: &#123;for_loop_time:.4f&#125;s&quot;)
-
-2. 使用 cProfile 分析性能瓶颈import cProfiledef slow_function():    total = 0    for i in range(1000000):        total += i    return totalcProfile.run(&#x27;slow_function()&#x27;)
-
-八、实用优化清单
-
-
-场景
-不推荐
-推荐
-
-
-
-字符串连接
-+
-join()
-
-
-字符串格式化
-% 或 format()
-f-string
-
-
-列表过滤
-filter() + lambda
-列表推导式
-
-
-查找元素
-list.index()
-set 或 dict
-
-
-频繁函数调用
-直接调用
-@lru_cache
-
-
-大数据遍历
-列表
-生成器
-
-
-属性访问
-obj.attr
-local_var = obj.attr
-
-
-文件操作
-open/close
-with 语句
-
-
-总结Python 代码优化是一门平衡的艺术：
-
-先写对，再写好：功能正确是第一位
-避免过早优化：除非性能确实是瓶颈
-使用工具分析：不要凭感觉，用 profiler 找出真正的瓶颈
-保持可读性：过度优化可能降低代码可维护性
-
-记住：”可读性 counts” 是 Python 的核心价值观！
-]]></content>
-      <categories>
-        <category>Python进阶</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>性能优化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux访问Windows共享文件夹并挂载在本地</title>
-    <url>/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/</url>
-    <content><![CDATA[前期准备
-Windows设置共享文件夹
-
-暂时略，记得将文件夹共享给Everyone即可
-
-Windows打开smb传输协议
-
-具体路径控制面板-程序-程序和功能-启用或关闭Windows功能-SMB 1.0/CIFS 文件共享支持
-
-
-Linux安装相关smbclient命令(以Ubuntu 16为例)
-
-sudo apt-get install smbclient
-
-访问共享文件夹命令
-查看有哪些共享文件夹
-
-smbclient -L 192.168.102.161 -U Administrator%123456
-
-
-访问文件夹
-
-smbclient //192.168.102.161/share -U Administrator%123456
-
-挂载共享文件夹至本地
-本地创建挂载文件夹
-
-mkdir /data/share
-
-
-挂载
-
-mount -t cifs //192.168.102.161/share /data/share -o username=Administrator,password=123456
-
-
-卸载
-
-注意，卸载前需要关闭对该目录的所有进程
-umount /data/share
-]]></content>
-      <categories>
-        <category>技术教程</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1783,6 +2572,319 @@ hexo clean
       <tags>
         <tag>工具</tag>
         <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux访问Windows共享文件夹并挂载在本地</title>
+    <url>/2021/10/18/Linux%E8%AE%BF%E9%97%AEWindows%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E5%A4%B9%E5%B9%B6%E6%8C%82%E8%BD%BD%E5%9C%A8%E6%9C%AC%E5%9C%B0/</url>
+    <content><![CDATA[前期准备
+Windows设置共享文件夹
+
+暂时略，记得将文件夹共享给Everyone即可
+
+Windows打开smb传输协议
+
+具体路径控制面板-程序-程序和功能-启用或关闭Windows功能-SMB 1.0/CIFS 文件共享支持
+
+
+Linux安装相关smbclient命令(以Ubuntu 16为例)
+
+sudo apt-get install smbclient
+
+访问共享文件夹命令
+查看有哪些共享文件夹
+
+smbclient -L 192.168.102.161 -U Administrator%123456
+
+
+访问文件夹
+
+smbclient //192.168.102.161/share -U Administrator%123456
+
+挂载共享文件夹至本地
+本地创建挂载文件夹
+
+mkdir /data/share
+
+
+挂载
+
+mount -t cifs //192.168.102.161/share /data/share -o username=Administrator,password=123456
+
+
+卸载
+
+注意，卸载前需要关闭对该目录的所有进程
+umount /data/share
+]]></content>
+      <categories>
+        <category>技术教程</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【广发金工】OpenClaw多平台部署与投研应用</title>
+    <url>/2026/03/01/2026-03-01-%E5%B9%BF%E5%8F%91%E9%87%91%E5%B7%A5OpenClaw%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E4%B8%8E%E6%8A%95%E7%A0%94%E5%BA%94%E7%94%A8/</url>
+    <content><![CDATA[广发证券首席金工分析师 安宁宁
+SAC: S0260512020003
+&#x61;&#110;&#x6e;&#105;&#x6e;&#x67;&#110;&#105;&#110;&#103;&#x40;&#x67;&#x66;&#46;&#x63;&#x6f;&#x6d;&#x2e;&#x63;&#110;
+
+
+广发证券联席首席金工分析师 陈原文
+SAC: S0260517080003
+&#x63;&#x68;&#101;&#110;&#x79;&#x75;&#x61;&#110;&#x77;&#x65;&#110;&#x40;&#x67;&#x66;&#x2e;&#x63;&#111;&#x6d;&#x2e;&#x63;&#x6e;
+联系人：广发证券金工高级研究员 林涛
+SAC:
+S0260124060060
+&#x67;&#x66;&#x6c;&#x69;&#x6e;&#116;&#x61;&#x6f;&#64;&#103;&#102;&#46;&#99;&#x6f;&#x6d;&#x2e;&#99;&#110;
+广发金工安宁宁陈原文团队
+摘要
+AI投研应用：
+在2025年2月发布的研究报告《如何使用DeepSeek提高投研效率——各类大语言模型在金融领域的应用综述》中，我们团队以45页长文系统性地探讨了大语言模型在投研领域的应用前景。过去一年间，AI技术不断演进，各类旨在提升生产力的AI智能体（Agent）井喷式涌现。其中，近期备受瞩目且广受好评的OpenClaw无疑是表现最为亮眼的佼佼者。本文旨在深入解析OpenClaw在多平台的具体部署方案，并全面展示其在实际投研场景中的进阶应用。
+OpenClaw的优势：
+OpenClaw是新兴的AI智能体，能够无缝融入用户工作流，有效解决传统AI助手在交互、隐私与上下文方面的痛点。其核心优势主要体现在四个维度：一是创新的跨平台交互，允许用户通过主流即时通讯软件实现去中心化的远程控制；二是强大的本地执行力，其具备系统级权限，能够自动处理代码审查、文件整理等复杂的本地任务；三是坚实的隐私保障，采用“本地优先”架构部署于个人设备，保障用户的敏感信息与交互数据；四是持久的系统记忆力，通过本地日志与全局配置文件能够突破上下文丢失的限制，为用户提供连贯且高度个性化的长期智能服务。
+OpenClaw多平台部署：
+本文在第一章中首先详细介绍了OpenClaw在本地的Windows、Mac平台以及云服务器的部署全流程，其中包括适用于Linux的Windows子系统安装、OpenClaw安装与大模型、即时通信软件等配置详情。除了调用云端大模型外，还介绍了通过Ollama等开源框架，实现完全本地化的智能体运行。
+OpenClaw投研应用：
+本文在第二章首先介绍了OpenClaw的整体框架，帮助读者理解该智能体的基本原理，然后用实际的例子介绍了如何使用OpenClaw实现金融数据接入、条件选股、文件管理、财报分析、复杂代码工程、技术分析等多视角的投研应用。
+风险提示：
+（1）本文所述模型用量化方法通过历史数据统计、建模和测算完成，所得结论与规律在市场政策、环境变化时存在失效风险；（2）本文策略在市场结构及交易行为改变时有可能存在失效风险；（3）因量化模型不同，本文提出的观点可能与其他量化模型结论存在差异。
+一、
+OpenClaw多平台部署
+在2025年2月发布的研究报告《如何使用DeepSeek提高投研效率——各类大语言模型在金融领域的应用综述》中，我们团队以45页长文系统性地探讨了大语言模型在投研领域的应用前景。
+过去一年间，AI技术不断演进，各类旨在提升生产力的AI智能体（Agent）井喷式涌现。其中，近期备受瞩目且广受好评的OpenClaw无疑是表现最为亮眼的佼佼者。本文旨在深入解析OpenClaw在多平台的具体部署方案，并全面展示其在实际投研场景中的进阶应用。
+近年来，OpenClaw作为一个新兴的AI智能体，在开发者与研究社区中引起了广泛关注。其核心优势
+在于将大语言模型的能力无缝融入用户的日常工作流中，同时兼顾了隐私与执行效率。与传统的受限于封闭客户端的AI助手不同，OpenClaw通过独特的架构设计，解决了AI落地应用中的
+交互摩擦、数据隐私以及上下文碎片化等痛点。它之所以能够迅速获得青睐，主要归功于其在跨平台交互、本地执行力、数据隐私保护以及持久化记忆等四个维度的创新突破。
+首先，在交互模式上，OpenClaw实现了创新的跨平台通讯软件控制。该框架打破了传统AI必须依赖专属客户端或网页端的形式，允许用户将其直接绑定至飞书、钉钉、WhatsApp、Telegram等主流即时通讯软件中。这种设计不仅极大地降低了用户的使用门槛，还赋予了系统极高的远程可用性。例如，用户在移动场景下，仅需通过手机发送一条消息，即可唤醒并指令部署在家庭、办公室电脑或云端服务器上的OpenClaw开启后台任务。这种“去中心化客户端”的交互逻辑，使得AI真正成为了随时待命的助手。
+其次，在执行层面，OpenClaw展现了强大的本地自动化与任务接管能力。它不仅仅是一个文本生成工具，更是一个具备系统级操作权限的“数字员工”。通过与本地环境的深度集成，OpenClaw能够自动执行过去需要人类繁琐手动操作的复杂任务。无论是编写与运行本地脚本、处理与回复结构化邮件，还是对本地文件系统进行整理与归档，甚至管理复杂的个人日程，它都能在本地环境中高效闭环。这种深度的执行力显著提升了人机协同的生产效率。
+针对当前日益受到重视的隐私与安全问题，OpenClaw坚持“本地优先”（Local-first）的架构设计，捍卫了用户的数据主权。与高度依赖大型科技公司云端服务器的商业AI产品不同，OpenClaw可以完全部署在用户个人的硬件设备上。它具备极高的跨平台兼容性，不仅支持MacOS、Windows和Linux系统，还可以通过Docker容器化部署或运行在树莓派等轻量级设备中。在这种架构下，用户所有的敏感信息、系统配置文件以及所有的交互历史日志，均被安全地加密并存储在本地物理硬盘中，从根本上阻断了数据外泄和被用于商业模型训练的风险。
+最后，OpenClaw突破了传统大模型往往具有上下文容易丢失的限制，构建了持久的系统“记忆力”。网页版或云端AI通常在每次刷新或开启新会话时就会面临“失忆”问题，而OpenClaw则通过在本地生成并维护详细的会话日志与全局配置文件来管理状态。这种持久化机制赋予了框架长期记忆的能力，使其能够在长周期的交互中，逐步学习并记住用户的工作习惯、个性化偏好以及特定项目的上下文背景，从而提供更加精准、连贯且高度个性化的智能服务。
+（一）Windows平台部署
+要在Windows平台更加平稳地运行OpenClaw，建议使用适用于Linux的Windows子系统（Windows Subsystem for Linux 2，WSL2）。在部署OpenClaw时，采用WSL2主要是为了满足其对类Unix运行环境的底层需求。OpenClaw的核心网关服务依赖Linux的systemd机制以维持后台守护进程的长期稳定运行。同时，OpenClaw的部分Node.js扩展模块在构建阶段需调用特定于Linux的C++编译工具链。若直接在Windows原生环境中进行部署，通常会面临复杂的路径解析错误及底层编译环境缺失等问题。借助WSL2，可直接为OpenClaw提供标准化的Linux运行环境，从而有效规避跨平台适配造成的系统不稳定与依赖冲突。
+在Windows命令提示符中输入
+wsl
+以安装WSL2基本组件，重启电脑后输入
+wsl.exe –install Ubuntu-22.04
+，即快捷可安装Ubuntu-22.04子系统。
+在Windows命令提示符中输入
+wsl
+进入Ubuntu-22.04子系统，输入
+curl -fsSL https://openclaw.ai/install.sh | bash
+即可自动安装OpenClaw。
+然后将OpenClaw路径加入环境变量，在命令行中分别输入
+echo ‘export PATH=”/home/lintao/.npm-global/bin:$PATH”‘ &gt;&gt; ~/.bashrc
+与
+source ~/.bashrc
+。
+接下来便是对OpenClaw的具体配置。首先，OpenClaw是一个智能体中枢，它需要调用具体的大模型来作为大脑。对于调用的大模型，既可以选择各类云端大模型，也可以选择本地运行的大模型（如基于Ollama）。
+比如，通过SiliconFlow（硅基流动），可以方便地调用上百款云端大模型。对于Ollama的安装，可在其官网（https://ollama.com/download/windows）直接选择客户端下载，安装完毕后选择所需模型配置即可，如
+ollama run qwen3:8b
+。
+然后是对OpenClaw的通信配置。通过连接飞书等即时通信软件，可以实现OpenClaw的移动端使用。
+进入飞书开放平台，在开发者后台中使用“创建企业自建应用”功能，填写自定义的应用名称与应用描述，然后在“添加应用能力”中选择添加“机器人”，在OpenClaw依次输入App ID、App Secret等信息，使用
+openclaw gateway restart
+命令重启网关，在飞书“权限管理”中赋予权限以及设置“长连接”和“接收信息”，然后进行版本发布。在飞书中与机器人首次对话时，会出现配对码，将相应信息在命令行中输入即可完成所有配置。
+（二）Mac平台部署
+在Mac平台安装OpenClaw，建议先单独通过
+/bin/zsh -c “$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)&quot;
+命令从清华源安装MacOS的包管理工具homebrew，并通过
+echo ‘eval “$(/opt/homebrew/bin/brew shellenv)”‘ &gt;&gt; /Users/&lt;你的用户名&gt;/.zprofile
+和
+eval “$(/opt/homebrew/bin/brew shellenv)”
+命令将homebrew路径加入环境变量。运行完成后，输入
+brew -v
+，如果能输出版本号（比如Homebrew 5.x.x），则说明homebrew安装成功。
+由于MacOS本身即为类Unix系统，因此Mac平台部署OpenClaw的剩余流程基本与上述WSL环境完全一致，参考上述步骤即可，这里不作赘述。
+（三）云端平台部署
+除了
+在本地的Windows
+、Mac等平台部署外，还可以通过腾讯云、阿里云、百度云、火山引擎等云服务器快速一键部署。
+二、
+OpenClaw投研应用
+OpenClaw是一种高度模块化的智能体（AI Agent）架构，旨在通过大语言模型（LLM）的逻辑推理能力与本地执行引擎的深度耦合，实现跨越数字与物理环境的复杂任务自动化。该体系以智能体核心（Agent Core）为调度中枢，协同管理用于维持长期记忆与领域知识的本地工作区（Workspace）、支持多模态交互的接入渠道（Channels），以及作为物理执行介质的技能工具箱（Skills）。依托标准化的函数调用（Function Calling）机制，该框架使得大模型能够突破单一的文本生成局限，安全且自主地操控外部数据库、API服务及本地操作系统，从而完成从意图理解、任务规划到物理执行的完整闭环。
+本文以最基础的官方系统技能“读取文件”（read_file）为例，对上述框架中“技能（Skill）”模块的底层运作机制进行介绍。在OpenClaw中，各项技能均严格遵循“接口声明”与“本地执行”相分离的双层架构设计：
+
+接口声明层（面向模型）：
+
+该层主要用于约束与引导大语言模型。它通过符合OpenAPI规范的数据结构，向大模型清晰定义了技能的功能属性与必填参数（例如目标文件的路径file_path）。当大模型在上下文中判断需要获取本地数据时，会输出包含特定参数的结构化指令，而非自然语言回复。
+
+物理执行层（面向宿主机）：
+
+该层隐藏于框架底层，负责接收并解析大模型生成的结构化指令。一旦拦截到调用请求，核心调度器会将其转化为宿主机环境（如 Python 运行环境）下的真实I/O调用操作，访问本地系统并读取指定文件。
+
+反馈闭环：
+
+执行完毕后，底层代码会将读取到的文件文本（或系统抛出的异常报错信息）作为“观察结果（Observation）”重新注入大模型的上下文记忆中，驱动模型进行下一步的分析与决策。
+基于上述高解耦与高扩展性的插件化设计，OpenClaw的应用边界并不局限于基础的文件操作或代码执行。研究人员与开发者可直接访问官方技能生态社区（https://clawhub.ai/），根据具体的需求，检索、下载并集成各类定制化的进阶技能（Skills），从而快速构建出具备特定领域专业能力的专属AI智能体。
+在终端运行
+clawhub install &lt;skill名称&gt;
+命令，可以直接安装所需skill。安装完成后，该技能会自动加载到OpenClaw工作区中，可以直接在自然语言对话中调用它。通过在终端运行
+openclaw skills list
+命令，可以查看已安装的skill。
+此外，OpenClaw具备自动解析链接和处理背景任务的能力。对于skill的安装，可以直接在与OpenClaw助手的聊天界面中把链接发给它，如下达指令：“请帮我安装并启用这个技能：&lt;skill名称&gt;”，OpenClaw会在后台自动下载该技能的相关文件并完成配置。
+（一）接入金融数据
+ClawHub上的Stock Watcher技能主要使用同花顺 (10jqka.com.cn) 作为数据源，提供实时行情、技术分析和资金流向数据，实现了添加自选股、删除自选股、查看列表、行情总结等自然语言控制功能。通过直接与OpenClaw对话下达指令“请帮我安装并启用这个技能：https://clawhub.ai/Robin797860/stock-watcher”，即可完成安装。
+当自定义数据获取出现问题时，OpenClaw会灵活地自动切换数据源（比如从同花顺切换到新浪）以完成指令。
+（二）条件选股
+在接入金融数据后，便可以实现条件选股。比如，对OpenClaw下达指令“选择合适的数据源，获取最新数据对自选股列表进行条件选股：总市值小于1000亿元，市盈率为正且小于100倍。并回测所选个股的等权组合在过去20个交易日的收益率”。
+OpenClaw的智能程度通常与所选用的大模型直接相关。选择更优秀的大模型，可以让OpenClaw更精准地实现各类进阶任务。
+（三）文件管理
+前文提到，OpenClaw不仅是一个简单的大模型调用器，它还可以直接参与到实际的宿主机环境下的真实文件I/O调用操作。
+举一些最简单的例子，我们可以通过直接与OpenClaw进行对话，在指定目录下批量创建文件夹，将文本写入txt并保存到指定路径，抑或是实现任意的文件移动。实际上，OpenClaw几乎可以实现任意的文件创建、搜索、更改、移动、读取等功能。
+（四）财报分析
+在没有前置任何工具配置的情况下，可以让OpenClaw自己选择合适的工具读取并总结本地文件。比如“用合适的工具读取目录下的‘某公司财报.pdf’文件，并客观总结”。
+（五）复杂代码工程
+使用网页端的大模型时，通常只能生成单一脚本文件。但结合OpenClaw对宿主机环境下的真实文件I/O调用操作，可以实现对复杂代码工程直接构建。比如，我们可以通过指令“基于目录下的‘cne-6公式.pdf’文件，编写barra cne6因子的python实现代码。我希望所有代码文件保存在新建的‘cne6’文件夹中，并实现合理的代码结构和分层级目录：每类一级因子一个python脚本，每个脚本中单独实现对应的二级因子、三级因子函数，最后通过一个总的main函数来调用。代码注释用中文”
+（六）技术分析
+通过ClawHub上的Technical Analyst技能，可以实现对k线图的技术分析，并生成详细的分析报告。
+三、风险提示
+本文所述模型用量化方法通过历史数据统计、建模和测算完成，所得结论与规律在市场政策、环
+境变化时存在失
+效风险；
+本文策略在市场结构及交易行为改变时有可能存在失效风险；
+因量化模型不同，本文提出的观点可能与其他量化模型结论存在差异。
+法律声明：
+本微信号推送内容仅供广发证券股份有限公司（下称“广发证券”）客户参考，其他的任何读者在订阅本微信号前，请自行评估接收相关推送内容的适当性，广发证券不会因订阅本微信号的行为或者收到、阅读本微信号推送内容而视相关人员为客户。
+完整的投资观点应以广发证券研究所发布的完整报告为准。完整报告所载资料的来源及观点的出处皆被广发证券认为可靠，但广发证券不对其准确性或完整性做出任何保证，报告内容亦仅供参考。
+在任何情况下，本微信号所推送信息或所表述的意见并不构成对任何人的投资建议。除非法律法规有明确规定，在任何情况下广发证券不对因使用本微信号的内容而引致的任何损失承担任何责任。读者不应以本微信号推送内容取代其独立判断或仅根据本微信号推送内容做出决策。
+本微信号推送内容仅反映广发证券研究人员于发出完整报告当日的判断，可随时更改且不予通告。
+本微信号及其推送内容的版权归广发证券所有，广发证券对本微信号及其推送内容保留一切法律权利。未经广发证券事先书面许可，任何机构或个人不得以任何形式翻版、复制、刊登、转载和引用，否则由此造成的一切不良后果及法律责任由私自翻版、复制、刊登、转载和引用者承担。
+
+
+原文链接：https://mp.weixin.qq.com/s/oGsdl2jWsNZCLrXoI1S4OQ
+
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>工具</tag>
+        <tag>投研</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python 代码优化技巧与常见陷阱（错题集）</title>
+    <url>/2026/03/13/2026-03-13-python-optimization-traps/</url>
+    <content><![CDATA[前言本文整理了 Python 开发中常见的性能优化技巧、易错点以及”错题集”，帮助你在日常开发中写出更高效、更 Pythonic 的代码。
+
+
+一、字符串操作优化1. 字符串连接：join vs +# ❌ 低效：每次 + 都创建新字符串result = &quot;&quot;for s in list_of_strings:    result += s# ✅ 高效：使用 joinresult = &quot;&quot;.join(list_of_strings)
+
+性能对比：当连接大量字符串时，join 比 + 快数十倍。
+2. 字符串格式化对比name = &quot;小明&quot;age = 18# 方式一：% 格式化（较老，不推荐）&quot;%s is %d years old&quot; % (name, age)# 方式二：str.format()&quot;&#123;&#125; is &#123;&#125; years old&quot;.format(name, age)# 方式三：f-string（Python 3.6+，推荐）f&quot;&#123;name&#125; is &#123;age&#125; years old&quot;# 性能：f-string &gt; % &gt; format
+
+二、列表操作优化1. 列表推导式 vs for 循环# ❌ 低效squares = []for x in range(1000):    squares.append(x ** 2)# ✅ 高效：列表推导式squares = [x ** 2 for x in range(1000)]# 性能提升：约 2-3 倍
+
+2. 生成器表达式处理大数据# ❌ 内存爆炸：一次性生成所有数据sum([x ** 2 for x in range(10000000)])# ✅ 内存友好：惰性求值sum(x ** 2 for x in range(10000000))
+
+3. 使用 set/dict 进行 O(1) 查找# ❌ O(n) 查找target = 100if target in large_list:  # 慢！    pass# ✅ O(1) 查找large_set = set(large_list)if target in large_set:  # 快！    pass
+
+4. 列表去重并保持顺序# 方法：利用 dict 的 ordered 特性（Python 3.7+）def unique_ordered(seq):    return list(dict.fromkeys(seq))# 示例items = [1, 2, 2, 3, 1, 4]print(unique_ordered(items))  # [1, 2, 3, 4]
+
+三、循环优化技巧1. 使用 enumerate 获取索引items = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]# ❌ 不 Pythonicfor i in range(len(items)):    print(i, items[i])# ✅ Pythonicfor i, item in enumerate(items):    print(i, item)
+
+2. 使用 zip 并行迭代names = [&#x27;Alice&#x27;, &#x27;Bob&#x27;, &#x27;Charlie&#x27;]ages = [25, 30, 35]# ✅ 优雅并行迭代for name, age in zip(names, ages):    print(f&quot;&#123;name&#125; is &#123;age&#125; years old&quot;)# Python 3.10+: zip 支持 strict 参数for name, age in zip(names, ages, strict=True):  # 长度不一致时报错    pass
+
+3. 使用 map/filter 还是列表推导？numbers = [1, 2, 3, 4, 5]# mapsquares = list(map(lambda x: x**2, numbers))# filterevens = list(filter(lambda x: x % 2 == 0, numbers))# ✅ 列表推导式（通常更快且更易读）squares = [x**2 for x in numbers]evens = [x for x in numbers if x % 2 == 0]
+
+四、函数优化1. 使用 lru_cache 缓存结果from functools import lru_cache# ❌ 重复计算def fibonacci(n):    if n &lt; 2:        return n    return fibonacci(n-1) + fibonacci(n-2)# ✅ 使用缓存@lru_cache(maxsize=None)def fibonacci(n):    if n &lt; 2:        return n    return fibonacci(n-1) + fibonacci(n-2)# 性能提升：从指数级到 O(n)
+
+2. 使用 partial 固定参数from functools import partial# 原始函数def power(base, exponent):    return base ** exponent# 创建平方函数square = partial(power, exponent=2)print(square(5))  # 25# 创建立方函数cube = partial(power, exponent=3)print(cube(5))  # 125
+
+3. 使用 slots 减少内存占用# ❌ 默认使用 __dict__，内存占用大class Point:    def __init__(self, x, y):        self.x = x        self.y = y# ✅ 使用 __slots__，内存节省约 50%class Point:    __slots__ = [&#x27;x&#x27;, &#x27;y&#x27;]    def __init__(self, x, y):        self.x = x        self.y = y
+
+五、常见陷阱与错题集陷阱 1：可变默认参数# ❌ 经典陷阱def append_to(element, to=[]):    to.append(element)    return toprint(append_to(1))  # [1]print(append_to(2))  # [1, 2] - 居然保留了上次的结果！# ✅ 正确做法def append_to(element, to=None):    if to is None:        to = []    to.append(element)    return to
+
+原因：默认参数在函数定义时只创建一次，而不是每次调用时。
+陷阱 2：在循环中修改列表# ❌ 危险操作numbers = [1, 2, 3, 4, 5]for num in numbers:    if num % 2 == 0:        numbers.remove(num)  # 跳过元素！print(numbers)  # [1, 3, 5] - 结果正确但可能跳过元素# ✅ 正确做法：创建新列表numbers = [1, 2, 3, 4, 5]numbers = [num for num in numbers if num % 2 != 0]# 或倒序遍历for num in reversed(numbers):    if num % 2 == 0:        numbers.remove(num)
+
+陷阱 3：闭包延迟绑定# ❌ 输出都是 9def make_multipliers():    return [lambda x: i * x for i in range(4)]for multiplier in make_multipliers():    print(multiplier(2))  # 6, 6, 6, 6# ✅ 正确做法：使用默认参数def make_multipliers():    return [lambda x, i=i: i * x for i in range(4)]for multiplier in make_multipliers():    print(multiplier(2))  # 0, 2, 4, 6
+
+陷阱 4：is vs ==# ❌ 可能出错a = 1000b = 1000print(a is b)  # False（小整数缓存范围外）a = 5b = 5print(a is b)  # True（小整数缓存范围内）# ✅ 比较值用 ==print(a == b)  # 始终正确
+
+陷阱 5：类属性与实例属性混淆class Dog:    tricks = []  # ❌ 类属性，所有实例共享        def __init__(self, name):        self.name = name        def add_trick(self, trick):        self.tricks.append(trick)dog1 = Dog(&quot;Fido&quot;)dog2 = Dog(&quot;Buddy&quot;)dog1.add_trick(&quot;roll over&quot;)print(dog2.tricks)  # [&#x27;roll over&#x27;] - dog2 也有了！# ✅ 正确做法dog1 = Dog(&quot;Fido&quot;)dog1.tricks = []  # 实例属性dog1.tricks.append(&quot;roll over&quot;)
+
+陷阱 6：try/except 过于宽泛# ❌ 捕获所有异常，可能隐藏 bugtry:    do_something()except:  # 捕获所有，包括 KeyboardInterrupt    pass# ✅ 捕获特定异常try:    do_something()except ValueError as e:    logger.error(f&quot;Value error: &#123;e&#125;&quot;)except Exception as e:    logger.error(f&quot;Unexpected error: &#123;e&#125;&quot;)    raise
+
+陷阱 7：忘记关闭文件# ❌ 可能泄露资源f = open(&#x27;file.txt&#x27;, &#x27;r&#x27;)data = f.read()# 如果这里抛出异常，文件不会关闭f.close()# ✅ 使用 with 语句with open(&#x27;file.txt&#x27;, &#x27;r&#x27;) as f:    data = f.read()# 自动关闭，即使发生异常
+
+六、import 优化1. 避免循环导入# a.pyfrom b import func_b  # ❌ 循环导入def func_a():    pass# b.pyfrom a import func_a  # ❌ 循环导入def func_b():    pass# ✅ 解决方案：延迟导入def func_a():    from b import func_b  # 在函数内部导入    func_b()
+
+2. 使用 all 控制导出# mymodule.py__all__ = [&#x27;public_func&#x27;, &#x27;PublicClass&#x27;]def public_func():    passdef _private_func():  # 下划线开头表示私有    passclass PublicClass:    passclass _PrivateClass:    pass
+
+七、性能分析工具1. 使用 timeit 测量代码import timeit# 测试列表推导 vs for 循环list_comp_time = timeit.timeit(    &#x27;[x**2 for x in range(1000)]&#x27;,     number=10000)for_loop_time = timeit.timeit(&#x27;&#x27;&#x27;result = []for x in range(1000):    result.append(x**2)&#x27;&#x27;&#x27;, number=10000)print(f&quot;列表推导: &#123;list_comp_time:.4f&#125;s&quot;)print(f&quot;for 循环: &#123;for_loop_time:.4f&#125;s&quot;)
+
+2. 使用 cProfile 分析性能瓶颈import cProfiledef slow_function():    total = 0    for i in range(1000000):        total += i    return totalcProfile.run(&#x27;slow_function()&#x27;)
+
+八、实用优化清单
+
+
+场景
+不推荐
+推荐
+
+
+
+字符串连接
++
+join()
+
+
+字符串格式化
+% 或 format()
+f-string
+
+
+列表过滤
+filter() + lambda
+列表推导式
+
+
+查找元素
+list.index()
+set 或 dict
+
+
+频繁函数调用
+直接调用
+@lru_cache
+
+
+大数据遍历
+列表
+生成器
+
+
+属性访问
+obj.attr
+local_var = obj.attr
+
+
+文件操作
+open/close
+with 语句
+
+
+总结Python 代码优化是一门平衡的艺术：
+
+先写对，再写好：功能正确是第一位
+避免过早优化：除非性能确实是瓶颈
+使用工具分析：不要凭感觉，用 profiler 找出真正的瓶颈
+保持可读性：过度优化可能降低代码可维护性
+
+记住：”可读性 counts” 是 Python 的核心价值观！
+]]></content>
+      <categories>
+        <category>Python进阶</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>性能优化</tag>
       </tags>
   </entry>
 </search>

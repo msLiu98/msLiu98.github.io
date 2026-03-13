@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>机器学习与深度学习入门笔记 | Thomas的随笔思考</title><meta name="author" content="Thomas"><meta name="copyright" content="Thomas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言机器学习是人工智能的核心领域，本文汇总机器学习与深度学习的学习资源、核心概念和实践案例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习与深度学习入门笔记">
+<meta property="og:url" content="http://example.com/2026/03/13/2026-03-13-notes-machine-learning/index.html">
+<meta property="og:site_name" content="Thomas的随笔思考">
+<meta property="og:description" content="前言机器学习是人工智能的核心领域，本文汇总机器学习与深度学习的学习资源、核心概念和实践案例。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920">
+<meta property="article:published_time" content="2026-03-13T12:35:00.000Z">
+<meta property="article:modified_time" content="2026-03-13T12:14:49.546Z">
+<meta property="article:author" content="Thomas">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Transformer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "机器学习与深度学习入门笔记",
+  "url": "http://example.com/2026/03/13/2026-03-13-notes-machine-learning/",
+  "image": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920",
+  "datePublished": "2026-03-13T12:35:00.000Z",
+  "dateModified": "2026-03-13T12:14:49.546Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Thomas",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/03/13/2026-03-13-notes-machine-learning/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习与深度学习入门笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (true) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.svg" alt="Logo"><span class="site-name">Thomas的随笔思考</span></a><a class="nav-page-title" href="/"><span class="site-name">机器学习与深度学习入门笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">机器学习与深度学习入门笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-13T12:35:00.000Z" title="发表于 2026-03-13 20:35:00">2026-03-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-13T12:14:49.546Z" title="更新于 2026-03-13 20:14:49">2026-03-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>机器学习是人工智能的核心领域，本文汇总机器学习与深度学习的学习资源、核心概念和实践案例。</p>
+<span id="more"></span>
+
+<h2 id="一、学习资源推荐"><a href="#一、学习资源推荐" class="headerlink" title="一、学习资源推荐"></a>一、学习资源推荐</h2><h3 id="1-1-优质课程"><a href="#1-1-优质课程" class="headerlink" title="1.1 优质课程"></a>1.1 优质课程</h3><table>
+<thead>
+<tr>
+<th>课程</th>
+<th>讲师</th>
+<th>平台</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>机器学习</strong></td>
+<td>李宏毅</td>
+<td>B站</td>
+<td>中文授课，理论与实践结合</td>
+</tr>
+<tr>
+<td><strong>Machine Learning</strong></td>
+<td>吴恩达</td>
+<td>Coursera</td>
+<td>经典入门，系统全面</td>
+</tr>
+<tr>
+<td><strong>深度学习专项</strong></td>
+<td>吴恩达</td>
+<td>Coursera</td>
+<td>深度学习系统课程</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-推荐书籍与资料"><a href="#1-2-推荐书籍与资料" class="headerlink" title="1.2 推荐书籍与资料"></a>1.2 推荐书籍与资料</h3><ul>
+<li>《机器学习》- 周志华（西瓜书）</li>
+<li>《深度学习》- Goodfellow（花书）</li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=U0s0f995w14">Pytorch Transformers from Scratch</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/642454398">pytorch实现Transformer</a></li>
+</ul>
+<h2 id="二、核心概念"><a href="#二、核心概念" class="headerlink" title="二、核心概念"></a>二、核心概念</h2><h3 id="2-1-机器学习分类"><a href="#2-1-机器学习分类" class="headerlink" title="2.1 机器学习分类"></a>2.1 机器学习分类</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">机器学习</span><br><span class="line">├── 监督学习</span><br><span class="line">│   ├── 分类（Classification）</span><br><span class="line">│   └── 回归（Regression）</span><br><span class="line">├── 无监督学习</span><br><span class="line">│   ├── 聚类（Clustering）</span><br><span class="line">│   └── 降维（Dimensionality Reduction）</span><br><span class="line">└── 强化学习</span><br><span class="line">    └── 决策过程优化</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-评估指标"><a href="#2-2-评估指标" class="headerlink" title="2.2 评估指标"></a>2.2 评估指标</h3><h4 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h4><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>公式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>准确率</strong></td>
+<td>$\frac{TP+TN}{TP+TN+FP+FN}$</td>
+<td>预测正确的比例</td>
+</tr>
+<tr>
+<td><strong>精确率</strong></td>
+<td>$\frac{TP}{TP+FP}$</td>
+<td>预测为正例中实际为正例的比例</td>
+</tr>
+<tr>
+<td><strong>召回率</strong></td>
+<td>$\frac{TP}{TP+FN}$</td>
+<td>实际为正例中被预测为正例的比例</td>
+</tr>
+<tr>
+<td><strong>F1-Score</strong></td>
+<td>$2 \cdot \frac{P \cdot R}{P+R}$</td>
+<td>精确率和召回率的调和平均</td>
+</tr>
+</tbody></table>
+<h4 id="回归问题"><a href="#回归问题" class="headerlink" title="回归问题"></a>回归问题</h4><ul>
+<li><strong>MSE</strong>（均方误差）：$\frac{1}{n}\sum_{i=1}^n (y_i - \hat{y}_i)^2$</li>
+<li><strong>MAE</strong>（平均绝对误差）：$\frac{1}{n}\sum_{i=1}^n |y_i - \hat{y}_i|$</li>
+<li><strong>RMSE</strong>（均方根误差）：$\sqrt{MSE}$</li>
+</ul>
+<h2 id="三、Transformer-与-Attention"><a href="#三、Transformer-与-Attention" class="headerlink" title="三、Transformer 与 Attention"></a>三、Transformer 与 Attention</h2><h3 id="3-1-Attention-机制"><a href="#3-1-Attention-机制" class="headerlink" title="3.1 Attention 机制"></a>3.1 Attention 机制</h3><p><strong>核心思想</strong>：让模型在处理序列时，能够动态地关注输入的不同部分。</p>
+<p><strong>自注意力公式</strong>：</p>
+<p>$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$</p>
+<p>其中：</p>
+<ul>
+<li><strong>Q（Query）</strong>：查询向量，表示当前要查询的信息</li>
+<li><strong>K（Key）</strong>：键向量，表示输入的位置信息</li>
+<li><strong>V（Value）</strong>：值向量，表示输入的实际内容</li>
+<li>**$d_k$**：Key 向量的维度，用于缩放点积</li>
+</ul>
+<h3 id="3-2-Transformer-架构"><a href="#3-2-Transformer-架构" class="headerlink" title="3.2 Transformer 架构"></a>3.2 Transformer 架构</h3><p>Transformer 完全基于 Attention 机制，摒弃了 RNN 和 CNN：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入嵌入 + 位置编码</span><br><span class="line">    ↓</span><br><span class="line">[ 编码器 × N ]          [ 解码器 × N ]</span><br><span class="line">- 多头自注意力          - 掩码自注意力</span><br><span class="line">- 前馈网络              - 编码器-解码器注意力</span><br><span class="line">- 残差连接              - 前馈网络</span><br><span class="line">- LayerNorm             - 残差连接</span><br><span class="line">    ↓</span><br><span class="line">输出层（线性 + Softmax）</span><br></pre></td></tr></table></figure>
+
+<p><strong>核心优势</strong>：</p>
+<ul>
+<li>并行计算，训练速度快</li>
+<li>长距离依赖建模能力强</li>
+<li>可解释性较好</li>
+</ul>
+<h2 id="四、自然语言处理（NLP）"><a href="#四、自然语言处理（NLP）" class="headerlink" title="四、自然语言处理（NLP）"></a>四、自然语言处理（NLP）</h2><h3 id="4-1-文本相似度分析流程"><a href="#4-1-文本相似度分析流程" class="headerlink" title="4.1 文本相似度分析流程"></a>4.1 文本相似度分析流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gensim <span class="keyword">import</span> corpora, models, similarities</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 读取文档</span></span><br><span class="line">docs = [<span class="string">&quot;文本1内容&quot;</span>, <span class="string">&quot;文本2内容&quot;</span>, <span class="string">&quot;文本3内容&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 分词</span></span><br><span class="line">texts = [[word <span class="keyword">for</span> word <span class="keyword">in</span> doc.split()] <span class="keyword">for</span> doc <span class="keyword">in</span> docs]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 构建词典和语料库</span></span><br><span class="line">dictionary = corpora.Dictionary(texts)</span><br><span class="line">corpus = [dictionary.doc2bow(text) <span class="keyword">for</span> text <span class="keyword">in</span> texts]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. TF-IDF 转换</span></span><br><span class="line">tfidf = models.TfidfModel(corpus)</span><br><span class="line">corpus_tfidf = tfidf[corpus]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5. 计算相似度</span></span><br><span class="line">index = similarities.MatrixSimilarity(corpus_tfidf)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 6. 查询</span></span><br><span class="line">query = <span class="string">&quot;查询文本&quot;</span></span><br><span class="line">query_vec = dictionary.doc2bow(query.split())</span><br><span class="line">query_tfidf = tfidf[query_vec]</span><br><span class="line">sims = index[query_tfidf]</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-NLP-评估指标：ROUGE"><a href="#4-2-NLP-评估指标：ROUGE" class="headerlink" title="4.2 NLP 评估指标：ROUGE"></a>4.2 NLP 评估指标：ROUGE</h3><p>ROUGE（Recall-Oriented Understudy for Gisting Evaluation）用于评估文本摘要和机器翻译质量：</p>
+<ul>
+<li><strong>ROUGE-N</strong>：N-gram 重叠度量</li>
+<li><strong>ROUGE-L</strong>：最长公共子序列</li>
+<li><strong>ROUGE-W</strong>：加权最长公共子序列</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rouge <span class="keyword">import</span> Rouge</span><br><span class="line"></span><br><span class="line">rouge = Rouge()</span><br><span class="line">scores = rouge.get_scores(hypothesis, reference)</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、常用工具库"><a href="#五、常用工具库" class="headerlink" title="五、常用工具库"></a>五、常用工具库</h2><table>
+<thead>
+<tr>
+<th>库</th>
+<th>用途</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Scikit-learn</strong></td>
+<td>传统机器学习</td>
+<td>分类、回归、聚类</td>
+</tr>
+<tr>
+<td><strong>PyTorch</strong></td>
+<td>深度学习框架</td>
+<td>神经网络构建</td>
+</tr>
+<tr>
+<td><strong>TensorFlow</strong></td>
+<td>深度学习框架</td>
+<td>生产部署</td>
+</tr>
+<tr>
+<td><strong>Transformers</strong></td>
+<td>预训练模型</td>
+<td>BERT、GPT</td>
+</tr>
+<tr>
+<td><strong>NLTK</strong></td>
+<td>自然语言处理</td>
+<td>文本处理</td>
+</tr>
+<tr>
+<td><strong>spaCy</strong></td>
+<td>工业级 NLP</td>
+<td>命名实体识别</td>
+</tr>
+</tbody></table>
+<h2 id="六、实践建议"><a href="#六、实践建议" class="headerlink" title="六、实践建议"></a>六、实践建议</h2><h3 id="6-1-学习路径"><a href="#6-1-学习路径" class="headerlink" title="6.1 学习路径"></a>6.1 学习路径</h3><ol>
+<li><strong>数学基础</strong>：线性代数、概率统计、微积分</li>
+<li><strong>编程能力</strong>：Python、NumPy、Pandas</li>
+<li><strong>机器学习</strong>：监督学习、无监督学习基础</li>
+<li><strong>深度学习</strong>：神经网络、CNN、RNN</li>
+<li><strong>前沿技术</strong>：Transformer、大语言模型</li>
+</ol>
+<h3 id="6-2-项目实践"><a href="#6-2-项目实践" class="headerlink" title="6.2 项目实践"></a>6.2 项目实践</h3><ul>
+<li><strong>入门</strong>：房价预测、鸢尾花分类</li>
+<li><strong>进阶</strong>：情感分析、图像分类</li>
+<li><strong>高级</strong>：文本生成、目标检测</li>
+</ul>
+<h2 id="参考资源"><a href="#参考资源" class="headerlink" title="参考资源"></a>参考资源</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762">Attention is All You Need 论文</a></li>
+<li><a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/">Transformers 库文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Wv411h7kN">李宏毅机器学习 (2022春)</a></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>机器学习领域发展迅速，从传统的统计学习方法到深度学习，再到如今的大语言模型，技术迭代不断加速。建议打好数学和编程基础，通过实践项目加深理解，保持对新技术的关注和学习。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">Thomas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2026/03/13/2026-03-13-notes-machine-learning/">http://example.com/2026/03/13/2026-03-13-notes-machine-learning/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">Thomas的随笔思考</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a><a class="post-meta__tags" href="/tags/NLP/">NLP</a><a class="post-meta__tags" href="/tags/Transformer/">Transformer</a></div><div class="post-share"><div class="social-share" data-image="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/03/13/2026-03-13-notes-job-search/" title="求职面试与学习技巧汇总"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">求职面试与学习技巧汇总</div></div><div class="info-2"><div class="info-item-1">前言本文汇总求职准备、面试技巧以及高效学习方法，助力职业发展。   一、简历制作1.1 简历结构12345678个人信息├── 姓名、联系方式、GitHub/博客链接├── 求职意向├── 教育背景├── 专业技能├── 项目经历（重点）├── 实习/工作经历└── 其他（证书、获奖等）  1.2 项目经历撰写要点STAR 法则：  Situation（背景）：项目背景和目标 Task（任务）：你的职责和任务 Action（行动）：具体采取的措施 Result（结果）：量化成果和影响  示例： 12345❌ 差：负责开发一个量化交易平台✅ 优：独立开发量化回测系统，使用 Python + Backtrader 框架，     实现 10+ 种技术指标策略，回测速度提升 30%，     策略夏普比率平均提升 0.5  1.3 技术简历要点   模块 注意事项    技能列表 按熟练度排序，避免堆砌   项目描述 突出技术难点和解决方案   代码链接 提供 GitHub 链接，保持活跃   量化成果 用数字说话（性能提升 xx%）   二、面试准备2.1 技术面试流程1234567...</div></div></div></a><a class="pagination-related" href="/2026/03/13/2026-03-13-notes-algorithms/" title="算法学习笔记：动态规划与双指针"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">算法学习笔记：动态规划与双指针</div></div><div class="info-2"><div class="info-item-1">前言算法是编程的核心基础，本文汇总动态规划和双指针两大经典技巧的核心知识点与实战应用。   一、动态规划（Dynamic Programming）1.1 核心思想动态规划通过将原问题分解为相对简单的子问题来求解复杂问题，适用于具有以下性质的问题：  最优子结构：问题的最优解包含子问题的最优解 无后效性：子问题的解一旦确定，不再受后续决策影响 重叠子问题：子问题被重复计算，可用记忆化优化  1.2 解题步骤 定义状态：确定 DP 数组的含义 状态转移方程：找出状态之间的关系 初始化：设置边界条件 遍历顺序：确定计算顺序 返回结果：从 DP 数组中提取答案  1.3 经典问题：0/1 背包问题描述：有 n 件物品，每件物品重量为 $w_i$，价值为 $v_i$。背包容量为 $C$，求能装入背包的最大价值。 状态定义：$dp[i][j]$ 表示前 $i$ 件物品，容量为 $j$ 时的最大价值 状态转移：$$dp[i][j] = \max(dp[i-1][j], \quad dp[i-1][j-w_i] + v_i)$$ 代码实现： 123456789101112131415161718...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/13/2026-03-13-quant-learning-notes/" title="量化投资与算法学习笔记汇总"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-13</div><div class="info-item-2">量化投资与算法学习笔记汇总</div></div><div class="info-2"><div class="info-item-1">前言本文汇总了个人在学习量化投资、算法与机器学习过程中的核心笔记，涵盖量化策略、Python编程技巧、经典算法以及数学建模方法。希望能为同样在这些领域探索的朋友提供参考。   一、量化投资基础1.1 量化交易概述量化交易是利用数学模型和计算机技术进行投资决策的方法。核心流程包括：  数据获取：行情数据、财务数据、另类数据 因子挖掘：技术指标、基本面因子、量价因子 策略回测：历史数据验证策略有效性 风险管理：仓位控制、止损止盈、回撤管理 实盘交易：信号执行、滑点控制、系统监控  1.2 经典技术指标策略MACD 策略MACD（Moving Average Convergence Divergence）是趋势跟踪指标，由快线（DIF）、慢线（DEA）和柱状图（MACD）组成。 交易信号：  金叉：DIF 上穿 DEA，买入信号 死叉：DIF 下穿 DEA，卖出信号  KDJ 策略KDJ 是随机指标，反映价格波动的相对位置，取值范围 0-100。 关键阈值：  K &gt; 80：超买区，考虑卖出 K &lt; 20：超卖区，考虑买入  1.3 多因子模型（Barra 模型）Barra...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Thomas</div><div class="author-info-description">记录技术、思考与生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/msLiu98"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/msLiu98" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Thomas 的随笔思考 🎉</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90%E6%8E%A8%E8%8D%90"><span class="toc-number">2.</span> <span class="toc-text">一、学习资源推荐</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%BC%98%E8%B4%A8%E8%AF%BE%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 优质课程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8E%A8%E8%8D%90%E4%B9%A6%E7%B1%8D%E4%B8%8E%E8%B5%84%E6%96%99"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 推荐书籍与资料</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">3.</span> <span class="toc-text">二、核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%88%86%E7%B1%BB"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 机器学习分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 评估指标</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="toc-number">3.2.1.</span> <span class="toc-text">分类问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98"><span class="toc-number">3.2.2.</span> <span class="toc-text">回归问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Transformer-%E4%B8%8E-Attention"><span class="toc-number">4.</span> <span class="toc-text">三、Transformer 与 Attention</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Attention-%E6%9C%BA%E5%88%B6"><span class="toc-number">4.1.</span> <span class="toc-text">3.1 Attention 机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Transformer-%E6%9E%B6%E6%9E%84"><span class="toc-number">4.2.</span> <span class="toc-text">3.2 Transformer 架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%88NLP%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">四、自然语言处理（NLP）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 文本相似度分析流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-NLP-%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87%EF%BC%9AROUGE"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 NLP 评估指标：ROUGE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93"><span class="toc-number">6.</span> <span class="toc-text">五、常用工具库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%AE%9E%E8%B7%B5%E5%BB%BA%E8%AE%AE"><span class="toc-number">7.</span> <span class="toc-text">六、实践建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84"><span class="toc-number">7.1.</span> <span class="toc-text">6.1 学习路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5"><span class="toc-number">7.2.</span> <span class="toc-text">6.2 项目实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90"><span class="toc-number">8.</span> <span class="toc-text">参考资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">9.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-job-search/" title="求职面试与学习技巧汇总"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="求职面试与学习技巧汇总"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-job-search/" title="求职面试与学习技巧汇总">求职面试与学习技巧汇总</a><time datetime="2026-03-13T12:40:00.000Z" title="发表于 2026-03-13 20:40:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-machine-learning/" title="机器学习与深度学习入门笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器学习与深度学习入门笔记"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-machine-learning/" title="机器学习与深度学习入门笔记">机器学习与深度学习入门笔记</a><time datetime="2026-03-13T12:35:00.000Z" title="发表于 2026-03-13 20:35:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-algorithms/" title="算法学习笔记：动态规划与双指针"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算法学习笔记：动态规划与双指针"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-algorithms/" title="算法学习笔记：动态规划与双指针">算法学习笔记：动态规划与双指针</a><time datetime="2026-03-13T12:30:00.000Z" title="发表于 2026-03-13 20:30:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-python-data-science/" title="Python 数据科学技巧汇总"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 数据科学技巧汇总"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-python-data-science/" title="Python 数据科学技巧汇总">Python 数据科学技巧汇总</a><time datetime="2026-03-13T12:25:00.000Z" title="发表于 2026-03-13 20:25:00">2026-03-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/13/2026-03-13-notes-kernel-regression/" title="核回归与数学建模笔记"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="核回归与数学建模笔记"/></a><div class="content"><a class="title" href="/2026/03/13/2026-03-13-notes-kernel-regression/" title="核回归与数学建模笔记">核回归与数学建模笔记</a><time datetime="2026-03-13T12:20:00.000Z" title="发表于 2026-03-13 20:20:00">2026-03-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2021 - 2026 By Thomas</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-heart.min.js" async="async" mobile="false"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
